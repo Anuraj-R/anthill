@@ -60,84 +60,82 @@ var grams = {};
 var beginnings = [];
 
 function isUpper( charvar ){
-	if (charvar == charvar.toLowerCase())return false;
-	return true;
+    if (charvar == charvar.toLowerCase())return false;
+    return true;
 }
 
-function DinkamQuote(){
-	for(var i = 0; i<(txt.length - order); i++){
-		var gram = txt.substr(i, order);
-		//mark it a suitable beginner gram for a sentence if it starts with an upper case
-		if(isUpper(txt.charAt(i)))beginnings.push(gram);
-		if(!grams[gram]){
-			grams[gram] = [];
-			grams[gram].push(txt.charAt(i+order));
-		}
-		else{
-			grams[gram].push(txt.charAt(i+order));
-		}
-	}
-	
-	//create chains
-	var rand = Math.floor( Math.random() * beginnings.length );
-	var nxt = beginnings[rand];
-	var result = nxt;
-	//get a beginning for each line
-	for( var i=0; i<120;){
-		
-		if(grams[nxt]){
-			possibilities = grams[nxt];
-			var rand = Math.floor( Math.random() * possibilities.length );
-			result = result+possibilities[rand];
-			//break after a full sentence
-			if (possibilities[rand] == ".") break;
-			nxt = result.substr(++i, order);
-		}
-		else{
-			break;
-		}
-	}
-	return result + "<br><b>--Dinkam Stone</b>";
+function DinkamQuote() {
+    for (var i = 0; i < (txt.length - order); i++) {
+        var gram = txt.substr(i, order);
+        //mark it a suitable beginner gram for a sentence if it starts with an upper case
+        if (isUpper(txt.charAt(i))) beginnings.push(gram);
+        if (!grams[gram]) {
+            grams[gram] = [];
+            grams[gram].push(txt.charAt(i + order));
+        }
+        else {
+            grams[gram].push(txt.charAt(i + order));
+        }
+    }
+
+    //create chains
+    var rand = Math.floor(Math.random() * beginnings.length);
+    var nxt = beginnings[rand];
+    var result = nxt;
+    //get a beginning for each line
+    for (var i = 0; i < 120;) {
+
+        if (grams[nxt]) {
+            var possibilities = grams[nxt];
+            rand = Math.floor(Math.random() * possibilities.length);
+            result = result + possibilities[rand];
+            //break after a full sentence
+            if (possibilities[rand] == ".") break;
+            nxt = result.substr(++i, order);
+        }
+        else {
+            break;
+        }
+    }
+    return result + "<br><b>--Dinkam Stone</b>";
 }
 
 
-function centrify(messageBox){
-	$("#"+messageBox).offset({
-	   top: BLOCKSIZE,
-	   left: $(document).width()/2 -  157
-	});
+function centrify(messageBox) {
+    $("#" + messageBox).offset({
+        top: BLOCKSIZE,
+        left: $(document).width() / 2 - 157
+    });
 }
-function popBox(msgBox){
-	$( "#"+msgBox ).show();
-        $( "#"+msgBox ).animate({
-          color: "#2D1A1C",
-          width: BLOCKSIZE*7
-        }, 800 );
+function popBox(msgBox) {
+    $("#" + msgBox).show();
+    $("#" + msgBox).animate({
+        color: "#2D1A1C",
+        width: BLOCKSIZE * 7
+    }, 800);
 }
 
-function fillBox(msgBox, msg){
-	$( "#"+msgBox ).html(msg);
+function fillBox(msgBox, msg) {
+    $("#" + msgBox).html(msg);
 }
 
 function showStartMessage() {
-
     var msg = "<p><br><br><br><br><br><br>";
     msg += DinkamQuote();
     msg += "<br><br>Tap here to start the game!<br><br><br><br><br><br></p>";
     fillBox("startBox", msg);
 
     centrify("startBox");
-    if ( showStartMessageState ) {
-    	popBox("startBox");
+    if (showStartMessageState) {
+        popBox("startBox");
 
-      } else {
+    } else {
         //user clicked on the box. fadeout the box and start music
-        $( "#startBox" ).fadeOut( "fast" );
+        $("#startBox").fadeOut("fast");
         playMusic();
-
         selectNextUnit();
-      }
-      showStartMessageState = !showStartMessageState;
+    }
+    showStartMessageState = !showStartMessageState;
 }
 function showWinMessage() {
 
@@ -145,34 +143,34 @@ function showWinMessage() {
     msg += DinkamQuote();
     msg += "<br><br>Well done warrior! You have unlocked more adventures! <br><br>Tap here to dismiss this message.<br><br></p>";
     fillBox("winBox", msg);
-    
+
     centrify("winBox");
-    if ( showWinMessageState ) {
+    if (showWinMessageState) {
 
         popBox("winBox");
         showWinMessageState = !showWinMessageState;
-      } else {
-        $( "#winBox" ).fadeOut( "slow", function() {
-		    // Animation complete.
-		    showWinMessageState = !showWinMessageState;
+    } else {
+        $("#winBox").fadeOut("slow", function () {
+            // Animation complete.
+            showWinMessageState = !showWinMessageState;
 
-		    //redirect to maplist
-      		//window.location = "../maplist.html";
-		  });
-      }
+            //redirect to maplist
+            //window.location = "../maplist.html";
+        });
+    }
 }
 function showFailMessage() {
     centrify("failBox");
-    if ( showFailMessageState ) {
+    if (showFailMessageState) {
         popBox("failBox");
         showFailMessageState = !showFailMessageState;
-      } else {
-        $( "#failBox" ).fadeOut( "slow", function() {
-		    // Animation complete.
-		    showFailMessageState = !showFailMessageState;
+    } else {
+        $("#failBox").fadeOut("slow", function () {
+            // Animation complete.
+            showFailMessageState = !showFailMessageState;
 
-		    //redirect to the same page without changing MAPLEVEL
-      		window.location = "map.html";
-		  });
-      }
+            //redirect to the same page without changing MAPLEVEL
+            window.location = "map.html";
+        });
+    }
 }

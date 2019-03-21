@@ -13,26 +13,17 @@ boardValue = 1;
 function loadFunc(){
 
 $(document).ready(function() {
-	
-	//For mobile: Add event listener
+	// For mobile: Add event listener
 	document.addEventListener("deviceready", onDeviceReady, false);
 	});
 }
 
-// Once device APIs are available
 function onDeviceReady() {
-    // Register the event listener
     document.addEventListener("backbutton", onBackKeyDown, false);
 }
 
-// Handle the back button
-//
 function onBackKeyDown() {
-   //console your current page location 
-   //alert("exiting app on back button");
-   
    navigator.app.exitApp();
-
 }
 
 function showCredits(){
@@ -66,12 +57,7 @@ function showContact(){
 <style type="text/css">
 
 html { 
-       /* background: url('common/images/AntHill.png') no-repeat center center fixed; 
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;*/
-		
+	
 }
 h1 {
 	font-family: Papyrus, fantasy;
@@ -184,18 +170,17 @@ h1 {
 #blackBoard{ 
 	height: 60px;  
 	display:block;
-	/*border:1px solid black;*/
 }
 </style>
 </head>
 <body onload="loadFunc()">
 <div class="center">
 <br><br><br>
-<img class="thumbnail" src="common/images/koyotil.png">
+<img class="thumbnail" src="common/images/units/DebutAnt.png">
 <br>
 <h1>An ant's tryst with destiny.</h1>
 <br>
-<a href="maps/maplist.html" class="demo-info demo-info-3">Play!</a><br><br><br>
+<a href="map.html" class="demo-info demo-info-3">Play!</a><br><br><br>
 <div id="blackBoard"></div>
 <br><br>
 <a href="#" onclick="showCredits()" class="box-demo-info demo-info-2">Credits</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

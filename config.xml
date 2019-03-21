@@ -16,5 +16,7 @@
   <author href="https://github.com/Anuraj-R/anthill" email="anurajr@gmail.com">
       Anuraj R
   </author>
+  
+  <icon src="common/images/anthill.png" platform="android" />
 
 </widget>

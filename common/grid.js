@@ -1,6 +1,4 @@
-var showStartMessageState = true;
-var showFailMessageState = true;
-var showWinMessageState = true;
+
 
 SEQUENCE=[];
 
@@ -248,10 +246,7 @@ function selectNextUnit(){
 MOVES=-1;
 function selectForAction (unitName){
 
-    tlog("inside selectForAction with unit name:" + unitName.name);
-    console.log(unitName);
-    tlog("Current SELECTEDBOX contains "+SELECTEDBOX);
-    
+    tlog(unitName);
 
     // no other unit is present in selection, select this unit
     if (SELECTEDBOX == "NONE" ){

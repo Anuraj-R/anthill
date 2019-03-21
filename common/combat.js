@@ -2,20 +2,18 @@
 
 function combatGeneric(attacker, defender){
     
-    tlog("combatGeneric");
+    tlog( attacker.name + " Vs "+defender.name);
     if (attacker.type == "infantry") combatMelee(attacker, defender);
     if (attacker.type == "ranged") combatMelee(attacker, defender);
-    //if (attacker.type == "magic") combatMagic(attacker, defender);
 }
-
 
 function combatMelee(attacker, defender){
     
-    tlog("combatMelee");
+    tlog( attacker.name + " Vs "+defender.name);
     animateNewObject( attacker.position, defender.position, 400, 'common/images/melee.png');
     playAudio('common/audio/anthill_melee.wav');
     
-    impact = attacker.attack * (0.5 + 0.5 * (attacker.health/attacker.maxHealth)) * (1 - (defender.defence/1000));
+    var impact = attacker.attack * (0.5 + 0.5 * (attacker.health/attacker.maxHealth)) * (1 - (defender.defence/1000));
 
         if (impact < defender.health){
             defender.health -= impact;
@@ -25,12 +23,12 @@ function combatMelee(attacker, defender){
         {
             defender.health = 0;
             defender.refreshGraphics();
-            
-            //code for destroying the unit
             defender.die();
-            
-            //check if won
-            winner=checkIfWon();
+            var winner=checkIfWon();
+            if ( winner != 0){
+                GAMEOVER=1;
+                tlog("Team "+winner+" has won");
+            }
         }
 }
 
@@ -40,7 +38,7 @@ function checkIfWon(){
     var playerUnits = 0;
     var AIUnits = 0;
 
-    for (i=0;i<SEQUENCE.length;i++){
+    for (var i=0;i<SEQUENCE.length;i++){
         if ( SEQUENCE[i].team == 1 ){
             playerUnits++;
         }
@@ -52,10 +50,13 @@ function checkIfWon(){
     if (totalUnits == playerUnits){
         doWinStuff();
         showWinMessage();
+        return 1;
     }
     else if (totalUnits == AIUnits){
         showFailMessage();
+        return 2;
     }
+    return 0;
 }
 
 function doWinStuff(){

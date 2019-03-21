@@ -1,3 +1,6 @@
+var showStartMessageState = true;
+var showFailMessageState = true;
+var showWinMessageState = true;
 
 var antMessage = "The ant's a centaur in his dragon world."+
 "So, uh, do you ever worry that your itsy little neck is just going to snap under the weight of your head? "+

@@ -1,7 +1,5 @@
 
-
 SEQUENCE=[];
-
 var GAMEOVER = 0;
 
 
@@ -12,8 +10,8 @@ var GAMEOVER = 0;
    There is also an additional unit called DebutAnt, which is unique and
    part of every player-army on all levels. */
 var playerUnitsPool = [ "KidSlinger", "WarrAnt", "FormicArcher" ];
-var AIUnitsPool = [	"Spider","Spidlings","GreySpider","MutAnt","BlackWidow",
-				"RedTailSpider","BogTroll", "SpiderQueen"];
+var AIUnitsPool = [ "Spider","Spidlings","GreySpider","MutAnt","BlackWidow",
+                "RedTailSpider","BogTroll", "SpiderQueen"];
 
 
 
@@ -22,222 +20,213 @@ var AIUnitsPool = [	"Spider","Spidlings","GreySpider","MutAnt","BlackWidow",
 //unit_weight = (2 * attack) + MaxHealth
 function placeUnitsOnGrid(){
 
-	var mapWeight = 100*MAPLEVEL;
+    tlog("MAPLEVEL is: "+MAPLEVEL);
 
-	console.log("MAPLEVEL is: "+MAPLEVEL);
-	//create player's units
-	playerUnits = selectPlayerUnits();
+    var playerUnits = selectPlayerUnits();
+    var AIUnits = selectAIUnits();
+    tlog(playerUnits);
+    tlog(AIUnits);
 
-	//create AI units
-	AIUnits = selectAIUnits();
-	console.log(AIUnits);
+    placeUnits(playerUnits, HEIGHT-1);
+    placeUnits(AIUnits, 0);
 
-	placeUnits(playerUnits, HEIGHT-1);
-	placeUnits(AIUnits, 0);
+    setSEQUENCE(playerUnits, AIUnits);
+    tlog(SEQUENCE);
+}
 
-	setSEQUENCE(playerUnits, AIUnits);
-	console.log(SEQUENCE);
+// returns an array of 'Creature' objects
+function selectPlayerUnits(){
+
+    var playerUnits=["DebutAnt"];
+    var unitsArray=[];
+
+    if (MAPLEVEL < 3){
+        //do nothing
+    }
+    else if (MAPLEVEL <= 5){
+        playerUnits.push("KidSlinger");
+    }
+    else if (MAPLEVEL < 7){
+        playerUnits.push("KidSlinger");
+        playerUnits.push("WarrAnt");
+    }
+    else if (MAPLEVEL < 8){
+        playerUnits.push("KidSlinger");
+        playerUnits.push("WarrAnt");
+        playerUnits.push("WarrAnt");
+    }
+    else if (MAPLEVEL < 9){
+        playerUnits.push("WarrAnt");
+        playerUnits.push("WarrAnt");
+        playerUnits.push("FormicArcher");
+    }
+    else if (MAPLEVEL < 12) {
+        playerUnits.push("WarrAnt");
+        playerUnits.push("WarrAnt");
+        playerUnits.push("FormicArcher");
+        playerUnits.push("FormicArcher");
+    }
+    else{
+        playerUnits.push("WarrAnt");
+        playerUnits.push("WarrAnt");
+        playerUnits.push("FormicArcher");
+        playerUnits.push("FormicArcher");
+        playerUnits.push("FormicArcher");
+    }
+
+    //playerWeight = calcWeightOfArray(playerUnits);
+    console.log("player units are: " + playerUnits);
+    console.log("player weight is: " + calcWeightOfArray(playerUnits));
+
+    for (var i in playerUnits) unitsArray.push(CreateCreature(playerUnits[i]));
+    for (var i in unitsArray) unitsArray[i].team = 1;
+    return unitsArray;
 }
 
 //set the sequence in which units take action. Also populate SEQUENCE global array.
 function setSEQUENCE(playerUnits, AIUnits){
-	SEQUENCE = $.merge(playerUnits, AIUnits);
-	//sort descending; greater initiative means early turn
-	SEQUENCE.sort(function(a,b){return b.initiative - a.initiative;});
+    SEQUENCE = $.merge(playerUnits, AIUnits);
+    //sort descending; greater initiative means early turn
+    SEQUENCE.sort(function(a,b){return b.initiative - a.initiative;});
 }
 
 //Takes an array of units and places them in the mentioned row
 function placeUnits(unitsArray, row){
 
-	for (var i in unitsArray){
+    for (var i in unitsArray){
 
-		var unit = unitsArray[i];
-		unit.position = GRIDNAME+"_"+i+"x"+row;
+        var unit = unitsArray[i];
+        unit.position = GRIDNAME+"_"+i+"x"+row;
 
-		TILES[unit.position] = new tileProperties(MOVABLE,unit);
+        TILES[unit.position] = new tileProperties(MOVABLE,unit);
 
-		var img = document.createElement('img');
-		img.id = "creatureImage_"+unit.id;
-		img.className = "creatureImage";
+        var img = document.createElement('img');
+        img.id = "creatureImage_"+unit.id;
+        img.className = "creatureImage";
 
-		img.src = unit.image;
-		$('body').append(img);
-		$('#'+img.id).css('width',BLOCKSIZE);
-		$('#'+img.id).css('height',BLOCKSIZE);
+        img.src = unit.image;
+        $('body').append(img);
+        $('#'+img.id).css('width',BLOCKSIZE);
+        $('#'+img.id).css('height',BLOCKSIZE);
 
-		//set the CSS properties for the first time for the image
-		var p = $( '#'+unit.position );
-		var position = p.position();
-		$('#'+img.id).css({
-		  	position:'absolute',
-		  	top:position.top-5,
-		  	left:position.left
-		});
+        //set the CSS properties for the first time for the image
+        var p = $( '#'+unit.position );
+        var position = p.position();
+        $('#'+img.id).css({
+            position:'absolute',
+            top:position.top-5,
+            left:position.left
+        });
 
-		unit.refreshGraphics();
-	}
+        unit.refreshGraphics();
+    }
 }
 
-//returns an array of 'Creature' objects
-function selectPlayerUnits(){
 
-	var playerUnits=["DebutAnt"];
-	var unitsArray=[];
-
-	if (MAPLEVEL < 3){
-		//do nothing
-	}
-	else if (MAPLEVEL <= 5){
-		playerUnits.push("KidSlinger");
-	}
-	else if (MAPLEVEL < 7){
-		playerUnits.push("KidSlinger");
-		playerUnits.push("WarrAnt");
-	}
-	else if (MAPLEVEL < 8){
-		playerUnits.push("KidSlinger");
-		playerUnits.push("WarrAnt");
-		playerUnits.push("WarrAnt");
-	}
-	else if (MAPLEVEL < 9){
-		playerUnits.push("WarrAnt");
-		playerUnits.push("WarrAnt");
-		playerUnits.push("FormicArcher");
-	}
-	else if (MAPLEVEL < 12) {
-		playerUnits.push("WarrAnt");
-		playerUnits.push("WarrAnt");
-		playerUnits.push("FormicArcher");
-		playerUnits.push("FormicArcher");
-	}
-	else{
-		playerUnits.push("WarrAnt");
-		playerUnits.push("WarrAnt");
-		playerUnits.push("FormicArcher");
-		playerUnits.push("FormicArcher");
-		playerUnits.push("FormicArcher");
-	}
-
-	//playerWeight = calcWeightOfArray(playerUnits);
-	console.log("player units are: " + playerUnits);
-	console.log("player weight is: " + calcWeightOfArray(playerUnits));
-
-	for (var i in playerUnits) unitsArray.push(CreateCreature(playerUnits[i]));
-	for (var i in unitsArray) unitsArray[i].team = 1;
-	return unitsArray;
-}
 
 function selectAIUnits(){
-	var AIUnits = [];
-	var unitsArray = [];
-	var mapWeight = 45 + 100*(MAPLEVEL);
-	var totalWeight = 0;
+    var AIUnits = [];
+    var unitsArray = [];
+    var mapWeight = 45 + 100*(MAPLEVEL);
+    var totalWeight = 0;
 
-	//get a sorted list from the units pool
-	var AIUnitsSorted = sortUnitsByWeight(AIUnitsPool.slice());
-	var idx = AIUnitsSorted.length - 1;
+    //get a sorted list from the units pool
+    var AIUnitsSorted = sortUnitsByWeight(AIUnitsPool.slice());
+    var idx = AIUnitsSorted.length - 1;
 
-	do {
-		//allow maximum of 8 units only
-		if (AIUnits.length > 7) break;
+    do {
+        //allow maximum of 8 units only
+        if (AIUnits.length > 7) break;
 
-		var selected = AIUnitsSorted[idx];
-		if ( selected.weight < (mapWeight - totalWeight) * .33){
-			AIUnits.push(selected.name);
-			totalWeight += selected.weight;
-		}
-		else{
-			idx--;
-		}
-	}while(idx >= 0);
+        var selected = AIUnitsSorted[idx];
+        if ( selected.weight < (mapWeight - totalWeight) * .33){
+            AIUnits.push(selected.name);
+            totalWeight += selected.weight;
+        }
+        else{
+            idx--;
+        }
+    }while(idx >= 0);
 
-	//console.log(AIUnitsSorted);
-	console.log("AI units are: " + AIUnits);
-	console.log("AI weight is: " + calcWeightOfArray(AIUnits));
+    //console.log(AIUnitsSorted);
+    console.log("AI units are: " + AIUnits);
+    console.log("AI weight is: " + calcWeightOfArray(AIUnits));
 
-	//convert to actual creatures
-	for (var i in AIUnits) unitsArray.push(CreateCreature(AIUnits[i]));
-	for (var i in unitsArray) unitsArray[i].team = 2;
-	return unitsArray;
+    //convert to actual creatures
+    for (var i in AIUnits) unitsArray.push(CreateCreature(AIUnits[i]));
+    for (var i in unitsArray) unitsArray[i].team = 2;
+    return unitsArray;
 
 }
 function sortUnitsByWeight(unitsArray){
-	var unitsSortedArray = [];
-	for ( var i=0; i< unitsArray.length; i++)
-		unitsSortedArray.push(new weightedUnit(unitsArray[i]));
-	unitsSortedArray.sort(function(a,b){return a.weight - b.weight;});
-	return unitsSortedArray;
+    var unitsSortedArray = [];
+    for ( var i=0; i< unitsArray.length; i++)
+        unitsSortedArray.push(new weightedUnit(unitsArray[i]));
+    unitsSortedArray.sort(function(a,b){return a.weight - b.weight;});
+    return unitsSortedArray;
 }
 
 //This is a structure with just the unit names and their weights
 //It is used as a helper structure for sorting units based on weights
 function weightedUnit(uname){
-	this.name = uname;
-	this.weight = calcWeight(uname);
+    this.name = uname;
+    this.weight = calcWeight(uname);
 }
 
 //calculate total weight of units in the array, by calcWeight function
 function calcWeightOfArray(unitsArray){
-	var units_weight=0;
-	for ( var i=0; i< unitsArray.length; i++) units_weight += calcWeight(unitsArray[i]);
-	return units_weight;
+    var units_weight=0;
+    for ( var i=0; i< unitsArray.length; i++) units_weight += calcWeight(unitsArray[i]);
+    return units_weight;
 }
 
 //method to calculate weight of a unit based on a formula
 //unit_weight = (2 * attack) + MaxHealth
 function calcWeight(unitName){
-	return getCreatureMaxHealth(unitName) + (getCreatureAttack(unitName) * 2);
+    return getCreatureMaxHealth(unitName) + (getCreatureAttack(unitName) * 2);
 }
 
 
 function selectNextUnit(){
 
     unLightAll ();
-
+    if (GAMEOVER == 1)return 0;
     tlog("selectNextUnit with "+SEQUENCE[0].name);
 
     SELECTEDBOX = "NONE";
     MOVES = "-1";
 
-    if (GAMEOVER == 1){
-        return 0;
-    }
-    else
+    var NEWINDEX = (NEXTINDEX + 1) % SEQUENCE.length;
+    LASTINDEX = (NEWINDEX - 2 + SEQUENCE.length ) % SEQUENCE.length;
+
+    // to avoid the first unit
+    if (NEXTINDEX != "-1" )
     {
+        //In the new world order, the first element always disappears!
+        //hook the elements, and insert the first one after the last
+        var firstEl = $("[name='" + GRIDNAME+ "orderBoxes" + "']").get(0);
+        var secndEl = $("[name='" + GRIDNAME+ "orderBoxes" + "']").get(1);
+        var lastEl  = $("[name='" + GRIDNAME+ "orderBoxes" + "']").get(SEQUENCE.length - 1);
 
-        var NEWINDEX = (NEXTINDEX + 1) % SEQUENCE.length;
-        LASTINDEX = (NEWINDEX - 2 + SEQUENCE.length ) % SEQUENCE.length;
+        //update the potion effects before moving the unit back.
+        //Wrong place to do that, should move if possible
+        SEQUENCE[NEXTINDEX].updateEffects();
 
-        //to avoid the first unit
-        if (NEXTINDEX != "-1" )
-        {
+        $(secndEl).css({ height: "+=6" , width: "+=6"});
+        $(firstEl).css({ height: "-=6" , width: "-=6"});
 
-            //In the new world order, the first element always disappears!
-            //hook the elements, and insert the first one after the last
-            var firstEl = $("[name='" + GRIDNAME+ "orderBoxes" + "']").get(0);
-            var secndEl = $("[name='" + GRIDNAME+ "orderBoxes" + "']").get(1);
-            var lastEl  = $("[name='" + GRIDNAME+ "orderBoxes" + "']").get(SEQUENCE.length - 1);
-
-			//update the potion effects before moving the unit back.
-            //Wrong place to do that, should move if possible
-    		SEQUENCE[NEXTINDEX].updateEffects();
-
-            $(secndEl).css({ height: "+=6" , width: "+=6"});
-            $(firstEl).css({ height: "-=6" , width: "-=6"});
-
-            $(firstEl).hide(600, function () {
-                $(firstEl).insertAfter(lastEl);
-                $(firstEl).show('slow', function() {
-                    NEXTINDEX = NEWINDEX;
-                    setTimeout(function(){
-                        selectForAction (SEQUENCE[NEXTINDEX]);},600);
-                });
+        $(firstEl).hide(600, function () {
+            $(firstEl).insertAfter(lastEl);
+            $(firstEl).show('slow', function() {
+                NEXTINDEX = NEWINDEX;
+                setTimeout(function(){
+                    selectForAction (SEQUENCE[NEXTINDEX]);},600);
             });
-        }
-        else {
-            NEXTINDEX = NEWINDEX;
-            setTimeout(function(){selectForAction (SEQUENCE[NEXTINDEX]);},400);
-        }
+        });
+    }
+    else {
+        NEXTINDEX = NEWINDEX;
+        setTimeout(function(){selectForAction (SEQUENCE[NEXTINDEX]);},400);
     }
 }
 
@@ -264,16 +253,16 @@ function selectForAction (unitName){
         if (unitName.team != 1){
             tlog("Automoving "+ unitName.name);
             autoMove(unitName, MOVES);
-    	}
-    	tlog("exiting selectForAction " +  unitName.name);
-	}
-	else{
-		//same unit is selected?
-		if (unitName.team != 1){
+        }
+        tlog("exiting selectForAction " +  unitName.name);
+    }
+    else{
+        //same unit is selected?
+        if (unitName.team != 1){
             tlog("Automoving "+unitName.name);
             autoMove(unitName, MOVES);
-    	}
-	}
+        }
+    }
 }
 
 //function moves the currently active (selected) unit to the target location specified
@@ -288,27 +277,27 @@ function selectForMove (targetBox){ //The function does selectForAction() again 
     }
     tlog("Invoking selectForMove on: "+targetBoxName);
 
-	this.endTurn = function(){
+    this.endTurn = function(){
         tlog ("ending turns for "+targetBoxName);
         MOVES="-1";
         selectNextUnit();
     };
 
-	//check if player is ending turn by clicking onthe same tile
-	if ( targetBoxName == SELECTEDUNIT.position ){
+    //check if player is ending turn by clicking onthe same tile
+    if ( targetBoxName == SELECTEDUNIT.position ){
         tlog("Unit skipping turn.");
         this.endTurn();
         return;
     }
 
-	//Find if the tile is impassable
-	if (TILES[targetBoxName].movable == IMPASSABLE ){
-	    tlog ("This square is impassable and cannot be moved into.");
-	    return;
-	}
+    //Find if the tile is impassable
+    if (TILES[targetBoxName].movable == IMPASSABLE ){
+        tlog ("This square is impassable and cannot be moved into.");
+        return;
+    }
 
-	//calculate distance
-	var dist = distance(SELECTEDUNIT.position, targetBoxName);
+    //calculate distance
+    var dist = distance(SELECTEDUNIT.position, targetBoxName);
 
     //Find if square is empty
     if ( TILES[targetBoxName].station == NONE ) // square can be moved into
@@ -584,12 +573,12 @@ function findNeighborTileCloserTo(startLoc, targetLoc, moves){
 
 function unLightAll (){
     //tlog("inside UnlightAll");
-	for (var i=0;i<WIDTH;i++){
-		for (var j=0;j<HEIGHT;j++){
+    for (var i=0;i<WIDTH;i++){
+        for (var j=0;j<HEIGHT;j++){
             var testBox=GRIDNAME+"_"+i+"x"+j;
             $("#"+testBox).css('background-color', ORIGINALCOLORS[testBox]);
-		}
-	}
+        }
+    }
 }
 
 
@@ -643,41 +632,41 @@ function highLightMoves (boxName , movepoints){
             var dist = parseFloat(distance(boxName, testBox));
             if ( dist <= SELECTEDUNIT.range ) highLight (testBox, rangeTint);
 
-		}
-	}
+        }
+    }
 }
 
 function rgbToHex(rgb){
-	var hex = "";
-	//"rgb(226, 242, 226)"
+    var hex = "";
+    //"rgb(226, 242, 226)"
 
-	this.valArray = function(rgb){
-		var m = rgb.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
-	    if( m) {
-	        return [m[1],m[2],m[3]];
-	    }
-   	};
-
-
-	this.valToHex = function (num) {
-  		var hex = Number(num).toString(16);
-	  	if (hex.length < 2) {
-	       	hex = "0" + hex;
-	  	}
-	  	return hex;
-	};
-
-	this.fullColorHex = function(r,g,b) {
-  		var red = valToHex(r);
-  		var green = valToHex(g);
-  		var blue = valToHex(b);
-  		return red+green+blue;
-	};
+    this.valArray = function(rgb){
+        var m = rgb.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+        if( m) {
+            return [m[1],m[2],m[3]];
+        }
+    };
 
 
-   	var valArr = valArray(rgb);
-	hex = fullColorHex(valArr[0],valArr[1],valArr[2]);
-	return hex;
+    this.valToHex = function (num) {
+        var hex = Number(num).toString(16);
+        if (hex.length < 2) {
+            hex = "0" + hex;
+        }
+        return hex;
+    };
+
+    this.fullColorHex = function(r,g,b) {
+        var red = valToHex(r);
+        var green = valToHex(g);
+        var blue = valToHex(b);
+        return red+green+blue;
+    };
+
+
+    var valArr = valArray(rgb);
+    hex = fullColorHex(valArr[0],valArr[1],valArr[2]);
+    return hex;
 
 }
 
@@ -755,8 +744,8 @@ function pathFind (start , end){
             VISITED[vertex]="NO";
             DIST[vertex]=1000;
             PREVIOUS[vertex]="none";
-    	}
-	}
+        }
+    }
 
     //dist[source]  := 0;
     DIST[start]=0;
@@ -811,8 +800,8 @@ function pathFind (start , end){
             Q="";
         }
     }
-	tlog("pathfind from "+start+" returns after filling up DIST");
-	tlog (DIST);
+    tlog("pathfind from "+start+" returns after filling up DIST");
+    tlog (DIST);
     return 0;
 }
 function pushQ( Q , node ){
@@ -856,8 +845,8 @@ function findSmallestInDIST(){
                     smallest = vertex;
                 }
             }
-    	}
-	}
+        }
+    }
     return smallest;
 }
 
@@ -879,23 +868,23 @@ function findNeighbors(node){
     var containerPrefix = node.slice(0,start);
 
     this.addToArray = function(x,y){
-    	if (pathExists(x,y)){
-        	tempArr[index] = containerPrefix+x+"x"+y;
-        	index++;
+        if (pathExists(x,y)){
+            tempArr[index] = containerPrefix+x+"x"+y;
+            index++;
         }
     };
 
     //Four side squares
-    (yVal > 0) 		&& this.addToArray((xVal),(yVal-1)); //up
-    (yVal < yNum) 	&& this.addToArray((xVal),(yVal+1)); //down
-    (xVal > 0) 		&& this.addToArray((xVal-1),(yVal)); //left
-    (xVal < xNum) 	&& this.addToArray((xVal+1),(yVal)); //right
+    (yVal > 0)      && this.addToArray((xVal),(yVal-1)); //up
+    (yVal < yNum)   && this.addToArray((xVal),(yVal+1)); //down
+    (xVal > 0)      && this.addToArray((xVal-1),(yVal)); //left
+    (xVal < xNum)   && this.addToArray((xVal+1),(yVal)); //right
 
     //Four corner squares
-    (yVal > 0 && xVal > 0) 		&& this.addToArray((xVal-1),(yVal-1));
+    (yVal > 0 && xVal > 0)      && this.addToArray((xVal-1),(yVal-1));
     (yVal < yNum && xVal < xNum)&& this.addToArray((xVal+1),(yVal+1));
-    (yVal > 0 && xVal < xNum) 	&& this.addToArray((xVal+1),(yVal-1));
-    (yVal < yNum && xVal > 0) 	&& this.addToArray((xVal-1),(yVal+1));
+    (yVal > 0 && xVal < xNum)   && this.addToArray((xVal+1),(yVal-1));
+    (yVal < yNum && xVal > 0)   && this.addToArray((xVal-1),(yVal+1));
 
     //console.log("findNeighbors for "+node+" returns :");
     //console.log(tempArr);
@@ -904,8 +893,8 @@ function findNeighbors(node){
 
 //returns 1 if pathExists, 0 otherwise
 function pathExists(x,y){
-	var testBox = GRIDNAME+"_"+x+"x"+y;
-	if ( TILES[testBox].movable == MOVABLE ){
+    var testBox = GRIDNAME+"_"+x+"x"+y;
+    if ( TILES[testBox].movable == MOVABLE ){
         if (TILES[testBox].station == NONE){
             return 1;
         }
@@ -933,8 +922,4 @@ function distance (boxName1, boxName2){
 
     return dist;
 }
-
-
-
-
 

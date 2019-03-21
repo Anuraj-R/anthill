@@ -43,7 +43,7 @@ class Creature {
     
     //The target should be of a different team, this should be validated before calling this method.
     combat(enemy) {
-        tlog("Combat --------> " + this.name + " attacks " + enemy.name + " at " + enemy.position);
+        CreatureLog("Combat --------> " + this.name + " attacks " + enemy.name + " at " + enemy.position);
         combatGeneric(this, enemy);
     }
 
@@ -95,11 +95,11 @@ class Creature {
         this.healthBar = this.createHealthBar();
         $(this.healthBar).offset({ top: pos.top - 12, left: pos.left });
         console.log("Refreshed graphics for " + this.name);
-        //console.log(this);
+        //CreatureLog(this);
     }
 
     die() {
-        tlog("Removing self: " + this.id);
+        CreatureLog("Removing self: " + this.id);
         //mark the map tile empty
         TILES.reset(this.position);
         //fadeout the picture
@@ -107,11 +107,11 @@ class Creature {
         //drop items if it is an enemy unit that got killed
         if (this.team != "1") {
             //drop Items based on DROPCHANCE
-            tlog("Dropping items at " + this.position);
+            CreatureLog("Dropping items at " + this.position);
             dropItems(this.position);
         }
         //remove the unit from SEQUENCE
-        index = SEQUENCE.indexOf(this);
+        var index = SEQUENCE.indexOf(this);
         SEQUENCE.splice(index, 1);
         //remove the unit from the orderBox
         //id orderBox+uname
@@ -181,8 +181,8 @@ function Units() {
         this.units.push(unit);
     };
     this.remove = function(id) {
-        console.log( typeof (id));
-        console.log(this.units[id]);
+        CreatureLog( typeof (id));
+        CreatureLog(this.units[id]);
         llog(9, "Seeking to remove " + id);
         for (var i = 0; i < this.units.length; i++) {
             if (id == this.units[i].id) {
@@ -193,7 +193,7 @@ function Units() {
         }
     };
     this.list = function() {
-        console.log("Listing Units");
+        CreatureLog("Listing Units");
         for (var i = 0; i < this.units.length; i++) {
             llog(9, "listing " + this.units[i].id + " of type " + this.units[i].name);
         }
@@ -309,14 +309,14 @@ function addStatsTable() {
 }
 
 function updateUnitStats() {
-    console.log("Inside updateUnitStats");
+    CreatureLog("Inside updateUnitStats");
 
     var x = document.getElementsByName("armies");
-    console.log(x.length + " units found.");
+    CreatureLog(x.length + " units found.");
 
     for (var i = 0; i < x.length; i++) {
         var updUnitName = getArmyId(x[i].id);
-        //console.log("Updating "+updUnitName );
+        //CreatureLog("Updating "+updUnitName );
 
         //Get the unit/array name without number
         var updNam = updUnitName.replace(/[0-9]*__/i, '');
@@ -324,13 +324,13 @@ function updateUnitStats() {
         //reference array using the array name stored in updNam string (like "Spider" )
         var array_name = this[updNam];
         if ( array_name instanceof Array) {
-            console.log("Array found " + updNam + ": " + array_name);
+            CreatureLog("Array found " + updNam + ": " + array_name);
 
             //init the values
             initValues(updUnitName, array_name);
 
         } else {
-            console.log("Array named " + updNam + " NOT found");
+            CreatureLog("Array named " + updNam + " NOT found");
         }
     }
 }
@@ -351,7 +351,7 @@ function initValues(armyID, val_array) {
 
 function llog(level, string) {
     if (level >= LOGLEVEL) {
-        console.log(string);
+        CreatureLog(string);
     }
 }
 

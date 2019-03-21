@@ -1,0 +1,194 @@
+RoadMap
+
+
+
+
+
+AntHill notes:
+Remove all deprecated attributes being shown as proprietary
+bgcolor="#E2F2E0"
+type="hidden"
+Fix this html problem first.
+
+===================================================================
+
+player's unit pool.
+	player is able to do selection of units for each further mission (after a first few)
+
+More mission stages
+Randomly generated stages 
+	generating the stage randomly
+	Placing random enemy units based on player level (unit placing policies might require changes based on testing and user feedback)
+
+drops (potions/boosts/equipments and items) from enemy units
+player inventory of 'items' (for the above)
+unit equipment
+
+Special attacks
+	magic
+	fire
+	poison
+	ice
+	lightning
+Boss units
+
+cosmetic changes
+
+Some day, with a server support
+	Multiplayer and PvP
+
+
+===================================================================
+
+------------
+
+
+Drops (potions and equipments)
+	StrengthPotion (40% att, 20% rangedattack)
+	HealthPotion (40% heal)
+	StoneskinPotion (30% def, rangeddef)
+	FormicAcid
+	
+Drops from enemy units (potions,equipments,items etc)
+Inventory of 'items' for holding equipments and enemy drops.
+------------
+Player's unit pool.
+    Player is able to do selection of units for each mission.
+More mission stages
+------------
+Special attacks and abilities
+    magic
+    healing
+    buff
+    fire
+    poison
+    ice
+    lightning
+    terraform
+Boss units
+------------
+Equipping a unit with armor/weapon etc.
+------------
+
+Some day, with server support
+    Multiplayer and PvP
+------------
+Randomly generated stages
+
+	use a seed?
+	
+	unitpool1, unit num
+	unitpool2, unit num
+	
+	% random cover, images
+	%random height, images
+	%random impassable, images
+	
+	random unit placement
+------------
+
+============== Implemented ====================
+
+
+Prereq:
+	Make unit stats populate from units.js (instead of predefined values in index.html) for every stage.
+	Make unit stats populate from units.js (instead of predefined values in index.html) for Editor.
+
+Terrain speciality
+UI tweaks
+
+
+audio images on/off
+
+audio and sound global variables in localstore
+	setSoundON
+	setSoundOff
+	toggleSound
+
+same for audio
+
+
+
+
+
+
+
+==============================
+From 13th (next set) onwards, ability to choose units. 
+	- Requires player inventory. Could be done through localstorage.
+
+Unit equipments.
+
+Features in unit dropbox - next, prev, close, picture, information
+
+
+
+Terrain types (class?)
+	plains
+	impassable
+	forest
+	hill
+	mountain
+	water
+
+	passable & impassable	
+	plains			no special colors
+	forest	 GREEN
+	hill				BROWN/YELLOW
+	mountain		BLUE
+	water 			DEEP BLUE IMPASSABLE2
+
+
+UNIT Types: 
+EFFECTIVE VALUES
+	Infantry(+30 forest), (provides +60% ranged defense)
+	ranged(+1r hill, +2r mount, -40% forest)
+	fast (+50 plains, -20 forest, -20 mountain)
+	special(+10 hills, +20 mount) [poison, fire, traps, artillery]
+	magic(+30 hills, +10 mount)
+
+
+check attribute, then terrain, then unittype
+
+defense:
+	forest:
+		-50
+		
+rangedDefence
+	forest:
+		+60		
+
+range:
+	Hill
+		+1
+	mountain:
+		+2
+
+
+
+
+range and movable areas all appear green. maken it more distinguishable in the description.
+map buttons background
+==========================
+
+Tweak unit values. 
+Decrease range for ranged units.
+Magic and special attacks
+======================
+features in unit dropbox - next, prev, close, picture
+
+1.02
+leaf fortress
++3 maps
+
+Think about blocking range (impossibly difficult?)
+
+
+
+
+
+
+
+
+
+

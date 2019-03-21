@@ -1,0 +1,129 @@
+
+
+
+enable effects
+fix max-map logic
+
+
+
+
+
+
+
+
+
+RoadMap
+
+------------
+
+
+Harmonic sum for 8 units = 2.7178
+Harmonic sum for 7 units = 2.5928
+Harmonic sum for 6 units = 2.45
+Harmonic sum for 5 units = 2.2833
+Harmonic sum for 4 units = 2.0833
+Harmonic sum for 3 units = 1.83
+Harmonic sum for 2 units = 1.5
+Harmonic sum for 1 units = 1
+
+Outpost		15%		Health		1
+Lowlands	35%		Barkskin	1
+Storehouse	35%		Strength	4
+SpiderPit	39%		All even	3
+TrollBog	60%		Strength	1
+SugarPlains	60%		Health		6
+Grave Prem	60,15,15			8
+Anc Grave	70,30,30			9
+
+
+Outpost		30 		Health		1
+Lowlands	65 		Barkskin	1
+Storehouse	65 		Strength	4
+SpiderPit	45e		All even	3
+TrollBog	20,85	Health, Str	1
+SugarPlains	40e     All even	6
+Grave Prem	120,30,30			8
+Anc Grave	270,60,60			9
+
+
+Drops (potions and equipments)
+	
+	POTION												EFFECT_turns
+	----------------------------------------------------------------------
+	healthPotion (40% heal)		
+	strengthPotion (40% att, 40% rangedattack)			strengthPotion_x
+	barkSkinPotion (40 def, 40 rangeddef)				barkSkinPotion_x
+				
+	Drops from enemy units (potions,equipments,items etc)
+	
+	DROPCHANCE[n]
+		rand % 100 < DROPCHANCE[n]
+	dropItem(n)
+		add to INVENTORY and save
+>		animateItemDrop(n)
+			moving img like bullet
+
+	Drops
+		10% chance on map
+		8 units
+			10/8 each 
+		
+------------
+	useHealthPotion()
+		check if potions available >0
+		get current unit
+		addeffect
+			check return
+		subtract potion number if used
+			fade inventory
+			else
+				give alert
+	ApplyEffectsOnAttack(val, effects)
+	ApplyEffectsOnDefence(val, effects)
+	ApplyEffectsOnRangedDefence(val, effects)
+		lookup required stuff in effects
+			modify val accordingly
+			return val
+						
+	addEffect(unit , effect, turns)
+		add a new effect to a unit
+
+	updateEffects(unit)
+		change turn numbers in the effects and remove expired ones
+
+	showStats(unit)
+		statsTable append effects tab
+		code to display effects
+			parse effects
+			strip _x
+			display as list
+
+Inventory of 'items' for holding equipments and enemy drops.
+	[
+		ANTHILL_PLAYER_INVENTORY
+		var INVENTORY = new Array();
+			
+		INVENTORY[0] = 0;
+		INVENTORY[1] = 0;	//Health Potion
+		INVENTORY[2] = 0;	//strength potion
+		INVENTORY[3] = 0;	//stoneskin potion
+	]
+	Inventory widget
+		showInventory
+		
+------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

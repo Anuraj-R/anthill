@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="../common/jquery-2.1.4.js"></script>
+	<script src="../common/jquery-ui.js"></script>
+	<script type="text/javascript" src="../cordova.js"></script>
+<title>Help </title> 
+<link rel="stylesheet" type="text/css" href="../common/koyotil.css" />
+<script type="text/javascript">
+
+function loadFunc(){
+
+$(document).ready(function() {
+	
+	var pathname = window.location.pathname;
+	console.log("pathname is :"+pathname);
+		
+	//For mobile: Add event listener
+	document.addEventListener("deviceready", onDeviceReady, false);
+	
+	if (localStorage[pathname]) {
+    	//do nothing
+	} else {
+	    localStorage[pathname] = '1';
+	}
+	
+    
+});
+}
+
+// Once device APIs are available
+function onDeviceReady() {
+    // Register the event listener
+    document.addEventListener("backbutton", onBackKeyDown, false);
+}
+
+// Handle the back button
+//
+function onBackKeyDown() {
+   //console your current page location 
+   console.log("going back to maplist from help");
+   
+   //Go to ../index.html
+   window.location="../maps/maplist.html";
+}
+
+
+
+</script>
+
+<style type="text/css">
+/* *{border:1px dotted blue;} */
+body {
+    margin: 0 auto;
+    padding: 0;
+    text-align:center; 
+
+    width: 100%;
+ 	height: 100%;
+ 	
+ 	font-family: verdana,arial,sans-serif;
+    font-size: 12px;
+}
+
+table.cellTable {
+    font-family: verdana,arial,sans-serif;
+    border-color: #CCCCCC;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 0px;
+    height: 42px;
+    width: 42px;
+}
+
+table td {
+	font-family: verdana,arial,sans-serif;
+	font-size: 11px;
+}
+
+table.center {
+    margin-left:auto; 
+    margin-right:auto;
+    
+    border-collapse:collapse; 
+    
+    width:300px;
+  }
+  
+  
+.potionIcon {
+    border-radius: 7px;
+    background-color: rgba(230, 255, 255, 0.57);
+    width: 42px;
+    height: 42px;
+    
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    /*line-height: 42px;*/
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    display: inline-block;
+}
+
+</style>
+
+
+
+</head>
+
+<body onload="loadFunc()" >
+<!--<div id="mainContainer" >-->
+<br><br><br>
+
+<a href="../maps/maplist.html" target="_parent" ><input type="button" class="map_button" value="Back" /></a>
+		
+<br><br><br>
+
+The aim of each stage is to kill all the enemies on the map, while atleast one of your own units is standing.
+Your units has blue health bars over their head while the enemies have red health bars.
+
+<br><br>
+<img style= "width: 204px;height: 204px;" src="images/help/help_001.png"><br><br>
+
+
+You move around the map by tapping on an empty tile. 
+Every unit has a certain number of move points, which determines the distance 
+it can move. The tiles that can be moved into are highlighted with a green tint.
+
+<br><br>
+
+You attack an enemy by tapping on the enemy when it is the turn on one of your units. 
+Melee units can attack enemy units on tiles adjacent to itself. Ranged units can attack 
+enemy units within their range. The range of the selected unit is highlighted with a yellowish tint.
+
+<br><br>
+<img style= "width: 204px;height: 204px;" src="images/help/help_002.png"><br><br>
+
+The cards on the top show the order in which units move. Taping on a card shows the details of the unit.
+The order of activation is based on the initiative value of the unit. 
+
+<br><br>
+<img style= "width: 204px;height: 304px;" src="images/help/help_003.png"><br><br>
+
+There are 5 kinds of terrains in the game. 
+
+Impassable, Plains, Forest, Hill and Mountain. 
+Different terrains provide different bonus/penalty to the units standing on them. 
+Terrain can be identified by the background color of the tile.
+
+<br><br>
+
+<table class="center" border="1" >
+	<tr>
+		<td>
+			<table class="cellTable" >
+				<tr>
+					<td style="background-image: url('../common/images/terrains/bog_003.png')" class="passable forest"></td>
+					
+				</tr>
+			</table>
+		</td>
+		<td>
+			Forest cover. +60% ranged defence. 50% melee vulnerability.
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table class="cellTable" border="1" >
+				<tr>
+					<td  style="background-image: url('../common/images/terrains/48_mountain02.png')"  class="passable mountain"></td>	
+				</tr>
+			</table>
+		</td>
+		<td>
+			Mountain. +2 range to ranged units.
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table class="cellTable" border="1" >
+				<tr>
+					<td  style="background-image: url('../common/images/terrains/spiderweb_48.png')"  class="passable hill"></td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			High hills. +1 range to ranged units.
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table class="cellTable" border="1" >
+				<tr>
+					<td style="background-image: url('../common/images/terrains/bog_005.png')"class="impassable"></td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			Impassable
+		</td>
+	</tr>
+</table>
+
+<br><br>
+
+Every kill has a chance to drop potions into your inventory. 
+You can use potions to buff up the selected unit.
+
+<br><br>
+
+<table class="center" border="1" >
+	<tr>
+		<td>
+			<div id="healthPotionIcon" class="potionIcon" >17</div>
+		</td>
+		<td>
+			Health Potion. Heals 15 hit points.
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div id="strengthPotionIcon" class="potionIcon" >26</div>
+		</td>
+		<td>
+			Strength Potion. +40 attack, +20 ranged attack for 3 turns.
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div id="barkskinPotionIcon" class="potionIcon" >31</div>
+		</td>
+		<td>
+			Bark Skin Potion. +30 defence and ranged defence for 3 turns.
+		</td>
+	</tr>
+</table>
+
+<br><br>
+More stages get unlocked as you finish each stage. Happy hunting!
+
+<br><br><br><br><br>
+
+<a href="../maps/maplist.html" target="_parent" ><input type="button" class="map_button" value="Back" /></a>
+
+<br><br><br><br>
+
+
+
+
+</body>
+</html>
+

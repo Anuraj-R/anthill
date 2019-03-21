@@ -1,0 +1,84 @@
+
+
+open the chest
+only if you have a
+heartofgold
+
+Outpost
+<br>As the newest recruit in the Queen's army, your first task is to weed out an enemy spider loitering around our outpost.<br><br>Click on a highlighted square(green) to move there.<br><br>Move adjacent to the enemy and click on it to attack.<br><br>Click here to dismiss this message and start the game.<br><br>
+<br>That was smashing! You have unlocked more adventures! <br><br>Tap here to dismiss this message.<br><br>
+<br>How sad! Spiders eat your limbs. <br><br>Tap here to wipe off your blood.<br><br>
+
+Lowlands
+<br>The scout you captured has divulged information about his companion hiding in the bushes nearby. <br><br> Destroy the enemy and secure the area.<br><br>Tap here to start the game!<br><br>
+<br>Well done warrior! You have unlocked more adventures! <br><br>Tap here to dismiss this message.<br><br>
+<br>How sad! Spiders eat your limbs. <br><br>Tap here to wipe off your blood.<br><br>
+
+Storehouse
+<br>An enemy commando unit has sneaked past out scouts to sabotage our storehouse. <br><br> Find and destroy them before they poison our food stocks!.<br><br>Tap here to start the game!<br><br>
+<br>You have vanquished our enemies. <br><br>The Queen of Ants notes with surprise that you show a small trace of intelligence! Further adventures are open for you.<br><br>Tap here to continue.<br><br>
+<br>How sad! Spiders eat your limbs. <br><br>Tap here to wipe off your blood.<br><br>
+
+SpiderPit:
+<br><br>You vanquished the spiders terrorizing the ant hill. Now is the time to take war into the enemy's land!<br><br>Tap here to start the game!<br><br>
+<br>Wonderful! Your fame has started to spread! <br><br>An insignificant ant in the outskirts of the country has named its little one after you!<br><br>Tap here to continue.<br><br>
+<br>How sad! Spiders eat your limbs. <br><br>Click to wipe off your blood.<br><br>
+
+TrollBog:
+<br><br>Inspired by your mission to save the world, a startup adventurer has joined you. His ranged attack with sling will come handy against  the bog troll.<br><br>Tap here to start the game!<br><br>
+<br><br>Whoa! The villagers of Trollbog rejoice at the news. They roast a cockroach leg in honor of you and your little friend!<br><br>
+<br><br>How sad! Spiders eat your limbs. <br><br>Tap here to wipe off your blood.<br><br>
+
+SugarPlains:
+<br><br>Having noted your superior tactical skills, the queen has granted some warriors to serve under you.<br><br>You are tasked to raid an enemy camp in the plains outside our hill and gather information.<br><br>Tap here to start the game!<br>
+<br><br>The raid was a success. You recovered some maps of the enemy war camp.<br><br>
+<br><br>How sad! Spiders eat your limbs. <br><br>Tap here to wipe off your blood.<br><br>
+
+Graveyard Premises:
+<br><br>Spiders were seen dragging our fallen brethren into the spider graveyard. Scout the premises and see if you can learn more about their intentions.<br><br>Tap here to start the game!<br><br>
+<br><br>You learn that the fallen ants were dragged into a sinister looking building. Even other spiders look at this building with fear. What could be inside it? <br><br>
+<br><br>How sad! Spiders eat your limbs. <br><br>Tap here to wipe off your blood.<br><br>
+
+
+Ancient Graveyard:
+<br><br>Invade the graveyard and raid the evil house in the middle. <br><br>The queen has granted a few elite archers to back you up.<br><br>Tap here to start the game!<br><br>
+<br><br>Success!<br><br>How dare they mutate our brothers' bodies to become thralls of the spider queen?!<br><br>We will avenge this transgression.<br><br>Prepare for the grand march!<br><br>
+<br><br>How sad! Spiders eat your limbs. <br><br>Tap here to wipe off your blood.<br><br>
+
+Leaf Fortress
+<br><br>The spiders have set siege against us.<br><br> Less talking more fighting!<br><br>
+<br><br>You have broken the siege<br><br>Now time to return the favour.<br><br>Prepare for the march!<br><br>
+<br><br>How sad! Spiders eat your limbs. <br><br>Tap here to wipe off your blood.<br><br>
+
+--------------------------------------
+
+
+
+Spider Valley
+Spider Peaks
+Deep pits (12th BOSS fight)
+
+Spiderlabs
+ReedBed
+
+<br>O Brave Ant Warrior! Chosen of the queen, terror of termites, blah blah!<br><br>Tap here to start the game!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

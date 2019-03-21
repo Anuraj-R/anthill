@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=800">
+<title>Battleground</title>
+
+<script src="common/jquery-2.1.4.js"></script>
+<script src="common/jquery-ui.js"></script>
+<script src="common/bootstrap.min.js"></script>
+<script src="common/perlin.js"></script>
+
+<script src="common/map.js"></script>
+<script src="common/creature.js"></script>
+<script src="common/combat.js"></script>
+<script src="common/grid.js"></script>
+<script src="common/inventory.js"></script>
+<script src="common/settings.js"></script>
+<script src="common/statstable.js"></script>
+<script src="common/messages.js"></script>
+
+<link rel="stylesheet" type="text/css" href="common/koyotil.css">
+<link rel="stylesheet" type="text/css" href="common/bootstrap.min.css">
+</head>
+<style></style>
+
+<body onload="loadFunc()">
+
+<div id="startBox" class="ui-widget-content ui-corner-all" onclick="showStartMessage()" style="display:none;">
+<p><br><br><br><br><br><br> Destroy the enemy and secure the area.<br><br>Tap here to start the game!<br><br><br><br><br><br></p></div>
+<div id="winBox" class="ui-widget-content ui-corner-all" onclick="showWinMessage()" style="display:none;">
+<p><br><br><br><br><br>Well done warrior! You have unlocked more adventures! <br><br>Tap here to dismiss this message.<br><br></p></div>
+<div id="failBox" class="ui-widget-content ui-corner-all" onclick="showFailMessage()" style="display:none;">
+<p><br><br><br><br><br>How sad! Spiders eat your limbs. <br><br>Tap here to wipe off your blood.<br><br></p></div>
+
+<div id="container"  class="containerDiv"> </div>
+<div id="statsTable"> </div>
+
+<script type="text/javascript">
+
+
+
+function loadFunc() {
+    $(document).ready(function() {
+        loadMapLevelFromLocalStorage();
+        initializeGlobals();
+        InitAudio();
+        loadInventory();
+        populateTheUIContainer();
+    });
+}
+
+function loadMapLevelFromLocalStorage(){
+    MAPLEVEL = localStorageGetOrSetVar("MAPLEVEL",3);
+    MAPLEVELMAX = localStorageGetOrSetVar("MAPLEVELMAX",20);
+}
+
+function initializeGlobals(){
+    HEIGHT = 13;
+    WIDTH = 8;
+    RULE=0;
+    BLOCKSIZE = 31;
+    GRIDNAME="container"+MAPLEVEL;
+    SLECTEDBOX = "";
+    NEXTINDEX = -1;
+    ANTHILL_MUSIC = "OFF";
+    LOGLEVEL = 1;
+    LOGGINGSCOPE = "MAP INVENTORY SETTINGS"; /* CREATURE MAP INVENTORY SETTINGS */
+}
+
+function populateTheUIContainer(){
+
+    addDropDownForLevels();
+    addMapButton();
+    addOrderBox();
+
+    createGridAndAddToContainer();
+    placeUnitsOnGrid();
+
+    fillOrderBox();
+    enlargeFirstUnitToMove();
+    showStartMessage();
+}
+
+function addDropDownForLevels(){
+    $("#container").append(createDropDown());
+}
+
+function createDropDown(){
+	var str = '<div class="dropdown" id="mapList" ><button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">';
+	str += 'Level '+ MAPLEVEL + ' ';
+	str += '<span class="caret"></span></button><ul class="dropdown-menu" id="dropdownList" ><li>';
+	for(var i = 1; i<=MAPLEVELMAX; i++){
+	 	str += '<li onclick="selectLevel('+i+')"><a href="#">' + 'Level '+ i + ' ' + '</a></li>';
+	}
+	str += '</li></ul></div>';
+	return str;
+}
+
+function selectLevel(i){
+    localStorage.setItem("MAPLEVEL", i);
+    location.reload();
+}
+
+function addOrderBox(){
+    var orderList = document.createElement('div');
+    orderList.id = GRIDNAME+"orderList";
+    $("#container").append(orderList);
+    $('#'+orderList.id).addClass("orderList");
+    $('#'+orderList.id).css('width',BLOCKSIZE*4.6);
+    $('#'+orderList.id).css('height',BLOCKSIZE*1.4);
+    $('#'+orderList.id).css('margin-left',BLOCKSIZE*2.8);
+    $("#container").append('<br>'); 
+}
+
+function createGridAndAddToContainer(){
+    $("#container").append(createGrid(WIDTH, HEIGHT));
+    ( MAPLEVEL % 5 == 0 ) ? paintWolframGrid(GRIDNAME) : perlinAntMap(GRIDNAME);
+}
+
+function fillOrderBox(){
+    var orderBoxHtml="";
+    for (i=0; i<SEQUENCE.length ; i++){
+        orderBoxHtml += '<img id="orderBox'+SEQUENCE[i].id+'" name="'+
+        GRIDNAME+'orderBoxes" onmouseover="showStats(this.id)" class="orderCard" style="font-size:20px; height: '
+        +BLOCKSIZE+'px; width: '+BLOCKSIZE+'px;" >';
+    }
+    document.getElementById(GRIDNAME+"orderList").innerHTML = orderBoxHtml;
+
+    var x=document.getElementsByName(GRIDNAME+"orderBoxes");
+    for (var i in SEQUENCE) x[i].src = SEQUENCE[i].image;
+}
+
+function addMapButton(){
+    var btn = document.createElement('button');
+    btn.id = GRIDNAME+"mapbutton";
+    $("#container").append(btn);
+    $('#'+btn.id).addClass("menuButton");
+    $('#'+btn.id).css('width',BLOCKSIZE*1.4);
+    $('#'+btn.id).css('height',BLOCKSIZE*1.4);
+    $("#container").append('<button id="'+GRIDNAME+'inventorybutton" class="inventorybutton" onclick="showInventory()" ></button>');
+    $('#'+GRIDNAME+'inventorybutton').css('width',BLOCKSIZE*1.4);
+    $('#'+GRIDNAME+'inventorybutton').css('height',BLOCKSIZE*1.4);
+    $('#'+GRIDNAME+'inventorybutton').css('margin-left',BLOCKSIZE*1.4);
+}
+
+function enlargeFirstUnitToMove(){
+    $($("[name='" +GRIDNAME+ "orderBoxes" + "']").get(0)).css({ height: "+=6" , width: "+=6"});
+}
+
+</script>
+
+</body>
+</html>
+
+
+
+

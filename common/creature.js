@@ -1,9 +1,40 @@
 
+var Creatures = [
+    //0                1        2        3          4      5       6      7             8           9       10              11
+    //name             attack,  defence, Location, moves, Health, Team, unit_type,  initiative, range, rangedDefence, maxHealth
+    ["DebutAnt",       50,      40,      "-1x-1",   3.0,   120,    0,    "infantry",   99,         1.5,    20,             120 ],
+    ["KidSlinger",     20,      -40,     "-1x-1",   1.5,   80,     0,    "ranged",     97,         2.24,   0,              80  ],
+    ["WarrAnt",        35,      15,      "-1x-1",   4.5,   100,    0,    "infantry",   90,         1.5,    20,             100 ],
+    ["FormicArcher",   45,      -30,     "-1x-1",   2.0,   80,     0,    "ranged",     98,         3.4,    20,             80  ],
+    ["Spidlings",      20,      0,       "-1x-1",   2.0,   40,     0,    "ranged",     50,         2.0,    5,              40  ],
+    ["Spider",         35,      5,       "-1x-1",   2.0,   70,     0,    "infantry",   40,         1.5,    30,             70  ],
+    ["GreySpider",     45,      40,      "-1x-1",   3.0,   100,    0,    "infantry",   30,         1.5,    5,              100 ],
+    ["MutAnt",         35,      0,       "-1x-1",   3.5,   90,     0,    "infantry",   90,         1.5,    0,              90  ],
+    ["BlackWidow",     40,      40,      "-1x-1",   4.0,   140,    0,    "infantry",   30,         1.5,    20,             140 ],
+    ["RedTailSpider",  40,      -15,     "-1x-1",   2.5,   80,     0,    "ranged",     30,         2.4,    10,             80  ],
+    ["BogTroll",       150,     70,      "-1x-1",   2.0,   140,    0,    "infantry",   10,         1.5,    -30,            140 ],
+    ["SpiderQueen",    120,     40,      "-1x-1",   3.5,   400,    0,    "ranged",     30,         2.2,    30,             400 ]
+    ];
+
+var CreatureImages = [
+    ["DebutAnt",       "common/images/units/DebutAnt.png"          ],
+    ["KidSlinger",     "common/images/units/kidslinger.png"        ],
+    ["WarrAnt",        "common/images/units/WarrAnt.png"           ],
+    ["FormicArcher",   "common/images/units/FormicArcher.png"      ],
+    ["Spidlings",      "common/images/units/spidling.png"          ],
+    ["Spider",         "common/images/units/spider.png"            ],
+    ["GreySpider",     "common/images/units/grey_spider.png"       ],
+    ["MutAnt",         "common/images/units/mutant.png"            ],
+    ["BlackWidow",     "common/images/units/blackWidow.png"        ],
+    ["RedTailSpider",  "common/images/units/RedTailSpider.png"     ],
+    ["BogTroll",       "common/images/units/bogtroll.png"          ],
+    ["SpiderQueen",    "common/images/units/redspider.png"         ]
+    ];
 
 // creates a Creature with unique ID, and increases the COUNTER used to generate IDs
 var COUNTER=0;
 class Creature {
-    
+
     constructor(name, attack, defence, moves, type, initiative, range, rangedDefence, maxHealth) {
         this.id = "unit_" + COUNTER++;
         this.name = name;
@@ -20,12 +51,23 @@ class Creature {
         this.health = maxHealth;
         this.position = "-1x-1";
         this.team = 1;
-        this.image = getCreatureImage(name);
+        this.image = this.getCreatureImage();
         this.healthBar = this.createHealthBar();
         this.effects = "";
         
-        llog(9, "unit " + this.name + " created with ID " + this.id);
+        console.log(9, "unit " + this.name + " created with ID " + this.id);
         return this;
+    }
+
+    getCreatureImage(){
+        var i;
+        for ( i = 0; i < CreatureImages.length; i++) {
+            if (CreatureImages[i][0] == this.name) {
+                return CreatureImages[i][1];
+            }
+        }
+        console.log(9, "A creature image for " + this.name + " not found in the database. Exiting with null");
+        return "";
     }
 
     // methods
@@ -50,7 +92,7 @@ class Creature {
     }
 
     createHealthBar() {
-        CreatureLog("Creating healthbar for " + this.name);
+        console.log("Creating healthbar for " + this.name);
         var barLength = 40;
         var col = this.teamColor();
         var greyLength = ((this.maxHealth - this.health) / this.maxHealth) * barLength;
@@ -172,6 +214,5 @@ class Creature {
     }
 
 }
-
 
 module.exports = Creature;

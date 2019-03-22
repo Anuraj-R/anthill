@@ -14,6 +14,8 @@ module.exports = {
         "SELECTEDBOX":"false",
         "tlog":"false",
         "MOVES":"false",
+        "test":"false",
+        "expect":"false",
         "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {

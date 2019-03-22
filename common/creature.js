@@ -55,7 +55,7 @@ class Creature {
         this.healthBar = this.createHealthBar();
         this.effects = "";
         
-        console.log(9, "unit " + this.name + " created with ID " + this.id);
+        this.log(9, "unit " + this.name + " created with ID " + this.id);
         return this;
     }
 
@@ -66,7 +66,7 @@ class Creature {
                 return CreatureImages[i][1];
             }
         }
-        console.log(9, "A creature image for " + this.name + " not found in the database. Exiting with null");
+        this.log(9, "A creature image for " + this.name + " not found in the database. Exiting with null");
         return "";
     }
 
@@ -92,7 +92,7 @@ class Creature {
     }
 
     createHealthBar() {
-        console.log("Creating healthbar for " + this.name);
+        this.log("Creating healthbar for " + this.name);
         var barLength = 40;
         var col = this.teamColor();
         var greyLength = ((this.maxHealth - this.health) / this.maxHealth) * barLength;
@@ -108,7 +108,7 @@ class Creature {
     
     //The target should be of a different team, this should be validated before calling this method.
     combat(enemy) {
-        CreatureLog("Combat --------> " + this.name + " attacks " + enemy.name + " at " + enemy.position);
+        this.log("Combat --------> " + this.name + " attacks " + enemy.name + " at " + enemy.position);
         combatGeneric(this, enemy);
     }
 
@@ -159,12 +159,12 @@ class Creature {
         $(this.healthBar).detach();
         this.healthBar = this.createHealthBar();
         $(this.healthBar).offset({ top: pos.top - 12, left: pos.left });
-        console.log("Refreshed graphics for " + this.name);
+        this.log("Refreshed graphics for " + this.name);
         //CreatureLog(this);
     }
 
     die() {
-        CreatureLog("Removing self: " + this.id);
+        this.log("Removing self: " + this.id);
         //mark the map tile empty
         TILES.reset(this.position);
         //fadeout the picture
@@ -172,7 +172,7 @@ class Creature {
         //drop items if it is an enemy unit that got killed
         if (this.team != "1") {
             //drop Items based on DROPCHANCE
-            CreatureLog("Dropping items at " + this.position);
+            this.log("Dropping items at " + this.position);
             dropItems(this.position);
         }
         //remove the unit from SEQUENCE
@@ -211,6 +211,24 @@ class Creature {
         div.style.display = "inline-block";
         div.className = "healthbar";
         return div;
+    }
+
+    log(data){
+        if (typeof LOGGINGSCOPE === "undefined"){
+            var LOGGINGSCOPE="CREATURE";
+        }
+        if( LOGGINGSCOPE.includes("CREATURE") ){
+            if (typeof data === 'string' || data instanceof String){
+                // eslint-disable-next-line no-console
+                console.log(this.name + ":---> " + data);
+            }
+            else{
+                // eslint-disable-next-line no-console
+                console.log(this.name + ":---> ");
+                // eslint-disable-next-line no-console
+                console.log(data);
+            }
+        }
     }
 
 }

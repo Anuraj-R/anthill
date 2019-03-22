@@ -1,4 +1,17 @@
 
+
+
+/**
+ * @jest-environment jsdom
+ */
+
+ /*
+test('use jsdom in this test file', () => {
+  const element = document.createElement('div');
+  expect(element).not.toBeNull();
+});
+*/
+
 const creature = require('./common/creature');
 import Creature from './common/creature';
 
@@ -20,17 +33,9 @@ var Creatures = [
     ];
 
 test('Creating a class Creature succeeds', () => {
-    
-    var unit = null;
-    var i = 0
+    var i = 1
     //name, 			attack, 	defence, 			moves, 			type, 		initiative, 	range, 			rangedDefence, 	maxHealth
-    unit = new Creature(Creatures[i][0], Creatures[i][1], Creatures[i][2], Creatures[i][4], Creatures[i][7], Creatures[i][8], Creatures[i][9], Creatures[i][10], Creatures[i][11]);
-
-    //there is a stop in Cristoph
-    //expect('Christoph').toMatch(/stop/);
-
-    expect(unit.name).toMatch(/DebutAnt/);
-    return unit;
-
+    var unit = new Creature(Creatures[i][0], Creatures[i][1], Creatures[i][2], Creatures[i][4], Creatures[i][7], Creatures[i][8], Creatures[i][9], Creatures[i][10], Creatures[i][11]);
+    expect(unit.name).toMatch(/KidSlinger/);
   });
 

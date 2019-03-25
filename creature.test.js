@@ -36,3 +36,24 @@ test('Creating various Creature objects succeed', () => {
     expect(unit.name).toMatch(/Spidlings/);
   });
 
+
+  test('throws NoSuchCreature on creating an invalid creature', () => {
+    function CreateInvalidCreature() {
+      var i = 0;
+      expect(new Creature("NoSuchCreature", Creatures[i][1], Creatures[i][2],
+      Creatures[i][4], Creatures[i][7], Creatures[i][8], Creatures[i][9], Creatures[i][10],
+      Creatures[i][11])).toThrow();
+    }
+    expect(CreateInvalidCreature).toThrow();
+  });
+
+  test('teamColor() returns approproiate color', () => {
+    var i = 0
+    var unit = new Creature(Creatures[i][0], Creatures[i][1], Creatures[i][2], Creatures[i][4],
+      Creatures[i][7], Creatures[i][8], Creatures[i][9], Creatures[i][10], Creatures[i][11]);
+
+    unit.team = 1;
+    expect(unit.teamColor()).toMatch(/#0000ff/);
+    unit.team = 2;
+    expect(unit.teamColor()).toMatch(/#ff0000/);
+  });

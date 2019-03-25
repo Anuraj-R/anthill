@@ -60,14 +60,12 @@ class Creature {
     }
 
     getCreatureImage(){
-        var i;
-        for ( i = 0; i < CreatureImages.length; i++) {
+        for ( var i = 0; i < CreatureImages.length; ++i) {
             if (CreatureImages[i][0] == this.name) {
                 return CreatureImages[i][1];
             }
         }
-        this.log(9, "A creature image for " + this.name + " not found in the database. Exiting with null");
-        return "";
+        throw "A creature image for " + this.name + " not found in the database.";
     }
 
     // methods
@@ -78,15 +76,6 @@ class Creature {
         }
         else if (this.team == 2) {
             col = "#ff0000";
-        }
-        else if (this.team == 3) {
-            col = "#aaaaff";
-        }
-        else if (this.team == 4) {
-            col = "#aaaaff";
-        }
-        else if (this.team == 9) {
-            col = "#bebebe";
         }
         return col;
     }

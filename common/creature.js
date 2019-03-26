@@ -66,10 +66,9 @@ class Creature {
                 return CreatureImages[i][1];
             }
         }
-        throw "A creature image for " + this.name + " not found in the database.";
+        throw "An image for creature " + this.name + " not found in the database.";
     }
 
-    // methods
     teamColor() {
         return this.team == 1 ? "#0000ff" : "#ff0000";
     }

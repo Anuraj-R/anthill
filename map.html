@@ -40,6 +40,17 @@
 <script type="text/javascript">
 
 
+var HEIGHT = 13;
+var WIDTH = 8;
+var RULE=0;
+var BLOCKSIZE = 31;
+
+var SLECTEDBOX = "";
+var NEXTINDEX = -1;
+var ANTHILL_MUSIC = "OFF";
+var LOGLEVEL = 1;
+var LOGGINGSCOPE = "MAP INVENTORY SETTINGS"; /* CREATURE MAP INVENTORY SETTINGS */
+
 
 function loadFunc() {
     $(document).ready(function() {
@@ -54,19 +65,11 @@ function loadFunc() {
 function loadMapLevelFromLocalStorage(){
     MAPLEVEL = localStorageGetOrSetVar("MAPLEVEL",3);
     MAPLEVELMAX = localStorageGetOrSetVar("MAPLEVELMAX",20);
+    GRIDNAME="container"+MAPLEVEL;
 }
 
 function initializeGlobals(){
-    HEIGHT = 13;
-    WIDTH = 8;
-    RULE=0;
-    BLOCKSIZE = 31;
-    GRIDNAME="container"+MAPLEVEL;
-    SLECTEDBOX = "";
-    NEXTINDEX = -1;
-    ANTHILL_MUSIC = "OFF";
-    LOGLEVEL = 1;
-    LOGGINGSCOPE = "MAP INVENTORY SETTINGS"; /* CREATURE MAP INVENTORY SETTINGS */
+    
 }
 
 function populateTheUIContainer(){

@@ -1,6 +1,4 @@
 
-var CREATURES = new Units();
-
 function Units() {
     this.units = [];
 
@@ -10,10 +8,10 @@ function Units() {
     this.remove = function(id) {
         CreatureLog( typeof (id));
         CreatureLog(this.units[id]);
-        llog(9, "Seeking to remove " + id);
+        CreatureLog(9, "Seeking to remove " + id);
         for (var i = 0; i < this.units.length; i++) {
             if (id == this.units[i].id) {
-                llog(9, "removing " + this.units[i].id + " of type " + this.units[i].name);
+                CreatureLog(9, "removing " + this.units[i].id + " of type " + this.units[i].name);
                 this.units.splice(i, 1);
                 break;
             }
@@ -22,49 +20,19 @@ function Units() {
     this.list = function() {
         CreatureLog("Listing Units");
         for (var i = 0; i < this.units.length; i++) {
-            llog(9, "listing " + this.units[i].id + " of type " + this.units[i].name);
+            CreatureLog(9, "listing " + this.units[i].id + " of type " + this.units[i].name);
         }
     };
 }
 
-function getCreatureIndex(unit_type) {
-    var i;
-    for ( i = 0; i < Creatures.length; i++) {
-        if (Creatures[i][0] == unit_type) {
-            break;
-        }
-    }
-    if (i == Creatures.length) {
-        llog(9, "A creature by the name " + unit_type + " not found in the database. Exiting with null");
-        i = -1;
-    }
-    return i;
-}
-
-
-
-//returns type Creature
-function CreateCreature(unit_type) {
-
-    var unit = null;
-    var i = getCreatureIndex(unit_type);
-    if (i != -1) {
-        //name, 			attack, 	defence, 			moves, 			type, 		initiative, 	range, 			rangedDefence, 	maxHealth
-        unit = new Creature(Creatures[i][0], Creatures[i][1], Creatures[i][2], Creatures[i][4], Creatures[i][7], Creatures[i][8], Creatures[i][9], Creatures[i][10], Creatures[i][11]);
-        CREATURES.add(unit);
-    }
-    return unit;
-}
-
-
 
 function getCreatureAttack(unit_type) {
-    var i = getCreatureIndex(unit_type);
+    var i = Creature.getIndex(unit_type);
     return Creatures[i][1];
 }
 
 function getCreatureMaxHealth(unit_type) {
-    var i = getCreatureIndex(unit_type);
+    var i = Creature.getIndex(unit_type);
     return Creatures[i][10];
 }
 
@@ -123,12 +91,6 @@ function initValues(armyID, val_array) {
 
     //add the effects input field.
     $('#' + armyID + ">form").append('<input type="hidden" name="effects" id="' + armyID + "_effects" + '" value="" />');
-}
-
-function llog(level, string) {
-    if (level >= LOGLEVEL) {
-        CreatureLog(string);
-    }
 }
 
 function CreatureLog(data){

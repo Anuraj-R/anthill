@@ -1,7 +1,8 @@
 
+
 var Creatures = [
     //0                1        2        3          4      5       6      7             8           9       10              11
-    //name             attack,  defence, Location, moves, Health, Team, unit_type,  initiative, range, rangedDefence, maxHealth
+    //name             attack,  defence, Location, moves, Health, Team, creature_type,  initiative, range, rangedDefence, maxHealth
     ["DebutAnt",       50,      40,      "-1x-1",   3.0,   120,    0,    "infantry",   99,         1.5,    20,             120 ],
     ["KidSlinger",     20,      -40,     "-1x-1",   1.5,   80,     0,    "ranged",     97,         2.24,   0,              80  ],
     ["WarrAnt",        35,      15,      "-1x-1",   4.5,   100,    0,    "infantry",   90,         1.5,    20,             100 ],
@@ -70,14 +71,7 @@ class Creature {
 
     // methods
     teamColor() {
-        var col = "#00ff00";
-        if (this.team == 1) {
-            col = "#0000ff";
-        }
-        else if (this.team == 2) {
-            col = "#ff0000";
-        }
-        return col;
+        return this.team == 1 ? "#0000ff" : "#ff0000";
     }
 
     createHealthBar() {
@@ -202,24 +196,44 @@ class Creature {
         return div;
     }
 
-    log(data){
-        if (typeof LOGGINGSCOPE === "undefined"){
-            var LOGGINGSCOPE="CREATURE";
+    static create(creatureName){
+        var unit = null;
+        var i = Creature.getIndex(creatureName);
+        if (i != -1) {
+            unit = new Creature(Creatures[i][0], Creatures[i][1], Creatures[i][2], Creatures[i][4], Creatures[i][7],
+                Creatures[i][8], Creatures[i][9], Creatures[i][10], Creatures[i][11]);
         }
-        if( LOGGINGSCOPE.includes("CREATURE") ){
-            if (typeof data === 'string' || data instanceof String){
-                // eslint-disable-next-line no-console
-                console.log(this.name + ":---> " + data);
+        return unit;
+    }
+
+    static getIndex(creature_type) {
+        var i;
+        for ( i = 0; i < Creatures.length; i++) {
+            if (Creatures[i][0] == creature_type) {
+                return i;
             }
-            else{
-                // eslint-disable-next-line no-console
-                console.log(this.name + ":---> ");
-                // eslint-disable-next-line no-console
-                console.log(data);
+        }
+        throw "A creature of type " + creature_type + " not found in the database.";
+    }
+
+    log(data){
+        if (typeof LOGGINGSCOPE != "undefined"){
+            if( LOGGINGSCOPE.includes("CREATURE") ){
+                if (typeof data === 'string' || data instanceof String){
+                    // eslint-disable-next-line no-console
+                    console.log(this.name + ":---> " + data);
+                }
+                else{
+                    // eslint-disable-next-line no-console
+                    console.log(this.name + ":---> ");
+                    // eslint-disable-next-line no-console
+                    console.log(data);
+                }
             }
         }
     }
 
 }
 
+window.module = window.module || {};
 module.exports = Creature;

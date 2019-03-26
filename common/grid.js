@@ -78,7 +78,7 @@ function selectPlayerUnits(){
     console.log("player units are: " + playerUnits);
     console.log("player weight is: " + calcWeightOfArray(playerUnits));
 
-    for (var i in playerUnits) unitsArray.push(CreateCreature(playerUnits[i]));
+    for (var i in playerUnits) unitsArray.push(Creature.create(playerUnits[i]));
     for (var i in unitsArray) unitsArray[i].team = 1;
     return unitsArray;
 }
@@ -153,7 +153,7 @@ function selectAIUnits(){
     console.log("AI weight is: " + calcWeightOfArray(AIUnits));
 
     //convert to actual creatures
-    for (var i in AIUnits) unitsArray.push(CreateCreature(AIUnits[i]));
+    for (var i in AIUnits) unitsArray.push(Creature.create(AIUnits[i]));
     for (var i in unitsArray) unitsArray[i].team = 2;
     return unitsArray;
 

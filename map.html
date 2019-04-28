@@ -75,7 +75,7 @@ function initializeGlobals(){
 function populateTheUIContainer(){
 
     addDropDownForLevels();
-    addMapButton();
+    addMapAndInventoryButtons();
 
     orderBox = new OrderBox(GRIDNAME, BLOCKSIZE);
     orderBox.addToContainer("container");
@@ -116,7 +116,7 @@ function createGridAndAddToContainer(){
     ( MAPLEVEL % 5 == 0 ) ? paintWolframGrid(GRIDNAME) : perlinAntMap(GRIDNAME);
 }
 
-function addMapButton(){
+function addMapAndInventoryButtons(){
     var btn = document.createElement('button');
     btn.id = GRIDNAME+"mapbutton";
     $("#container").append(btn);

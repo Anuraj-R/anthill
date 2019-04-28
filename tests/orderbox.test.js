@@ -2,10 +2,10 @@
  * @jest-environment jsdom
  */
 
-window.$ = require('./common/jquery-2.1.4');
+window.$ = require('../common/jquery-2.1.4');
 
-import Creature from './common/creature';
-import OrderBox from './common/orderbox';
+import Creature from '../common/creature';
+import OrderBox from '../common/orderbox';
 
 test('Creating the orderbox succeed', () => {
 

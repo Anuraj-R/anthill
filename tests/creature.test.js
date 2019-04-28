@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import Creature from './common/creature';
+import Creature from '../common/creature';
 
 test('Creating various Creature objects succeed', () => {
 

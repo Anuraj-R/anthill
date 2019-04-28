@@ -49,7 +49,6 @@ class Grid{
         this.height = height;
         this.gridName = gridName;
         this.mapLevel = mapLevel;
-        //this.paintingAlgorithm = ( MAPLEVEL % 5 == 0 ) ? paintWolframGrid(GRIDNAME) : perlinAntMap(GRIDNAME);
         this.html = this.createHtml();
     }
 
@@ -70,6 +69,7 @@ class Grid{
 
     paint(){
         this.perlinAntMap();
+        //( this.mapLevel % 5 == 0 ) ? paintWolframGrid(GRIDNAME) : perlinAntMap();
     }
 
     getHtml(){
@@ -77,7 +77,7 @@ class Grid{
     }
 
     static terrainPaint(tileID, terrainArray, terrainClass){
-        
+
         var imgIndex = ( Math.floor(100 * Math.random()) ) % terrainArray.length;
         var link = terrainArray[imgIndex];
         document.getElementById(tileID).style.backgroundImage = "url(\"" + link + "\")";
@@ -85,41 +85,25 @@ class Grid{
         $("#"+tileID).addClass(terrainClass);
     }
 
+    //An ant starts at 0,0 and moves randomly, painting the terrain
     perlinAntMap() {
 
-        //ant starts at 0,0 and moves randomly, painting the terrain
         var x=0, y=0;
         noise.seed(Math.random());
-        
         for (var i=0; i<this.width*this.height; i++){
-        
-            var mov = Math.random();
-            if (mov < .25){ //moveleft
-                (x == 0)? x = this.width-1 : x = (x-1);
-            } else if (mov < .5) { //moveright
-                (x == this.width-1)? x = 0 : x = (x+1);
-            } else if (mov < .75) { //moveup
-                (y == 0)? y = this.height-1 : y = (y-1);
-            } else { //movedown
-                (y == this.height-1)? y = 0 : y = (y+1);
-            }
-                
-            var val = noise.perlin2(y / 100, x / 100);
-            //console.log("antval is: " + val);
-            
+
+            var move = Math.random();
+            if (move < .25) (x == 0)? x = this.width-1 : x = (x-1);       //move left
+            else if (move < .5)  (x == this.width-1)? x = 0 : x = (x+1);  //move right
+            else if (move < .75) (y == 0)? y = this.height-1 : y = (y-1); //move up
+            else (y == this.height-1)? y = 0 : y = (y+1);                 //move down
+
             var tileID = GRIDNAME + "_"+ x + "x" + y;
-            if (val < -0.02){ //BOG
-                Grid.terrainPaint(tileID, BOG, "BOGtile");
-            }
-            else if (val <.03){ //WOODS
-                Grid.terrainPaint(tileID, WOODS, "WOODStile");
-            }
-            else if (val <.07){ //HEIGHTS
-                Grid.terrainPaint(tileID, HEIGHTS, "HEIGHTStile");
-            }
-            else{ //PLAINS
-                Grid.terrainPaint(tileID, PLAINS, "PLAINStile");
-            }
+            var val = noise.perlin2(y / 100, x / 100);
+            if (val < -0.02) Grid.terrainPaint(tileID, BOG, "BOGtile");
+            else if (val <.03) Grid.terrainPaint(tileID, WOODS, "WOODStile");
+            else if (val <.07) Grid.terrainPaint(tileID, HEIGHTS, "HEIGHTStile");
+            else Grid.terrainPaint(tileID, PLAINS, "PLAINStile");
         }
     }
 }

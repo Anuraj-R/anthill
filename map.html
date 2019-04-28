@@ -51,6 +51,7 @@ var ANTHILL_MUSIC = "OFF";
 var LOGLEVEL = 1;
 var LOGGINGSCOPE = "MAP INVENTORY SETTINGS"; /* CREATURE MAP INVENTORY SETTINGS */
 var ORDERBOX = null;
+var GRID = null;
 function loadMapLevelFromLocalStorage(){
     MAPLEVEL = localStorageGetOrSetVar("MAPLEVEL",3);
     MAPLEVELMAX = localStorageGetOrSetVar("MAPLEVELMAX",20);
@@ -104,16 +105,11 @@ function selectLevel(i){
     location.reload();
 }
 
-
 function createGridAndAddToContainer(){
-    //$("#container").append(createGrid(WIDTH, HEIGHT));
-    //( MAPLEVEL % 5 == 0 ) ? paintWolframGrid(GRIDNAME) : perlinAntMap(GRIDNAME);
-
-    //$("#container").append(createGrid(WIDTH, HEIGHT));
     var grid = new Grid(WIDTH, HEIGHT, GRIDNAME, MAPLEVEL);
     $("#container").append(grid.getHtml());
     grid.paint();
-
+    GRID = grid;
 }
 
 function addMapAndInventoryButtons(){

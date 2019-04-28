@@ -15,6 +15,7 @@
 <script src="common/combat.js"></script>
 <script src="common/orderbox.js"></script>
 <script src="common/grid.js"></script>
+<script src="common/grid_old.js"></script>
 <script src="common/inventory.js"></script>
 <script src="common/settings.js"></script>
 <script src="common/statstable.js"></script>
@@ -50,26 +51,19 @@ var ANTHILL_MUSIC = "OFF";
 var LOGLEVEL = 1;
 var LOGGINGSCOPE = "MAP INVENTORY SETTINGS"; /* CREATURE MAP INVENTORY SETTINGS */
 var ORDERBOX = null;
-
-
-function loadFunc() {
-    $(document).ready(function() {
-        loadMapLevelFromLocalStorage();
-        initializeGlobals();
-        InitAudio();
-        loadInventory();
-        populateTheUIContainer();
-    });
-}
-
 function loadMapLevelFromLocalStorage(){
     MAPLEVEL = localStorageGetOrSetVar("MAPLEVEL",3);
     MAPLEVELMAX = localStorageGetOrSetVar("MAPLEVELMAX",20);
     GRIDNAME="container"+MAPLEVEL;
 }
 
-function initializeGlobals(){
-    
+function loadFunc() {
+    $(document).ready(function() {
+        loadMapLevelFromLocalStorage();
+        InitAudio();
+        loadInventory();
+        populateTheUIContainer();
+    });
 }
 
 function populateTheUIContainer(){
@@ -112,8 +106,14 @@ function selectLevel(i){
 
 
 function createGridAndAddToContainer(){
-    $("#container").append(createGrid(WIDTH, HEIGHT));
-    ( MAPLEVEL % 5 == 0 ) ? paintWolframGrid(GRIDNAME) : perlinAntMap(GRIDNAME);
+    //$("#container").append(createGrid(WIDTH, HEIGHT));
+    //( MAPLEVEL % 5 == 0 ) ? paintWolframGrid(GRIDNAME) : perlinAntMap(GRIDNAME);
+
+    //$("#container").append(createGrid(WIDTH, HEIGHT));
+    var grid = new Grid(WIDTH, HEIGHT, GRIDNAME, MAPLEVEL);
+    $("#container").append(grid.getHtml());
+    grid.paint();
+
 }
 
 function addMapAndInventoryButtons(){

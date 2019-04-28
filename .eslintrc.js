@@ -17,6 +17,7 @@ module.exports = {
         "MOVES":"false",
         "test":"false",
         "expect":"false",
+        "require":"false",
         "module":"false",
         "LOGGINGSCOPE":"false",
         "SharedArrayBuffer": "readonly"

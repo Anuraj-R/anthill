@@ -42,6 +42,28 @@ var PLAINS = [
 	"common/images/terrains/plains/plains_02.png"
 ];
 
+
+//tileProperties.movable; 
+//These are temporary values used to help functions communicate the state of the map
+//They may not reflect the actual state of the tile
+//var EMPTY = 0;
+var IMPASSABLE = -1;
+var MOVABLE = 1;
+var NONE = "none";
+//contains the movability of the tile, and the name of the unit stationed if any
+function tileProperties(movable, station){
+	this.movable = movable;    // EMPTY IMPASSABLE MOVABLE OCCUPIED ATTACKABLE 
+	this.station = station;    //TILES[cellName].station contains the UNIT if occupied, NONE otherwise
+	return this;
+}
+
+
+var TILES = new Array();
+TILES.reset = function( tile ) { 
+    tlog("Resetting "+tile);
+    TILES[tile] = new tileProperties(MOVABLE, NONE);
+};
+
 class Grid{
 
     constructor(width, height, gridName, mapLevel){

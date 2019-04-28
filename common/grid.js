@@ -82,6 +82,34 @@ TILES.reset = function( tile ) {
     TILES[tile] = new tileProperties(MOVABLE, NONE);
 };
 
+//TODO
+/*
+class Grid{
+
+    constructor(width, height, paintingAlgorithm){
+        this.width = width;
+        this.height = height;
+        this.paintingAlgorithm = paintingAlgorithm; //perlin wolfram
+        this.html = this.createHtml();
+    }
+
+    createHtml(){
+        var grid = "";
+        console.log ("Creating grid named "+GRIDNAME );
+        for (var j = 0; j < this.height; j++) {
+            for (var i = 0; i < this.width; i++){
+                var cellName = GRIDNAME + "_"+ i + "x" + j ;
+                grid += '<div id="' + cellName + '" class="mapTile" onclick="selectForMove(' + cellName + ')" ></div>';
+                //console.log ("Created "+name +"_"+ i + "x" + j);
+                TILES[GRIDNAME +"_"+ i + "x" + j] = new tileProperties(MOVABLE, NONE);
+            }
+            grid += "<br>";
+        }
+        return grid;
+    }
+}
+
+*/
 
 function createGrid(width, height) {
 	var grid = "";
@@ -94,7 +122,6 @@ function createGrid(width, height) {
 		for (var i = 0; i < width; i++){
 			
 			var cellName = GRIDNAME + "_"+ i + "x" + j ;
-			
 		    grid += '<div id="' + cellName + '" class="mapTile" onclick="selectForMove(' + cellName + ')" ></div>';
 		    //console.log ("Created "+name +"_"+ i + "x" + j);
 		    TILES[GRIDNAME +"_"+ i + "x" + j] = new tileProperties(MOVABLE, NONE);
@@ -253,6 +280,7 @@ function paintWolframGrid(){
     var idx = Math.floor(MAPLEVEL/5) - 1;
     var design = WOLFRAMLIST[idx];
     
+    //Cellular Automata
     CA = new wolfram(design,8,32);
     CA.display(GRIDNAME);
     paintcount++;
@@ -443,7 +471,6 @@ function calcWeight(unitName){
     return getCreatureMaxHealth(unitName) + (getCreatureAttack(unitName) * 2);
 }
 
-
 function selectNextUnit(){
 
     unLightAll ();
@@ -453,40 +480,22 @@ function selectNextUnit(){
     SELECTEDBOX = "NONE";
     MOVES = "-1";
 
-    var NEWINDEX = (NEXTINDEX + 1) % SEQUENCE.length;
-    LASTINDEX = (NEWINDEX - 2 + SEQUENCE.length ) % SEQUENCE.length;
-
-    // to avoid the first unit
-    if (NEXTINDEX != "-1" )
+    //the first unit to move
+    if (NEXTINDEX == -1 )
     {
-        //In the new world order, the first element always disappears!
-        //hook the elements, and insert the first one after the last
-        var firstEl = $("[name='" + GRIDNAME+ "orderBoxes" + "']").get(0);
-        var secndEl = $("[name='" + GRIDNAME+ "orderBoxes" + "']").get(1);
-        var lastEl  = $("[name='" + GRIDNAME+ "orderBoxes" + "']").get(SEQUENCE.length - 1);
-
-        //update the potion effects before moving the unit back.
-        //Wrong place to do that, should move if possible
-        SEQUENCE[NEXTINDEX].updateEffects();
-
-        $(secndEl).css({ height: "+=6" , width: "+=6"});
-        $(firstEl).css({ height: "-=6" , width: "-=6"});
-
-        $(firstEl).hide(600, function () {
-            $(firstEl).insertAfter(lastEl);
-            $(firstEl).show('slow', function() {
-                NEXTINDEX = NEWINDEX;
-                setTimeout(function(){
-                    selectForAction (SEQUENCE[NEXTINDEX]);},600);
-            });
-        });
-    }
-    else {
-        NEXTINDEX = NEWINDEX;
+        tlog("NEXTINDEX is -1, initializing...");
+        NEXTINDEX = (NEXTINDEX + 1) % SEQUENCE.length;
         setTimeout(function(){selectForAction (SEQUENCE[NEXTINDEX]);},400);
     }
+    else {
+        //update effects on the current selected unit and invoke the next
+        SEQUENCE[NEXTINDEX].updateEffects();
+        NEXTINDEX = (NEXTINDEX + 1) % SEQUENCE.length;
+        ORDERBOX.progress();
+        setTimeout(function(){
+            selectForAction (SEQUENCE[NEXTINDEX]); }, 700);
+    }
 }
-
 
 //A global variable variable to hold the moves left for the currently selected unit
 MOVES=-1;
@@ -653,35 +662,31 @@ function autoMove(unitName, moves){
         if (MOVES >=0){
             //end the moves (for now, until double strikes are introduced)
             MOVES="-1";
-            //TODO combat
-            //change combat functons
-
             unitName.combat(enemyNear);
-
-            //combat(enemyNear);
             selectNextUnit();
         }
     }
+    else if ( moveTarget != unitName.position ){
     //make sure that we are not moving to the current position it already is in
     //shouldnt arrive here, because the (dist <= range ) loop would have handled this scenario
     //and subsequently called 'selectNextUnit'
-    //else if ( moveTarget != unitName.position )
-    //{
         if (MOVES >=1){
             //move to the nearest tile to the enemy (moveTarget)
             tlog("moving to : "+moveTarget);
             selectForMove(moveTarget);
-
         }
         else{
             selectNextUnit();
         }
-    //}
-    //else //Closest enemy not within reach; but we are on closest possible tile.(moveTarget == boxName). End turn
-    //{
-        //MOVES = "-1";
-        //selectNextUnit();
-    //}
+    }
+    else
+    //Closest enemy not within reach;
+    //but we are on closest possible tile.(moveTarget == unitName.position).
+    //End turn
+    {
+        MOVES = "-1";
+        selectNextUnit();
+    }
 
 
     return 0;

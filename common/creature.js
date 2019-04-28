@@ -157,16 +157,19 @@ class Creature {
             this.log("Dropping items at " + this.position);
             dropItems(this.position);
         }
+
         //remove the unit from SEQUENCE
         var index = SEQUENCE.indexOf(this);
         SEQUENCE.splice(index, 1);
+
         //remove the unit from the orderBox
         //id orderBox+uname
         $("#orderBox" + this.id).remove();
+
         //If the dead unit's index is less than NEXTINDEX, reduce NEXTINDEX by 1
         //so that the very next unit in turn is not skipped
         if (index < NEXTINDEX) {
-            NEXTINDEX -= 1;
+            NEXTINDEX = NEXTINDEX - 1;
         }
     }
 

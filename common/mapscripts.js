@@ -1066,40 +1066,6 @@ function showMenu(){
 	window.location.href = "../maplist.html";
 }
 
-
-
-function setupOrderBox (){
-    
-    var log = document.getElementById("logsheet").innerHTML;
-    tlog("Inside setupOrderBox");
-    for (i=0; i<SEQUENCE.length ; i++){
-        tlog(" "+getArmyId(SEQUENCE[i]));
-    }
-    
-    var scontent="";
-    for (i=0; i<SEQUENCE.length ; i++){
-        scontent += '<img id="orderBox'+getArmyId(SEQUENCE[i])+'" onmouseover="showStats(this.id)" name="orderBoxes" src="" width="42" height="42"  >';
-    }
-    document.getElementById("orderList").innerHTML = scontent;
-
-    var x=document.getElementsByName("orderBoxes");
-    for (i=0; i<SEQUENCE.length ; i++){
-        uname=getArmyId(SEQUENCE[i]);
-        var img = $("#"+uname+"Pic").attr("src");
-        
-        x[i].src = img;
-        //add the class for the element
-        x[i].classList.add("orderCard");
-    }
-
-    //get by index or we can't use it!
-    $($("[name='" + "orderBoxes" + "']").get(0)).css({ height: "+=6" , width: "+=6"});
-}
-
-
-
-
-
 function updateEffects(uname){
 	
 	//Add the effects

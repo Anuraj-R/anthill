@@ -13,6 +13,7 @@
 <script src="common/creature.js"></script>
 <script src="common/creature_remaining.js"></script>
 <script src="common/combat.js"></script>
+<script src="common/orderbox.js"></script>
 <script src="common/grid.js"></script>
 <script src="common/inventory.js"></script>
 <script src="common/settings.js"></script>
@@ -48,6 +49,7 @@ var NEXTINDEX = -1;
 var ANTHILL_MUSIC = "OFF";
 var LOGLEVEL = 1;
 var LOGGINGSCOPE = "MAP INVENTORY SETTINGS"; /* CREATURE MAP INVENTORY SETTINGS */
+var ORDERBOX = null;
 
 
 function loadFunc() {
@@ -74,13 +76,17 @@ function populateTheUIContainer(){
 
     addDropDownForLevels();
     addMapButton();
-    addOrderBox();
+
+    orderBox = new OrderBox(GRIDNAME, BLOCKSIZE);
+    orderBox.addToContainer();
 
     createGridAndAddToContainer();
     placeUnitsOnGrid();
 
-    fillOrderBox();
-    enlargeFirstUnitToMove();
+    orderBox.fillOrderBox(SEQUENCE);
+    orderBox.progress();
+    ORDERBOX = orderBox;
+
     showStartMessage();
 }
 
@@ -104,33 +110,10 @@ function selectLevel(i){
     location.reload();
 }
 
-function addOrderBox(){
-    var orderList = document.createElement('div');
-    orderList.id = GRIDNAME+"orderList";
-    $("#container").append(orderList);
-    $('#'+orderList.id).addClass("orderList");
-    $('#'+orderList.id).css('width',BLOCKSIZE*4.6);
-    $('#'+orderList.id).css('height',BLOCKSIZE*1.4);
-    $('#'+orderList.id).css('margin-left',BLOCKSIZE*2.8);
-    $("#container").append('<br>'); 
-}
 
 function createGridAndAddToContainer(){
     $("#container").append(createGrid(WIDTH, HEIGHT));
     ( MAPLEVEL % 5 == 0 ) ? paintWolframGrid(GRIDNAME) : perlinAntMap(GRIDNAME);
-}
-
-function fillOrderBox(){
-    var orderBoxHtml="";
-    for (i=0; i<SEQUENCE.length ; i++){
-        orderBoxHtml += '<img id="orderBox'+SEQUENCE[i].id+'" name="'+
-        GRIDNAME+'orderBoxes" onmouseover="showStats(this.id)" class="orderCard" style="font-size:20px; height: '
-        +BLOCKSIZE+'px; width: '+BLOCKSIZE+'px;" >';
-    }
-    document.getElementById(GRIDNAME+"orderList").innerHTML = orderBoxHtml;
-
-    var x=document.getElementsByName(GRIDNAME+"orderBoxes");
-    for (var i in SEQUENCE) x[i].src = SEQUENCE[i].image;
 }
 
 function addMapButton(){
@@ -144,10 +127,6 @@ function addMapButton(){
     $('#'+GRIDNAME+'inventorybutton').css('width',BLOCKSIZE*1.4);
     $('#'+GRIDNAME+'inventorybutton').css('height',BLOCKSIZE*1.4);
     $('#'+GRIDNAME+'inventorybutton').css('margin-left',BLOCKSIZE*1.4);
-}
-
-function enlargeFirstUnitToMove(){
-    $($("[name='" +GRIDNAME+ "orderBoxes" + "']").get(0)).css({ height: "+=6" , width: "+=6"});
 }
 
 </script>

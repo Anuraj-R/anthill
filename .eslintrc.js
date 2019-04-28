@@ -12,6 +12,7 @@ module.exports = {
         "GRIDNAME":"false",
         "LASTINDEX":"false",
         "SELECTEDBOX":"false",
+        "ORDERBOX":"false",
         "tlog":"false",
         "MOVES":"false",
         "test":"false",

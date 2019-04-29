@@ -2,56 +2,16 @@
 //SEQUENCE=[];
 var GAMEOVER = 0;
 
-
-
-
-var HIDDEN = [
-	""
-];
-
-
-//tileProperties.movable; 
-//These are temporary values used to help functions communicate the state of the map
-//They may not reflect the actual state of the tile
-//var EMPTY = 0;
-var IMPASSABLE = -1;
-var MOVABLE = 1;
-var NONE = "none";
-
-//contains if impassable tile, and the name of the unit stationed
-function tileProperties(movable, station){
-	this.movable = movable;    // EMPTY IMPASSABLE MOVABLE OCCUPIED ATTACKABLE 
-	this.station = station;    //TILES[cellName].station contains the UNIT if occupied, NONE otherwise
-	return this;
-}
-
-var TILES = new Array();
-TILES.reset = function( tile ) { 
-    tlog("Resetting "+tile);
-    TILES[tile] = new tileProperties(MOVABLE, NONE);
-};
-
-
-
-/* This is the pool of units from which armies are formed automatically
-   based on the map-level.
-   There is also an additional unit called DebutAnt, which is unique and
-   part of every player-army on all levels. */
-var playerUnitsPool = [ "KidSlinger", "WarrAnt", "FormicArcher" ];
-var AIUnitsPool = [ "Spider","Spidlings","GreySpider","MutAnt","BlackWidow",
-                "RedTailSpider","BogTroll", "SpiderQueen"];
-
-
-
-
 //place units on grid based on the current map level
 //unit_weight = (2 * attack) + MaxHealth
 function placeUnitsOnGrid(){
 
     tlog("MAPLEVEL is: "+MAPLEVEL);
 
-    var playerUnits = selectPlayerUnits();
-    var AIUnits = selectAIUnits();
+    creaturePlacer = new CreaturePlacer(MAPLEVEL,GRID);
+
+    var playerUnits = creaturePlacer.selectPlayerUnits();
+    var AIUnits = creaturePlacer.selectAIUnits();
     tlog(playerUnits);
     tlog(AIUnits);
 
@@ -62,54 +22,6 @@ function placeUnitsOnGrid(){
     tlog(SEQUENCE);
 }
 
-// returns an array of 'Creature' objects
-function selectPlayerUnits(){
-
-    var playerUnits=["DebutAnt"];
-    var unitsArray=[];
-
-    if (MAPLEVEL < 3){
-        //do nothing
-    }
-    else if (MAPLEVEL <= 5){
-        playerUnits.push("KidSlinger");
-    }
-    else if (MAPLEVEL < 7){
-        playerUnits.push("KidSlinger");
-        playerUnits.push("WarrAnt");
-    }
-    else if (MAPLEVEL < 8){
-        playerUnits.push("KidSlinger");
-        playerUnits.push("WarrAnt");
-        playerUnits.push("WarrAnt");
-    }
-    else if (MAPLEVEL < 9){
-        playerUnits.push("WarrAnt");
-        playerUnits.push("WarrAnt");
-        playerUnits.push("FormicArcher");
-    }
-    else if (MAPLEVEL < 12) {
-        playerUnits.push("WarrAnt");
-        playerUnits.push("WarrAnt");
-        playerUnits.push("FormicArcher");
-        playerUnits.push("FormicArcher");
-    }
-    else{
-        playerUnits.push("WarrAnt");
-        playerUnits.push("WarrAnt");
-        playerUnits.push("FormicArcher");
-        playerUnits.push("FormicArcher");
-        playerUnits.push("FormicArcher");
-    }
-
-    //playerWeight = calcWeightOfArray(playerUnits);
-    console.log("player units are: " + playerUnits);
-    console.log("player weight is: " + calcWeightOfArray(playerUnits));
-
-    for (var i in playerUnits) unitsArray.push(Creature.create(playerUnits[i]));
-    for (var i in unitsArray) unitsArray[i].team = 1;
-    return unitsArray;
-}
 
 //set the sequence in which units take action. Also populate SEQUENCE global array.
 function setSEQUENCE(playerUnits, AIUnits){
@@ -152,40 +64,6 @@ function placeUnits(unitsArray, row){
 
 
 
-function selectAIUnits(){
-    var AIUnits = [];
-    var unitsArray = [];
-    var mapWeight = 45 + 100*(MAPLEVEL);
-    var totalWeight = 0;
-
-    //get a sorted list from the units pool
-    var AIUnitsSorted = sortUnitsByWeight(AIUnitsPool.slice());
-    var idx = AIUnitsSorted.length - 1;
-
-    do {
-        //allow maximum of 8 units only
-        if (AIUnits.length > 7) break;
-
-        var selected = AIUnitsSorted[idx];
-        if ( selected.weight < (mapWeight - totalWeight) * .33){
-            AIUnits.push(selected.name);
-            totalWeight += selected.weight;
-        }
-        else{
-            idx--;
-        }
-    }while(idx >= 0);
-
-    //console.log(AIUnitsSorted);
-    console.log("AI units are: " + AIUnits);
-    console.log("AI weight is: " + calcWeightOfArray(AIUnits));
-
-    //convert to actual creatures
-    for (var i in AIUnits) unitsArray.push(Creature.create(AIUnits[i]));
-    for (var i in unitsArray) unitsArray[i].team = 2;
-    return unitsArray;
-
-}
 function sortUnitsByWeight(unitsArray){
     var unitsSortedArray = [];
     for ( var i=0; i< unitsArray.length; i++)
@@ -198,21 +76,16 @@ function sortUnitsByWeight(unitsArray){
 //It is used as a helper structure for sorting units based on weights
 function weightedUnit(uname){
     this.name = uname;
-    this.weight = calcWeight(uname);
+    this.weight = Creature.weight(uname);
 }
 
 //calculate total weight of units in the array, by calcWeight function
 function calcWeightOfArray(unitsArray){
     var units_weight=0;
-    for ( var i=0; i< unitsArray.length; i++) units_weight += calcWeight(unitsArray[i]);
+    for ( var i=0; i< unitsArray.length; i++) units_weight += Creature.weight(unitsArray[i]);
     return units_weight;
 }
 
-//method to calculate weight of a unit based on a formula
-//unit_weight = (2 * attack) + MaxHealth
-function calcWeight(unitName){
-    return getCreatureMaxHealth(unitName) + (getCreatureAttack(unitName) * 2);
-}
 
 function selectNextUnit(){
 

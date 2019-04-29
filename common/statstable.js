@@ -37,7 +37,7 @@ var statsTable = ""+
 '        <td>.</td></tr>                                                                        '+
 '</table>                                                                                       ';
 
-
+var SHOWINDEX = 0;
 function showStats(x){
     //find the clicked location in the sequence box. and set SHOWINDEX to the clicked index.
     //this is required when user clicks next/previous buttons
@@ -75,8 +75,10 @@ function fillStatsTable(uname){
 
     var thisUnit = SEQUENCE[0];
     for (var i=0; i<SEQUENCE.length ; i++){
-        if(SEQUENCE[i].id === uname)break;
-		thisUnit = SEQUENCE[i];
+        if(SEQUENCE[i].id === uname){
+            thisUnit = SEQUENCE[i];
+            break;
+        }
     }
 
     var str = ""+

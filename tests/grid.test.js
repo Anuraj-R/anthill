@@ -19,7 +19,6 @@ test('Creating a grid succeeds', () => {
     //Grid has movable tiles
     expect(grid.getHtml()).toMatch(/selectForMove/);
 
-    
     //perlin.js gives error on
     //var module = global.noise = {};
     //need to rectify this to enable the below test

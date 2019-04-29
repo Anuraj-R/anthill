@@ -188,6 +188,11 @@ class Creature {
         this.refreshGraphics();
     }
 
+    static weight(creatureName){
+        var i = Creature.getIndex(creatureName);
+        return Creatures[i][11] + (2*Creatures[i][1]); // maxHealth + 2*attack
+    }
+
     static createDiv(width, height, color) {
         var div = document.createElement('div');
         div.style.width = width;

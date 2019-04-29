@@ -3,7 +3,6 @@
 <head>
 	<script src="../common/jquery-2.1.4.js"></script>
 	<script src="../common/jquery-ui.js"></script>
-	<script type="text/javascript" src="../cordova.js"></script>
 <title>Help </title> 
 <link rel="stylesheet" type="text/css" href="../common/koyotil.css" />
 <script type="text/javascript">
@@ -13,18 +12,13 @@ function loadFunc(){
 $(document).ready(function() {
 	
 	var pathname = window.location.pathname;
-	console.log("pathname is :"+pathname);
 		
 	//For mobile: Add event listener
 	document.addEventListener("deviceready", onDeviceReady, false);
 	
-	if (localStorage[pathname]) {
-    	//do nothing
-	} else {
+	if (! localStorage[pathname]) {
 	    localStorage[pathname] = '1';
 	}
-	
-    
 });
 }
 
@@ -154,7 +148,7 @@ Terrain can be identified by the background color of the tile.
 		<td>
 			<table class="cellTable" >
 				<tr>
-					<td style="background-image: url('../common/images/terrains/bog_003.png')" class="passable forest"></td>
+					<td style="background-image: url('../common/images/terrains/bog/bog_003.png')" class="passable forest"></td>
 					
 				</tr>
 			</table>
@@ -167,7 +161,7 @@ Terrain can be identified by the background color of the tile.
 		<td>
 			<table class="cellTable" border="1" >
 				<tr>
-					<td  style="background-image: url('../common/images/terrains/48_mountain02.png')"  class="passable mountain"></td>	
+					<td  style="background-image: url('../common/images/terrains/heights/mountain_002.png')"  class="passable mountain"></td>	
 				</tr>
 			</table>
 		</td>
@@ -191,7 +185,7 @@ Terrain can be identified by the background color of the tile.
 		<td>
 			<table class="cellTable" border="1" >
 				<tr>
-					<td style="background-image: url('../common/images/terrains/bog_005.png')"class="impassable"></td>
+					<td style="background-image: url('../common/images/terrains/bog/bog_005.png')"class="impassable"></td>
 				</tr>
 			</table>
 		</td>

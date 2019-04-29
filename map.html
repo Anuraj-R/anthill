@@ -115,7 +115,8 @@ function createGridAndAddToContainer(){
 
 function addMapAndInventoryButtons(){
 
-    $("#container").append('<button id="'+GRIDNAME+'mapbutton" class="menuButton" onclick="showHelp()" ></button>');
+    //$("#container").append('<button id="'+GRIDNAME+'mapbutton" class="menuButton" onclick="showHelp()" ></button>');
+    $("#container").append('<button id="'+GRIDNAME+'mapbutton" class="menuButton" onclick="showMenu()" ></button>');
     $('#'+GRIDNAME+'mapbutton').css('width',BLOCKSIZE*1.4);
     $('#'+GRIDNAME+'mapbutton').css('height',BLOCKSIZE*1.4);
 

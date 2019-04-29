@@ -64,27 +64,6 @@ function placeUnits(unitsArray, row){
 
 
 
-function sortUnitsByWeight(unitsArray){
-    var unitsSortedArray = [];
-    for ( var i=0; i< unitsArray.length; i++)
-        unitsSortedArray.push(new weightedUnit(unitsArray[i]));
-    unitsSortedArray.sort(function(a,b){return a.weight - b.weight;});
-    return unitsSortedArray;
-}
-
-//This is a structure with just the unit names and their weights
-//It is used as a helper structure for sorting units based on weights
-function weightedUnit(uname){
-    this.name = uname;
-    this.weight = Creature.weight(uname);
-}
-
-//calculate total weight of units in the array, by calcWeight function
-function calcWeightOfArray(unitsArray){
-    var units_weight=0;
-    for ( var i=0; i< unitsArray.length; i++) units_weight += Creature.weight(unitsArray[i]);
-    return units_weight;
-}
 
 
 function selectNextUnit(){

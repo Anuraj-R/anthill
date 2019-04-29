@@ -149,8 +149,12 @@ a.blacklist{
 #winBox h5 { margin: 0; text-align: center; }
 
 #inventoryBox { text-decoration: none; text-align: center; border-radius: 15px;}
-#inventoryBox { width: 240px; height:152px; position: absolute; z-index:1; background: rgba(165, 207, 243, 0.89); }
+#inventoryBox { width: 240px; height:92px; position: absolute; z-index:1; background: rgba(165, 207, 243, 0.89); }
 #inventoryBox h5 { margin: 0; text-align: center; float: left; }
+
+#menuBox { text-decoration: none; text-align: center; border-radius: 15px;}
+#menuBox { width: 240px; height:74px; position: absolute; z-index:1; background: rgba(171, 195, 133, 0.89); }
+#menuBox h5 { margin: 0; text-align: center; float: left; }
 
 #healthPotionIcon{
 	background-image: url("images/healthPotion.png"); 
@@ -161,7 +165,15 @@ a.blacklist{
 #barkskinPotionIcon{
 	background-image: url("images/barkSkinPotion.png"); 
 }
-
+#soundIcon{
+	background-image: url("images/sound_icons/loudspeakerOn.png");
+}
+#musicIcon{
+	background-image: url("images/sound_icons/musicOn.png");
+}
+#helpIcon{
+	background-image: url("images/sound_icons/help.png");
+}
 .potionIcon {
 	border-radius: 7px;
 	background-color:rgba(230, 255, 255, 0.57);
@@ -179,6 +191,31 @@ a.blacklist{
     text-align: center;
 	vertical-align: middle;
 	line-height: 48px; 
+	
+	margin-left: 12px;
+    margin-top: 12px;
+    
+    display: inline-block;
+}
+
+.menuIcon {
+	border-radius: 7px;
+    background-color:rgba(230, 255, 255, 0.57);
+    background-size: 100%;
+
+	/*padding:20px;*/ 
+	width:40px; 
+	height:40px;
+	margin-left:12px;
+	margin-right:12px;
+	background-repeat: no-repeat;
+    background-position: center; 
+    
+    /*align text to centre*/
+    color:white;
+    text-align: center;
+	vertical-align: middle;
+	line-height: 40px;
 	
 	margin-left: 12px;
     margin-top: 12px;

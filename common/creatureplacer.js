@@ -32,7 +32,7 @@ class CreaturePlacer{
     
         //playerWeight = calcWeightOfArray(playerUnits);
         console.log("player units are: " + playerUnits);
-        console.log("player weight is: " + calcWeightOfArray(playerUnits));
+        console.log("player weight is: " + CreaturePlacer.calcWeightOfArray(playerUnits));
     
         return CreaturePlacer.convertToCreatures(playerUnits, 1);
     }
@@ -45,7 +45,6 @@ class CreaturePlacer{
         //get a sorted list from the units pool
         var AIUnitsSorted = CreaturePlacer.sortUnitsByWeight(AIUnitsPool.slice());
         var idx = AIUnitsSorted.length - 1;
-    
         do {
             //allow maximum of 8 units only
             if (AIUnits.length > 7) break;
@@ -59,6 +58,9 @@ class CreaturePlacer{
                 idx--;
             }
         }while(idx >= 0);
+
+        //minimum one unit should be present
+        if(AIUnits.length == 0)AIUnits.push(AIUnitsSorted[0].name);
     
         //console.log(AIUnitsSorted);
         console.log("AI units are: " + AIUnits);

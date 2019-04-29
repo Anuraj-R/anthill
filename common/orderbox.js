@@ -23,7 +23,7 @@ class OrderBox{
         orderList.id = this.id;
         $("#"+container).append(orderList);
         $('#'+orderList.id).addClass("orderList");
-        $('#'+orderList.id).css('width',this.blockSize*4.6);
+        $('#'+orderList.id).css('width',222);
         $('#'+orderList.id).css('height',this.blockSize*1.4);
         $('#'+orderList.id).css('margin-left',this.blockSize*2.8);
         $("#"+container).append('<br>');

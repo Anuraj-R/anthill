@@ -66,6 +66,24 @@ function setSoundOFF(){
 	localStorage.setItem("ANTHILL_AUDIO", "OFF");
 	ANTHILL_AUDIO = "OFF";
 }
+function setMusic(){
+	ANTHILL_MUSIC = localStorage.getItem("ANTHILL_MUSIC");
+	if ( ANTHILL_MUSIC == "ON" ){
+		$("#musicIcon").css('background-image','url("common/images/sound_icons/musicOn.png")');
+	}
+	else{
+		$("#musicIcon").css('background-image','url("common/images/sound_icons/musicOff.png")');
+	}
+}
+function setSound(){
+	ANTHILL_AUDIO = localStorage.getItem("ANTHILL_AUDIO");
+	if ( ANTHILL_AUDIO == "ON" ){
+		$("#soundIcon").css('background-image','url("common/images/sound_icons/loudspeakerOn.png")');
+	}
+	else{
+		$("#soundIcon").css('background-image','url("common/images/sound_icons/loudspeakerOff.png")');
+	}
+}
 function toggleMusic(){
 	
 	tlog("toggling music");
@@ -73,29 +91,24 @@ function toggleMusic(){
 	
 	if ( ANTHILL_MUSIC == "ON" ){
 		setMusicOFF();
-		//change sound icon
-		$("#MusicButton").css('background-image','url("../common/images/sound_icons/OFF_music-304645_960_720.png")');
+		$("#musicIcon").css('background-image','url("common/images/sound_icons/musicOff.png")');
 	}
 	else{
 		setMusicON();
-		//change sound icon
-		$("#MusicButton").css('background-image','url("../common/images/sound_icons/music-304645_960_720.png")');
+		$("#musicIcon").css('background-image','url("common/images/sound_icons/musicOn.png")');
 	}
 }
 function toggleSound(){
 	
 	tlog("toggling sound");
 	ANTHILL_AUDIO = localStorage.getItem("ANTHILL_AUDIO");
-	
 	if ( ANTHILL_AUDIO == "ON" ){
 		setSoundOFF();
-		//change sound icon
-		$("#SoundButton").css('background-image','url("../common/images/sound_icons/OFF_loudspeaker-48534_960_720.png")');
+		$("#soundIcon").css('background-image','url("common/images/sound_icons/loudspeakerOff.png")');
 	}
 	else{
 		setSoundON();
-		//change sound icon
-		$("#SoundButton").css('background-image','url("../common/images/sound_icons/loudspeaker-48534_960_720.png")');
+		$("#soundIcon").css('background-image','url("common/images/sound_icons/loudspeakerOn.png")');
 	}
 }
 

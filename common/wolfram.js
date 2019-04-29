@@ -117,4 +117,17 @@ function paintWolframGrid(){
 }
 
 
+/*
+//assign terrain class and a random terrain background
+function terrainPaint(tileID, TERRAIN_ARRAY, terrain_class){
+    //set background image from the array
+    var imgIndex = ( Math.floor(100 * Math.random()) ) % TERRAIN_ARRAY.length;
+    var link = TERRAIN_ARRAY[imgIndex];
+    document.getElementById(tileID).style.backgroundImage = "url(\"" + link + "\")";
+
+    //set the terrain class
+    $("#"+tileID).addClass(terrain_class);
+}
+*/
+
 

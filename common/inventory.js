@@ -130,15 +130,18 @@ function loadInventory() {
         INVENTORY = JSON.parse(retrievedData);
     }
 
+    //insert the inventory box
     var str = '<div id="healthPotionIcon" class="potionIcon" onclick="useHealthPotion()">13</div>';
     str += '<div id="strengthPotionIcon" class="potionIcon" onclick="useStrengthPotion()">0</div>';
     str += '<div id="barkskinPotionIcon" class="potionIcon" onclick="useBarkskinPotion()">0</div>';
-    //add more potions here
-
     str = '<div id="inventoryBox" class="ui-widget-content ui-corner-all" onclick="" style="display:none;">' + str + '</div>';
+    $(str).insertAfter("#failBox");
 
-    //insert the inventory box to display
-    //$('<div id="inventoryBox" class="ui-widget-content ui-corner-all" onclick="" style="display:none;">Inventory</div>').insertAfter("#failBox");
+    //insert the menu box
+    str = '<div id="soundIcon" class="menuIcon" onclick="toggleSound()"></div>';
+    str += '<div id="musicIcon" class="menuIcon" onclick="toggleMusic()"></div>';
+    str += '<div id="helpIcon" class="menuIcon" onclick="showHelp()"></div>';
+    str = '<div id="menuBox" class="ui-widget-content ui-corner-all" onclick="" style="display:none;">' + str + '</div>';
     $(str).insertAfter("#failBox");
 
 }
@@ -149,13 +152,13 @@ function saveInventory() {
     }
 }
 function showInventory() {
-    //fill the inventory values correctly
     updateInventoryNumbers();
     $("#inventoryBox").toggle();
+    $("#menuBox").hide();
+    hideStats();
     var pos = $("#"+GRIDNAME+"inventorybutton").position();
     $("#inventoryBox").offset({
         top : pos.top + 46,
-        //left: $(document).width()/2 -  157
         left : pos.left
     });
 }
@@ -163,6 +166,19 @@ function updateInventoryNumbers() {
     $("#healthPotionIcon").html(INVENTORY[0]);
     $("#strengthPotionIcon").html(INVENTORY[1]);
     $("#barkskinPotionIcon").html(INVENTORY[2]);
+}
+
+function showMenu() {
+    setMusic();
+    setSound();
+    $("#inventoryBox").hide();
+    $("#menuBox").toggle();
+    hideStats();
+    var pos = $("#"+GRIDNAME+"mapbutton").position();
+    $("#menuBox").offset({
+        top : pos.top + 46,
+        left : pos.left
+    });
 }
 
 /* Inventory items application effects */
@@ -247,32 +263,6 @@ function addEffects(unit, effect, turns){
     }
 
     return true;
-
-
-	var eff = $('#'+unit+'_effects').val();
-	
-	if(eff.indexOf(effect) != -1){
-    	console.log("Effect "+effect+" already exists for "+unit+".");
-    	//Exit for now. Later, if decided to do it that way, the turns could be reset.
-    	
-    	return 1;
-    	
-    	//var idx1 = eff.indexOf(effect);
-    	//var str = eff.substr(idx1);
-   
-   		//get the remaining turns
-    	//var turns = str.match(/[0-9]*/);
-    	//turn = turns[0];
-    	
-	}
-	else{
-		//add if doesnt exist
-		eff = eff+" "+effect+"_"+turns;
-		$('#'+unit+'_effects').val(eff);
-		console.log("Effect "+effect+" set for "+unit);
-		
-		return 0;
-	}
 }
 
 

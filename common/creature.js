@@ -54,7 +54,7 @@ class Creature {
         this.team = 1;
         this.image = this.getCreatureImage();
         this.healthBar = this.createHealthBar();
-        this.effects = "";
+        this.effects = new Map();
         
         this.log(9, "unit " + this.name + " created with ID " + this.id);
         return this;
@@ -94,25 +94,27 @@ class Creature {
         combatGeneric(this, enemy);
     }
 
-    updateEffects() {
-        //Add the effects
-        var eff = this.effects;
-        var arr = eff.split(' ');
-        //update only valid effects in this variable and then replace.
-        var effectsUpdated = "";
-        for (var i = 0; i < arr.length; i++) {
-            var effect = arr[i];
-            var turns = parseInt(effect.split('_')[1]);
-            if (turns > 1) {
-                turns--;
-                var newEff = effect.split('_')[0] + "_" + turns;
-                //causes a leading whitespace. will this be a problem?
-                effectsUpdated = effectsUpdated + " " + newEff;
-            }
-            //if turns are at 1 then it is the last turn, dont add this effect anymore
+    applyEffect(effect, turns){
+        if (effect in this.effects){
+            alert("This effect is already applied")
+            return false;
         }
-        //update the new effects string
-        this.effects = effectsUpdated;
+        else{
+            this.effects[effect] = turns;
+            return true;
+        }
+    }
+
+    updateEffectsCount() {
+        for (var effect in this.effects){
+            var turns = this.effects[effect] - 1;
+            if(turns == 0){
+                delete this.effects[effect];
+            }
+            else{
+                this.effects[effect] = turns;
+            }
+        }
     }
 
     moveTo(loc) {

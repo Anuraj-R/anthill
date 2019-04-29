@@ -188,11 +188,11 @@ function useHealthPotion() {
     numPotions = parseInt(INVENTORY[0]);
     if (numPotions > 0) {
         //get current unit
-        uname = SEQUENCE[NEXTINDEX];
-        var mxHealth = uname.maxHealth;
-        var health = uname.health;
+        crit = SEQUENCE[NEXTINDEX];
+        var mxHealth = crit.maxHealth;
+        var health = crit.health;
         if (health < mxHealth) {
-            uname.setHealth(parseInt(health)+parseInt(healAmount));
+            crit.setHealth(parseInt(health)+parseInt(healAmount));
             INVENTORY[0]--;
             saveInventory();
             updateInventoryNumbers();
@@ -203,117 +203,34 @@ function useHealthPotion() {
 }
 function useStrengthPotion() {
     var turns = 3;
-
-    //strength potion available
-    numPotions = parseInt(INVENTORY[1]);
-    if (numPotions > 0) {
-        //get current unit
-        uname = SEQUENCE[NEXTINDEX];
-
-        var ret = addEffects(uname, "strengthPotion", turns);
-
-        if (ret == true) {
-            INVENTORY[1] = --numPotions;
-            saveInventory();
-            updateInventoryNumbers();
-        }
-    }
+    usePotion("strengthPotion", turns);
 }
 function useBarkskinPotion() {
     var turns = 3;
+    usePotion("barkSkinPotion", turns);
+}
+
+function usePotion(potion, turns){
+
+    /* TODO
+    //remove this mental map of positioning potions and improve the inventory structure    */
+   var idx = 0;
+   if(potion == "strengthPotion")idx = 1;
+   if(potion == "barkSkinPotion")idx = 2;
 
     //barkskin potion available
-    numPotions = parseInt(INVENTORY[2]);
+    numPotions = parseInt(INVENTORY[idx]);
     if (numPotions > 0) {
         //get current unit
         uname = SEQUENCE[NEXTINDEX];
-
-        var ret = addEffects(uname, "barkSkinPotion", turns);
+        var ret = uname.applyEffect(potion, turns);
 
         if (ret == true) {
-            INVENTORY[2] = --numPotions;
+            INVENTORY[idx] = --numPotions;
             saveInventory();
             updateInventoryNumbers();
         }
     }
 }
-
-
-EFFECTS = {};
-function addEffects(unit, effect, turns){
-    //check if the effect exists on the unit
-    //no effects already
-    if (!EFFECTS[unit.id]){
-        var unit_effect = [];
-        unit_effect[effect] = turns;
-        EFFECTS[unit.id] = unit_effect;
-    }
-    else{
-        var unit_effect = EFFECTS[unit.id];
-        //if this specific effect exists
-        if (unit_effect[effect] && unit_effect[effect] != 0){
-            alert("this effect already exists.");
-            return false;
-        }
-        else{
-            unit_effect[effect] = turns;
-            EFFECTS[unit.id] = unit_effect;
-        }
-
-    }
-
-    return true;
-}
-
-
-
-/*
-javascrit Map
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
-
-
-var myMap = new Map();
-
-var keyString = 'a string',
-    keyObj = {},
-    keyFunc = function() {};
-
-// setting the values
-myMap.set(keyString, "value associated with 'a string'");
-myMap.set(keyObj, 'value associated with keyObj');
-myMap.set(keyFunc, 'value associated with keyFunc');
-
-myMap.size; // 3
-
-// getting the values
-myMap.get(keyString);    // "value associated with 'a string'"
-myMap.get(keyObj);       // "value associated with keyObj"
-myMap.get(keyFunc);      // "value associated with keyFunc"
-
-myMap.get('a string');   // "value associated with 'a string'"
-                         // because keyString === 'a string'
-myMap.get({});           // undefined, because keyObj !== {}
-myMap.get(function() {}) // undefined, because keyFunc !== function () {}
-
-
-myMap.forEach(function(value, key) {
-  console.log(key + ' = ' + value);
-});
-// Will show 2 logs; first with "0 = zero" and second with "1 = one"
-Object.keys(obj).forEach(function(key,index) {
-    // key: the name of the object key
-    // index: the ordinal position of the key within the object 
-});
-
-* 
-* 
-* 
-* */
-
-
-
-
-
-
 
 

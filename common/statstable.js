@@ -103,21 +103,13 @@ function fillStatsTable(uname){
     str+='<tr><td>Position</td><td>'+thisUnit.position+'</td></tr>'          ;
 
     //update effects
-    /*
-    for (var key in array) {
-        var value = array[key];
-        console.log(key, value);
+    str+='<tr><td>Effects	</td><td>';
+    var effects = "";
+    for (var effect in thisUnit.effects){
+        var turns = thisUnit.effects[effect];
+        effects+= effect + "(" + turns + ")<br>";
     }
-    */
-   str+='<tr><td>Effects	</td><td>';
-                   
-    var effs = "";
-    var arr = EFFECTS[thisUnit.id];
-    for (var key in arr){
-        var value = arr[key];
-        if(value!=0) effs+= key + "(" + value + ")<br>";
-    }
-    str+=effs + '</td></tr>';
+    str+=effects + '</td></tr>';
 
     //close the table
     str+='</table>';

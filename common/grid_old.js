@@ -84,7 +84,7 @@ function selectNextUnit(){
     }
     else {
         //update effects on the current selected unit and invoke the next
-        SEQUENCE[NEXTINDEX].updateEffects();
+        SEQUENCE[NEXTINDEX].updateEffectsCount();
         NEXTINDEX = (NEXTINDEX + 1) % SEQUENCE.length;
         ORDERBOX.progress();
         setTimeout(function(){

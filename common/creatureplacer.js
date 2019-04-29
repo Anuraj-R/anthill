@@ -1,12 +1,11 @@
 /* eslint-disable no-console */
 
-
-
 /* This is the pool of units from which armies are formed automatically
    based on the map-level.
    There is also an additional unit called DebutAnt, which is unique and
    part of every player-army on all levels. */
-   var playerUnitsPool = [ "KidSlinger", "WarrAnt", "FormicArcher" ];
+
+   //var playerUnitsPool = [ "KidSlinger", "WarrAnt", "FormicArcher" ];
    var AIUnitsPool = [ "Spider","Spidlings","GreySpider","MutAnt","BlackWidow",
                    "RedTailSpider","BogTroll", "SpiderQueen"];
    

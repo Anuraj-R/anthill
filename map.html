@@ -114,16 +114,20 @@ function createGridAndAddToContainer(){
 }
 
 function addMapAndInventoryButtons(){
-    var btn = document.createElement('button');
-    btn.id = GRIDNAME+"mapbutton";
-    $("#container").append(btn);
-    $('#'+btn.id).addClass("menuButton");
-    $('#'+btn.id).css('width',BLOCKSIZE*1.4);
-    $('#'+btn.id).css('height',BLOCKSIZE*1.4);
+
+    $("#container").append('<button id="'+GRIDNAME+'mapbutton" class="menuButton" onclick="showHelp()" ></button>');
+    $('#'+GRIDNAME+'mapbutton').css('width',BLOCKSIZE*1.4);
+    $('#'+GRIDNAME+'mapbutton').css('height',BLOCKSIZE*1.4);
+
+
     $("#container").append('<button id="'+GRIDNAME+'inventorybutton" class="inventorybutton" onclick="showInventory()" ></button>');
     $('#'+GRIDNAME+'inventorybutton').css('width',BLOCKSIZE*1.4);
     $('#'+GRIDNAME+'inventorybutton').css('height',BLOCKSIZE*1.4);
     $('#'+GRIDNAME+'inventorybutton').css('margin-left',BLOCKSIZE*1.4);
+}
+
+function showHelp(){
+    window.location="common/help.html";
 }
 
 </script>

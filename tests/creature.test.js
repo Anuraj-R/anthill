@@ -5,6 +5,7 @@
 import Creature from '../common/creature';
 //import Effect from '../common/effect';/////////////////////////////////// NOT WORKING
 //import StrengthPotion from '../common/strengthpotion';/////////////////////////////////// NOT WORKING
+//import Combat from '../common/combat';/////////////////////////////////// NOT WORKING
 
 test('Creating various Creature objects succeed', () => {
   var unit = Creature.create("DebutAnt")
@@ -46,6 +47,26 @@ test('Setting health works as expected', () => {
   unit.team = 2;
   expect(unit.teamColor()).toMatch(/#ff0000/);
 });
+
+/*
+test('Combat works as expected', () => {
+  var attacker = Creature.create("DebutAnt");
+  attacker.team = 1;
+
+  var defender = Creature.create("GreySpider");
+  defender.team = 2;
+
+  expect(defender.health).toBe(defender.maxHealth);
+  attacker.combat(defender);
+  expect(defender.health).toBeNot(defender.maxHealth);
+
+  //unit.setHealth(0);
+  //expect(unit.health).toBe(0);
+
+  unit.team = 2;
+  expect(unit.teamColor()).toMatch(/#ff0000/);
+});
+*/
 
 /*
 //some issues with importing effect

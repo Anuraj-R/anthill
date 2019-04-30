@@ -150,6 +150,11 @@ class Creature {
     }
 
     setHealth(num) {
+        this.setHealthToNumber(num);
+        this.refreshGraphics();
+    }
+
+    setHealthToNumber(num) {
         if (num > this.maxHealth) {
             this.health = this.maxHealth;
         }
@@ -161,7 +166,6 @@ class Creature {
         else {
             this.health = num;
         }
-        this.refreshGraphics();
     }
 
     getCreatureImage(){

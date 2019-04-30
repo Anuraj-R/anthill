@@ -30,6 +30,23 @@ test('teamColor() returns approproiate color', () => {
   expect(unit.teamColor()).toMatch(/#ff0000/);
 });
 
+test('Setting health works as expected', () => {
+  var unit = Creature.create("DebutAnt");
+  unit.team = 1;
+
+  unit.setHealthToNumber(unit.maxHealth - 5);
+  expect(unit.health).toBe(unit.maxHealth - 5);
+
+  unit.setHealthToNumber(unit.maxHealth + 5);
+  expect(unit.health).toBe(unit.maxHealth);
+
+  //unit.setHealth(0);
+  //expect(unit.health).toBe(0);
+
+  unit.team = 2;
+  expect(unit.teamColor()).toMatch(/#ff0000/);
+});
+
 /*
 //some issues with importing effect
 //If I add import statements in other javascript files, they would start throwing

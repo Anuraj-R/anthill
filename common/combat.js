@@ -1,36 +1,64 @@
 
+class Combat {
+    constructor(attacker, defender) {
+        this.attacker = attacker;
+        this.defender = defender;
+    }
 
-function combatGeneric(attacker, defender){
-    
-    tlog( attacker.name + " Vs "+defender.name);
-    if (attacker.type == "infantry") combatMelee(attacker, defender);
-    if (attacker.type == "ranged") combatMelee(attacker, defender);
-}
+    start(){
+        console.log( this.attacker.name + " Vs "+this.defender.name);
+        if (this.attacker.type == "infantry") this.combatMelee();
+        if (this.attacker.type == "ranged") this.combatRanged();
+        this.defender.refreshGraphics();
+    }
 
-function combatMelee(attacker, defender){
-    
-    tlog( attacker.name + " Vs "+defender.name);
-    animateNewObject( attacker.position, defender.position, 400, 'common/images/melee.png');
-    playAudio('common/audio/anthill_melee.wav');
-    
-    var impact = attacker.attack * (0.5 + 0.5 * (attacker.health/attacker.maxHealth)) * (1 - (defender.defence/1000));
+    combatMelee(){
+        var animationObject = 'common/images/melee.png';
+        var audioObject = 'common/audio/anthill_melee.wav';
+        var defenceCoefficient = 1 - (this.defender.defence/100);
 
-        if (impact < defender.health){
-            defender.health -= impact;
-            defender.refreshGraphics();
+        this.doCombat(animationObject, audioObject, defenceCoefficient);
+    }
+
+    combatRanged(){
+        var animationObject = 'common/images/ranged.png';
+        var audioObject = 'common/audio/anthill_ranged.wav';
+        var defenceCoefficient = 1 - (this.defender.rangedDefence/100);
+
+        this.doCombat(animationObject, audioObject, defenceCoefficient);
+    }
+
+    doCombat(animationObject, audioObject, defenceCoefficient){
+        animateNewObject( this.attacker.position, this.defender.position, 400, animationObject);
+        playAudio(audioObject);
+
+        var impact = this.attacker.attack * (0.5 + 0.5 * (this.attacker.health/this.attacker.maxHealth)) * defenceCoefficient;
+
+        if (impact < this.defender.health){
+            this.defender.health -= impact;
+            //defender.refreshGraphics();
         }
         else
         {
-            defender.health = 0;
-            defender.refreshGraphics();
-            defender.die();
+            this.defender.health = 0;
+            //this.defender.refreshGraphics();
+            this.defender.die();
             var winner=checkIfWon();
             if ( winner != 0){
                 GAMEOVER=1;
-                tlog("Team "+winner+" has won");
+                console.log("Team "+winner+" has won");
             }
         }
+    }
+
+
+
 }
+
+window.module = window.module || {};
+module.exports = Combat;
+
+
 
 function checkIfWon(){
     
@@ -69,101 +97,3 @@ function doWinStuff(){
     //save the player inventory
     saveInventory();
 }
-
-
-
-
-/*
- * 
- * 
- * 
- * function combatAttack(boxName){
-    
-    //Get the unit name from the selection
-    prevSq = document.getElementById("selectedBox").innerHTML;
-    uname = getUnitName(prevSq);
-    
-    dist = parseFloat(distance (prevSq , boxName));
-    range = parseFloat(getUnitRange(uname));
-    
-    if (range < 2){ //melee unit, melee attack
-        //alert ("melee attack");
-        meleeAttackAnimation(prevSq , boxName);
-        
-        attack = parseFloat(getUnitAttack(uname));
-        health = parseFloat(getUnitHealth(uname));
-        maxHealth = parseFloat(getUnitMaxHealth(uname));
-        
-        defense = parseFloat(getUnitDefense(boxName));
-        impact = parseFloat(attack* ((health+maxHealth)/(maxHealth+maxHealth)) * ((100-defense)/100));
-        defHealth = parseFloat(getUnitHealth(boxName));
-        
-        if (impact < defHealth){
-            defHealth -= impact;
-            setUnitHealth(boxName, defHealth);
-            healthBar(getUnitName(boxName));
-        }
-        else
-        {
-            defHealth = 0;
-            //code for destroying the unit
-            setUnitHealth(boxName, defHealth);
-            healthBar(getUnitName(boxName));
-            
-            combatKill(boxName);
-            
-            //check if won
-            winner=checkIfWon();
-            if ( winner != 0){
-                GAMEOVER=1;
-                if (LOGGING > 0){
-                    var log = document.getElementById("logsheet").innerHTML;
-                    log = log+"</br>"+"Team "+winner+" has won";
-                    document.getElementById("logsheet").innerHTML=log;
-                }
-            }
-        }
-    }
-    else{//ranged attack
-    
-        rangedAttackAnimation(prevSq , boxName);
-        
-        attack = parseFloat(getUnitAttack(uname));
-        health = parseFloat(getUnitHealth(uname));
-        maxHealth = parseFloat(getUnitMaxHealth(uname));
-        
-        defense = parseFloat(getUnitRangedDefense(boxName));
-        impact = parseFloat(attack* ((health+maxHealth)/(maxHealth+maxHealth)) * ((100-defense)/100));
-        defHealth = parseFloat(getUnitHealth(boxName));
-        
-        if (impact < defHealth){
-            defHealth -= impact;
-            setUnitHealth(boxName, defHealth);
-            healthBar(getUnitName(boxName));
-        }
-        else
-        {
-            defHealth = 0;
-            //code for destroying the unit
-            setUnitHealth(boxName, defHealth);
-            healthBar(getUnitName(boxName));
-            
-            combatKill(boxName);
-            
-            //check if won
-            winner=checkIfWon();
-            if ( winner != 0){
-                GAMEOVER=1;
-                if (LOGGING > 0){
-                    var log = document.getElementById("logsheet").innerHTML;
-                    log = log+"</br>"+"Team "+winner+" has won";
-                    document.getElementById("logsheet").innerHTML=log;
-                }
-            }
-        }
-    }
-}
- * */
-
-
-

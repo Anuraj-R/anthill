@@ -196,10 +196,8 @@ class Creature {
         return outerDiv;
     }
 
-    //The target should be of a different team, this should be validated before calling this method.
     combat(enemy) {
-        this.log("Combat --------> " + this.name + " attacks " + enemy.name + " at " + enemy.position);
-        combatGeneric(this, enemy);
+        (new Combat(this, enemy)).start();
     }
 
     static weight(creatureName){

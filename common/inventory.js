@@ -2,12 +2,15 @@
 
 function localStorageGetOrSetVar(varname, defaultValue){
     if (localStorage.getItem(varname) === null) {
-        //map level not set. Initialize it to 3.
         localStorage.setItem(varname, defaultValue);
     }
     return localStorage.getItem(varname);
 }
 
+
+var healthPotion = "HealthPotion";
+var strengthPotion = "StrengthPotion";
+var barkSkinPotion = "BarkSkinPotion";
 
 function animateDrop(i, loc){
     
@@ -15,13 +18,13 @@ function animateDrop(i, loc){
         
     var image_url = "";
     switch ( i ){
-        case 0:
+        case healthPotion:
             image_url = 'common/images/healthPotion.png';
             break;
-        case 1:
+        case strengthPotion:
             image_url = 'common/images/strengthPotion.png';
             break;
-        case 2:
+        case barkSkinPotion:
             image_url = 'common/images/barkSkinPotion.png';
             break;
         default:
@@ -96,16 +99,11 @@ function dropItems(loc){
     }
 }
 function dropItem(itemNum, loc){
-    /*
-     * 0 = Health Potion
-     * 1 = Strength Potion
-     * 2 = Barkskin Potion
-     */
-    var item = 0;
+    var item = healthPotion;
     if (itemNum > 66){
-        item = 2;
+        item = barkSkinPotion;
     }else if( itemNum > 33){
-        item = 1;
+        item = strengthPotion;
     }
     console.log("dropping item "+item);
     
@@ -113,21 +111,23 @@ function dropItem(itemNum, loc){
     saveInventory();
     animateDrop(item, loc);
 }
+
 function loadInventory() {
     console.log("loading the player inventory..");
-    INVENTORY = new Array();
-    if (localStorage.getItem("ANTHILL_PLAYER_INVENTORY") === null) {
+    INVENTORY = new Map();
+    if (localStorage.getItem("ANTHILL_INVENTORY_ITEMS") === null) {
         //inventory is not set. Initialize it.
-        INVENTORY[0] = 0; //Health Potion
-        INVENTORY[1] = 0; //strength potion
-        INVENTORY[2] = 0; //stoneskin potion
-
-        //store the inventory in the local storage
-        localStorage.setItem("ANTHILL_PLAYER_INVENTORY", JSON.stringify(INVENTORY));
-    } else {
-        //load the inventory
-        var retrievedData = localStorage.getItem("ANTHILL_PLAYER_INVENTORY");
-        INVENTORY = JSON.parse(retrievedData);
+        INVENTORY[healthPotion] = 0; //Health Potion
+        INVENTORY[strengthPotion] = 0; //strength potion
+        INVENTORY[barkSkinPotion] = 0; //stoneskin potion
+        saveInventory();
+    }
+    else{
+        var ANTHILL_INVENTORY_ITEMS = JSON.parse(localStorage.getItem("ANTHILL_INVENTORY_ITEMS"));
+        var ANTHILL_INVENTORY_NUMBERS = JSON.parse(localStorage.getItem("ANTHILL_INVENTORY_NUMBERS"));
+        for(var i=0; i<ANTHILL_INVENTORY_ITEMS.length; i++){
+            INVENTORY[ANTHILL_INVENTORY_ITEMS[i]] = ANTHILL_INVENTORY_NUMBERS[i];
+        }
     }
 
     //insert the inventory box
@@ -145,12 +145,19 @@ function loadInventory() {
     $(str).insertAfter("#failBox");
 
 }
+
 function saveInventory() {
     console.log("Saving the player inventory..");
-    if ( INVENTORY instanceof Array) {
-        localStorage.setItem("ANTHILL_PLAYER_INVENTORY", JSON.stringify(INVENTORY));
+    var ANTHILL_INVENTORY_ITEMS = [];
+    var ANTHILL_INVENTORY_NUMBERS = [];
+    for (var item in INVENTORY){
+        ANTHILL_INVENTORY_ITEMS.push(item);
+        ANTHILL_INVENTORY_NUMBERS.push(INVENTORY[item]);
     }
+    localStorage.setItem("ANTHILL_INVENTORY_ITEMS", JSON.stringify(ANTHILL_INVENTORY_ITEMS));
+    localStorage.setItem("ANTHILL_INVENTORY_NUMBERS", JSON.stringify(ANTHILL_INVENTORY_NUMBERS));
 }
+
 function showInventory() {
     updateInventoryNumbers();
     $("#inventoryBox").toggle();
@@ -162,10 +169,12 @@ function showInventory() {
         left : pos.left
     });
 }
+
+
 function updateInventoryNumbers() {
-    $("#healthPotionIcon").html(INVENTORY[0]);
-    $("#strengthPotionIcon").html(INVENTORY[1]);
-    $("#barkskinPotionIcon").html(INVENTORY[2]);
+    $("#healthPotionIcon").html(INVENTORY[healthPotion]);
+    $("#strengthPotionIcon").html(INVENTORY[strengthPotion]);
+    $("#barkskinPotionIcon").html(INVENTORY[barkSkinPotion]);
 }
 
 function showMenu() {
@@ -181,11 +190,12 @@ function showMenu() {
     });
 }
 
+
 /* Inventory items application effects */
 function useHealthPotion() {
     var healAmount = 50;
     //health potion available
-    numPotions = parseInt(INVENTORY[0]);
+    numPotions = parseInt(INVENTORY[healthPotion]);
     if (numPotions > 0) {
         //get current unit
         crit = SEQUENCE[NEXTINDEX];
@@ -193,7 +203,7 @@ function useHealthPotion() {
         var health = crit.health;
         if (health < mxHealth) {
             crit.setHealth(parseInt(health)+parseInt(healAmount));
-            INVENTORY[0]--;
+            INVENTORY[healthPotion]--;
             saveInventory();
             updateInventoryNumbers();
         }
@@ -201,36 +211,27 @@ function useHealthPotion() {
     }
     else alert("No more health potions available!");
 }
+
+
 function useStrengthPotion() {
     var turns = 3;
-    usePotion("strengthPotion", turns);
+    usePotion(strengthPotion, turns);
 }
 function useBarkskinPotion() {
     var turns = 3;
-    usePotion("barkSkinPotion", turns);
+    usePotion(barkSkinPotion, turns);
 }
 
 function usePotion(potion, turns){
-
-    /* TODO
-    //remove this mental map of positioning potions and improve the inventory structure    */
-   var idx = 0;
-   if(potion == "strengthPotion")idx = 1;
-   if(potion == "barkSkinPotion")idx = 2;
-
-    //barkskin potion available
-    numPotions = parseInt(INVENTORY[idx]);
+    numPotions = parseInt(INVENTORY[potion]);
     if (numPotions > 0) {
-        //get current unit
         uname = SEQUENCE[NEXTINDEX];
         var ret = uname.applyEffect(potion, turns);
-
         if (ret == true) {
-            INVENTORY[idx] = --numPotions;
+            INVENTORY[potion] = --numPotions;
             saveInventory();
             updateInventoryNumbers();
         }
     }
 }
-
 

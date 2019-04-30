@@ -48,6 +48,11 @@ class Creature {
         this.rangedDefence = rangedDefence;
         this.maxHealth = maxHealth;
 
+        //effective values
+        this.baseAttack = this.attack;
+        this.baseDefence = this.defence;
+        this.baseRangedDefence = this.rangedDefence;
+
         // defaults
         this.health = maxHealth;
         this.position = "-1x-1";
@@ -60,59 +65,30 @@ class Creature {
         return this;
     }
 
-    getCreatureImage(){
-        for ( var i = 0; i < CreatureImages.length; ++i) {
-            if (CreatureImages[i][0] == this.name) {
-                return CreatureImages[i][1];
-            }
-        }
-        throw "An image for creature " + this.name + " not found in the database.";
+    effectExists(effect){
+        if (effect.name in this.effects) return true;
+        return false;
     }
 
-    teamColor() {
-        return this.team == 1 ? "#0000ff" : "#ff0000";
-    }
-
-    createHealthBar() {
-        this.log("Creating healthbar for " + this.name);
-        var barLength = 40;
-        var col = this.teamColor();
-        var greyLength = ((this.maxHealth - this.health) / this.maxHealth) * barLength;
-        var greenLength = barLength - greyLength;
-        var outerDiv = document.createElement('div');
-        outerDiv.style.position = "absolute";
-        //width, height, color
-        var div = Creature.createDiv(greenLength + "px", "2px", col);
-        outerDiv.appendChild(div);
-        document.body.appendChild(outerDiv);
-        return outerDiv;
-    }
-    
-    //The target should be of a different team, this should be validated before calling this method.
-    combat(enemy) {
-        this.log("Combat --------> " + this.name + " attacks " + enemy.name + " at " + enemy.position);
-        combatGeneric(this, enemy);
-    }
-
-    applyEffect(effect, turns){
-        if (effect in this.effects){
-            alert("This effect is already applied")
+    applyEffect(effect){
+        if (this.effectExists(effect.name)){
+            alert("This effect is already applied");
             return false;
         }
         else{
-            this.effects[effect] = turns;
+            this.effects[effect.name] = effect;
             return true;
         }
     }
 
     updateEffectsCount() {
-        for (var effect in this.effects){
-            var turns = this.effects[effect] - 1;
-            if(turns == 0){
-                delete this.effects[effect];
+        for (var effectName in this.effects){
+            if (this.effects[effectName].turns == 1) {
+                this.effects[effectName].removeEffect(this);
+                delete this.effects[effectName];
             }
             else{
-                this.effects[effect] = turns;
+                this.effects[effectName].updateTurns(this, -1);
             }
         }
     }
@@ -121,9 +97,7 @@ class Creature {
         //update the TILES status array of the map
         TILES[this.position].station = NONE;
         TILES[loc].station = this;
-        //update location
         this.position = loc;
-        //reposition the image
         this.refreshGraphics();
         //legacy
         //support SELECTEDBOX which is a global variable used to identify the currently selected box
@@ -188,6 +162,40 @@ class Creature {
             this.health = num;
         }
         this.refreshGraphics();
+    }
+
+    getCreatureImage(){
+        for ( var i = 0; i < CreatureImages.length; ++i) {
+            if (CreatureImages[i][0] == this.name) {
+                return CreatureImages[i][1];
+            }
+        }
+        throw "An image for creature " + this.name + " not found in the database.";
+    }
+
+    teamColor() {
+        return this.team == 1 ? "#0000ff" : "#ff0000";
+    }
+
+    createHealthBar() {
+        this.log("Creating healthbar for " + this.name);
+        var barLength = 40;
+        var col = this.teamColor();
+        var greyLength = ((this.maxHealth - this.health) / this.maxHealth) * barLength;
+        var greenLength = barLength - greyLength;
+        var outerDiv = document.createElement('div');
+        outerDiv.style.position = "absolute";
+        //width, height, color
+        var div = Creature.createDiv(greenLength + "px", "2px", col);
+        outerDiv.appendChild(div);
+        document.body.appendChild(outerDiv);
+        return outerDiv;
+    }
+
+    //The target should be of a different team, this should be validated before calling this method.
+    combat(enemy) {
+        this.log("Combat --------> " + this.name + " attacks " + enemy.name + " at " + enemy.position);
+        combatGeneric(this, enemy);
     }
 
     static weight(creatureName){

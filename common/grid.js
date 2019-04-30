@@ -128,6 +128,10 @@ class Grid{
             else Grid.terrainPaint(tileID, PLAINS, "PLAINStile");
         }
     }
+
+    static currentCreature(){
+        return SEQUENCE[NEXTINDEX];
+    }
 }
 
 window.module = window.module || {};

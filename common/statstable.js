@@ -90,7 +90,7 @@ function fillStatsTable(uname){
     '		<div class="statsTableButtons" id="statsTableCloseBtn" onclick="hideStats()"></div>     '+
     '	</td></tr>                                                                                  ';
     //TODO: update terrain bonus
-    str+='<tr><td>Name</td><td>'+thisUnit.name+'</td></tr>'					;
+    str+='<tr><td>Name</td><td>'+thisUnit.name+'</td></tr>'                  ;
     str+='<tr><td>Attack</td><td>'+thisUnit.attack+'</td></tr>'              ;
     str+='<tr><td>Defence</td><td>'+thisUnit.defence+'</td></tr>'            ;
     str+='<tr><td>Health</td><td>'+thisUnit.health+'</td></tr>'              ;
@@ -106,8 +106,9 @@ function fillStatsTable(uname){
     str+='<tr><td>Effects	</td><td>';
     var effects = "";
     for (var effect in thisUnit.effects){
-        var turns = thisUnit.effects[effect];
-        effects+= effect + "(" + turns + ")<br>";
+        var name = thisUnit.effects[effect].name;
+        var turns = thisUnit.effects[effect].turns;
+        effects+= name + "(" + turns + ")<br>";
     }
     str+=effects + '</td></tr>';
 

@@ -194,41 +194,25 @@ function showMenu() {
 /* Inventory items application effects */
 function useHealthPotion() {
     var healAmount = 50;
-    //health potion available
-    numPotions = parseInt(INVENTORY[healthPotion]);
-    if (numPotions > 0) {
-        //get current unit
-        crit = SEQUENCE[NEXTINDEX];
-        var mxHealth = crit.maxHealth;
-        var health = crit.health;
-        if (health < mxHealth) {
-            crit.setHealth(parseInt(health)+parseInt(healAmount));
-            INVENTORY[healthPotion]--;
-            saveInventory();
-            updateInventoryNumbers();
-        }
-        else alert("Health is full already.");
-    }
-    else alert("No more health potions available!");
+    usePotion(new HealthPotion(healAmount));
 }
-
 
 function useStrengthPotion() {
     var turns = 3;
-    usePotion(strengthPotion, turns);
-}
-function useBarkskinPotion() {
-    var turns = 3;
-    usePotion(barkSkinPotion, turns);
+    usePotion(new StrengthPotion(turns));
 }
 
-function usePotion(potion, turns){
-    numPotions = parseInt(INVENTORY[potion]);
+function useBarkskinPotion() {
+    var turns = 3;
+    usePotion(new BarkSkinPotion(turns));
+}
+
+function usePotion(potion){
+    numPotions = parseInt(INVENTORY[potion.name]);
     if (numPotions > 0) {
-        uname = SEQUENCE[NEXTINDEX];
-        var ret = uname.applyEffect(potion, turns);
+        var ret = potion.applyEffect(Grid.currentCreature());
         if (ret == true) {
-            INVENTORY[potion] = --numPotions;
+            INVENTORY[potion.name] = --numPotions;
             saveInventory();
             updateInventoryNumbers();
         }

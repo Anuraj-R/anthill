@@ -95,7 +95,6 @@ class Grid{
 
     createHtml(){
         var grid = "";
-        console.log ("Creating grid named "+this.gridName );
         for (var j = 0; j < this.height; j++) {
             for (var i = 0; i < this.width; i++){
                 var cellName = this.gridName + "_"+ i + "x" + j ;
@@ -113,9 +112,7 @@ class Grid{
         //( this.mapLevel % 5 == 0 ) ? paintWolframGrid(GRIDNAME) : perlinAntMap();
     }
 
-    getHtml(){
-        return this.html;
-    }
+    getHtml(){ return this.html; }
 
     static terrainPaint(tileID, terrainArray, terrainClass){
 

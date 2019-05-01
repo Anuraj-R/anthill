@@ -347,7 +347,7 @@ function findClosestEnemy(boxName){
 
 //find neighbortile of the selected unit, closest to a target location, subject to number of moves available
 function findNeighborTileCloserTo(startLoc, targetLoc, moves){
-    //pathFind (startLoc);
+
     tlog("From "+startLoc+", findNeighborTileCloserTo "+targetLoc+ " within moves "+moves+".");
     var minDist = 1000;
     var returnNode = "-1x-1";
@@ -425,7 +425,7 @@ function highLightMoves (boxName , movepoints){
 
     var moves = movepoints;
     //tlog("inside HightlightMoves");
-    pathFind (boxName, "");
+    pathFind (boxName);
 
     for (j=0;j<WIDTH;j++) {
         for (i=0;i<HEIGHT;i++) {
@@ -529,17 +529,12 @@ function darkenBy(color, percent){
     return darken(color, -1 * percent / 100.0);
 }
 
-//TODO
-//remove third argument if 'end' is not used anywhere
-//why did i make this function always return -1? recall and fix it
 var VISITED = new Array();
 var DIST = new Array();
 var PREVIOUS = new Array();
 //Fills up PREVIOUS[vertex] and DIST[vertex] for each tile in the map, from using 'start' as starting point.
 //'end' is not used, always return -1 in dist which is also not used!
-function pathFind (start , end){
-    var stopper = 0;
-    var dist=-1;
+function pathFind (start){
     var xNum = WIDTH;
     var yNum = HEIGHT;
 

@@ -99,10 +99,7 @@ class Creature {
         TILES[loc].station = this;
         this.position = loc;
         this.refreshGraphics();
-        //legacy
-        //support SELECTEDBOX which is a global variable used to identify the currently selected box
-        //this is used for highlighting movables tiles and such
-        SELECTEDBOX = "NONE";
+
     }
 
     refreshGraphics() {

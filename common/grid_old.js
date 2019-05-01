@@ -174,35 +174,15 @@ function selectForMove (targetBox){ //The function does selectForAction() again 
         MOVES -= dist;
 
         SELECTEDUNIT.moveTo( targetBoxName );
-
-        //apply the bonuses
-        //this should be implemented in the unit class
-        //document.getElementById("3x5"+"bonus").value
-        /*
-        if (getUnitTeam(uname) == "1"){
-            if (document.getElementById(getLocation(uname)+"bonus").value == "5" ){
-                //Heal Fully!
-                setUnitHealth(uname , getUnitMaxHealth(uname) );
-                healthBar(uname);
-                document.getElementById(boxName+"display").style.backgroundImage = "url(\"\")";
-                document.getElementById(getLocation(uname)+"bonus").value = 0;
-                $("#"+uname+"Pic").animate({opacity:'0.4'}, 200);
-                $("#"+uname+"Pic").animate({opacity:'1.0'}, 200);
-            }
-        }
-        */
-
-        //deselect all movable tiles
+        SELECTEDBOX = "NONE";
         unLightAll();
 
         //Select the unit again if it has MOVES left.
         if ( MOVES >= 1 ){
-            //select the unit for action
             selectForAction(SELECTEDUNIT);
         }// No moves left; reset MOVES
         else{
             MOVES="-1";
-            //alert("selecting next");
             selectNextUnit();
         }
     }

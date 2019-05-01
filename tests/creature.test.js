@@ -1,3 +1,4 @@
+
 /**
  * @jest-environment jsdom
  */
@@ -6,6 +7,8 @@ import Creature from '../common/creature';
 //import Effect from '../common/effect';/////////////////////////////////// NOT WORKING
 //import StrengthPotion from '../common/strengthpotion';/////////////////////////////////// NOT WORKING
 //import Combat from '../common/combat';/////////////////////////////////// NOT WORKING
+
+/* eslint-disable no-console */
 
 test('Creating various Creature objects succeed', () => {
   var unit = Creature.create("DebutAnt")
@@ -31,6 +34,7 @@ test('teamColor() returns approproiate color', () => {
   expect(unit.teamColor()).toMatch(/#ff0000/);
 });
 
+
 test('Setting health works as expected', () => {
   var unit = Creature.create("DebutAnt");
   unit.team = 1;
@@ -41,11 +45,37 @@ test('Setting health works as expected', () => {
   unit.setHealthToNumber(unit.maxHealth + 5);
   expect(unit.health).toBe(unit.maxHealth);
 
-  //unit.setHealth(0);
-  //expect(unit.health).toBe(0);
+  //mock the die & refreshGraphics methods before setting health below 0
+  unit.die = function(){this.mockDead = true;};
+  unit.refreshGraphics = function(){this.mockGraphicsRefreshed = true;};
+  unit.setHealth(-15);
+  expect(unit.health).toBe(0);
+  expect(unit.mockDead).toBeTruthy();
+  expect(unit.mockGraphicsRefreshed).toBeTruthy();
 
-  unit.team = 2;
-  expect(unit.teamColor()).toMatch(/#ff0000/);
+});
+
+test('Logging', () => {
+  global.LOGGINGSCOPE = "TEST";
+  var unit = Creature.create("DebutAnt");
+
+  var consoleBackup = console.log;
+  console.log = function(x){this.logPut=x};
+
+  unit.log("logtest")
+  expect(console.logPut).toBe(undefined);
+
+  global.LOGGINGSCOPE = "CREATURE";
+  //test that a string is output
+  unit.log("logtest")
+  expect(console.logPut).toMatch(/logtest/);
+
+  //test that objects are output as is
+  unit.log(unit)
+  expect(console.logPut).toBe(unit);
+
+  console.log = consoleBackup;
+
 });
 
 /*

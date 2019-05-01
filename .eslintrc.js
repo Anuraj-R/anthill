@@ -19,6 +19,7 @@ module.exports = {
         "expect":"false",
         "require":"false",
         "module":"false",
+        "global":"false",
         "LOGGINGSCOPE":"false",
         "SharedArrayBuffer": "readonly"
     },

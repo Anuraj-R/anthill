@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 
 //SEQUENCE=[];
 var GAMEOVER = 0;
@@ -38,7 +39,7 @@ function placeUnits(unitsArray, row){
         var unit = unitsArray[i];
         unit.position = GRIDNAME+"_"+i+"x"+row;
 
-        TILES[unit.position] = new tileProperties(MOVABLE,unit);
+        GRID.placeCreature(unit);
 
         var img = document.createElement('img');
         img.id = "creatureImage_"+unit.id;
@@ -129,39 +130,33 @@ function selectForAction (unitName){
 //function moves the currently active (selected) unit to the target location specified
 //clicking on a tile invokes this method with that tile as argument.
 //selected unit is implicit and global settings are used
-function selectForMove (targetBox){ //The function does selectForAction() again if there are MOVES left after moving
+function selectForMove (targetLocation){ //The function does selectForAction() again if there are MOVES left after moving
 
-
-    var targetBoxName = targetBox;
-    if ( "string" != typeof targetBox ){
-        targetBoxName = targetBoxName.id;
+    if ( "string" != typeof targetLocation ){
+        targetLocation = targetLocation.id;
     }
-    tlog("Invoking selectForMove on: "+targetBoxName);
+    tlog("Invoking selectForMove on: "+targetLocation);
 
     this.endTurn = function(){
-        tlog ("ending turns for "+targetBoxName);
+        tlog ("ending turns for "+targetLocation);
         MOVES="-1";
         selectNextUnit();
     };
 
     //check if player is ending turn by clicking onthe same tile
-    if ( targetBoxName == SELECTEDUNIT.position ){
+    if ( targetLocation == SELECTEDUNIT.position ){
         tlog("Unit skipping turn.");
         this.endTurn();
         return;
     }
 
-    //Find if the tile is impassable
-    if (TILES[targetBoxName].movable == IMPASSABLE ){
+    if (GRID.isImpassable(targetLocation)){
         tlog ("This square is impassable and cannot be moved into.");
         return;
     }
 
-    //calculate distance
-    var dist = distance(SELECTEDUNIT.position, targetBoxName);
-
-    //Find if square is empty
-    if ( TILES[targetBoxName].station == NONE ) // square can be moved into
+    var dist = distance(SELECTEDUNIT.position, targetLocation);
+    if (GRID.isVacant(targetLocation)) // square can be moved into
     {
         //Is distance less than the moves left?
         if ( dist > MOVES ){
@@ -170,10 +165,10 @@ function selectForMove (targetBox){ //The function does selectForAction() again 
         }
 
         // Update MOVES(global variable) left for the selected unit
-        tlog("Moving "+SELECTEDUNIT.id+" from "+SELECTEDUNIT.position+" to "+targetBoxName);
+        tlog("Moving "+SELECTEDUNIT.id+" from "+SELECTEDUNIT.position+" to "+targetLocation);
         MOVES -= dist;
 
-        SELECTEDUNIT.moveTo( targetBoxName );
+        SELECTEDUNIT.moveTo( targetLocation );
         SELECTEDBOX = "NONE";
         unLightAll();
 
@@ -190,7 +185,7 @@ function selectForMove (targetBox){ //The function does selectForAction() again 
     {
 
         //Ally?
-        if ( TILES[ targetBoxName].station.team == SELECTEDUNIT.team ) {
+        if ( (GRID.station(targetLocation)).team == SELECTEDUNIT.team ) {
             //ally stationed on this square
             alert ("This tile is already occupied by your ally.");
             return;
@@ -200,7 +195,7 @@ function selectForMove (targetBox){ //The function does selectForAction() again 
             //within range or not?
             if (dist <= SELECTEDUNIT.range)
             {
-                SELECTEDUNIT.combat(TILES[targetBoxName].station);
+                SELECTEDUNIT.combat(GRID.station(targetLocation));
 
                 //end the moves (for now, until double strikes are introduced)
                 this.endTurn();
@@ -285,18 +280,13 @@ function findClosestEnemy(boxName){
         for (var i=0;i<WIDTH;i++){
             for (var j=0;j<HEIGHT;j++){
                 var testBox=GRIDNAME+"_"+i+"x"+j;
-                //unit present
-                if (TILES[testBox].station != NONE ){
-                    //of a different team
-                    if ( TILES[testBox].station.team != SELECTEDUNIT.team ){
-                        //and within range
-                        if ( distance(testBox,boxName) <= SELECTEDUNIT.range){
-
-                            //and closer than last unit within range
-                            if ( distance(testBox,boxName) < closestDist){
-                                closestDist = distance(testBox,boxName);
-                                closestEnemyWithinRange = testBox;
-                            }
+                if(GRID.isEnemy(testBox, SELECTEDUNIT.team)){
+                    //and within range
+                    if ( distance(testBox,boxName) <= SELECTEDUNIT.range){
+                        //and closer than last unit within range
+                        if ( distance(testBox,boxName) < closestDist){
+                            closestDist = distance(testBox,boxName);
+                            closestEnemyWithinRange = testBox;
                         }
                     }
                 }
@@ -311,19 +301,14 @@ function findClosestEnemy(boxName){
         for (var i=0;i<WIDTH;i++){
             for (var j=0;j<HEIGHT;j++){
                 var testBox=GRIDNAME+"_"+i+"x"+j;
-                //unit present
-                if (TILES[testBox].station != NONE ){
-                    //of a different team
-                    if ( TILES[testBox].station.team != SELECTEDUNIT.team ){
-                        //and closer than the last unit
+                if(GRID.isEnemy(testBox, SELECTEDUNIT.team)){
+                    //and closer than the last unit
+                    var tempTile = findNeighborTileCloserTo(SELECTEDUNIT.position, testBox, 1.5);
+                    tlog(boxName+" found neighbor tile for "+testBox+" as "+tempTile+" "+DIST[tempTile]+" squares away.");
 
-                        var tempTile = findNeighborTileCloserTo(SELECTEDUNIT.position, testBox, 1.5);
-                        tlog(boxName+" found neighbor tile for "+testBox+" as "+tempTile+" "+DIST[tempTile]+" squares away.");
-
-                        if ( DIST[tempTile] < closestDist){
-                            closestDist = DIST[tempTile];
-                            closestEnemyReachable = testBox;
-                        }
+                    if ( DIST[tempTile] < closestDist){
+                        closestDist = DIST[tempTile];
+                        closestEnemyReachable = testBox;
                     }
                 }
             }
@@ -337,22 +322,15 @@ function findClosestEnemy(boxName){
         for (var i=0;i<WIDTH;i++){
             for (var j=0;j<HEIGHT;j++){
                 var testBox=GRIDNAME+"_"+i+"x"+j;
-                //unit present
-                if (TILES[testBox].station != NONE ){
-                    //of a different team
-                    if ( TILES[testBox].station.team != SELECTEDUNIT.team ){
-                        //and closer than the last unit
+                if(GRID.isEnemy(testBox, SELECTEDUNIT.team)){
+                    //and closer than the last unit
+                    var tempTile = findNeighborTileCloserTo(SELECTEDUNIT.position, testBox, 1.5);
+                    tlog(boxName+" found neighbor tile for "+testBox+" as "+tempTile+" "+DIST[tempTile]+" squares away.");
 
-                        //occupied tiles have a distance of 1000 (impassable)
-                        //so find the closest neighbor and return it
-                        var tempTile = findNeighborTileCloserTo(SELECTEDUNIT.position, testBox, 1.5);
-                        tlog(boxName+" found neighbor tile for "+testBox+" as "+tempTile+" "+DIST[tempTile]+" squares away.");
-
-                        if ( DIST[tempTile] < closestDist){
-                            closestDist = DIST[tempTile];
-                            closestEnemyLocation = testBox;
-                            tlog("closestEnemyLocation changed to "+closestEnemyLocation);
-                        }
+                    if ( DIST[tempTile] < closestDist){
+                        closestDist = DIST[tempTile];
+                        closestEnemyLocation = testBox;
+                        tlog("closestEnemyLocation changed to "+closestEnemyLocation);
                     }
                 }
             }
@@ -361,16 +339,10 @@ function findClosestEnemy(boxName){
         return closestEnemyLocation;
     }
 
-
-
     //return the actual Creature
-    if (this.enemyWithinRange() != "-1x-1") return TILES[closestEnemyWithinRange].station;
-    if (this.enemyReachable()   != "-1x-1") return TILES[closestEnemyReachable].station;
-    return TILES[this.closestEnemyUnreachable()];
-
-    //TODO
-    //what if there are no enemies left (?) Will this situation happen?
-
+    if (this.enemyWithinRange() != "-1x-1") return GRID.station(closestEnemyWithinRange);
+    if (this.enemyReachable()   != "-1x-1") return GRID.station(closestEnemyReachable);
+    return GRID.station(this.closestEnemyUnreachable());
 }
 
 //find neighbortile of the selected unit, closest to a target location, subject to number of moves available
@@ -392,7 +364,7 @@ function findNeighborTileCloserTo(startLoc, targetLoc, moves){
             if (distance(startLoc, testBox) <= moveRadius){
                 //tlog("Processing neighbor tile "+testBox);
                 //If not impassable and unoccupied, see if it moves closer to our target
-                if(TILES[testBox].movable == MOVABLE && TILES[testBox].station == NONE){
+                if(GRID.isMovable(testBox)){
                     var temp = distance(testBox, targetLoc);
                     if (temp < minDist) {
                         minDist = temp;
@@ -460,7 +432,7 @@ function highLightMoves (boxName , movepoints){
             testBox=GRIDNAME+'_'+j+"x"+i;
 
             //Highlight movable squares
-            if(TILES[testBox].movable != IMPASSABLE){
+            if(!GRID.isImpassable(testBox)){
                 var dist = DIST[testBox];
                 if ( dist <= moves ) highLight (testBox, moveTint);
             }
@@ -731,10 +703,8 @@ function findNeighbors(node){
 //returns 1 if pathExists, 0 otherwise
 function pathExists(x,y){
     var testBox = GRIDNAME+"_"+x+"x"+y;
-    if ( TILES[testBox].movable == MOVABLE ){
-        if (TILES[testBox].station == NONE){
-            return 1;
-        }
+    if ( GRID.isMovable(testBox) ){
+        return 1;
     }
     return 0;
 }

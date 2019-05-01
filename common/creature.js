@@ -94,12 +94,9 @@ class Creature {
     }
 
     moveTo(loc) {
-        //update the TILES status array of the map
-        TILES[this.position].station = NONE;
-        TILES[loc].station = this;
+        GRID.moveCreature(this, loc);
         this.position = loc;
         this.refreshGraphics();
-
     }
 
     refreshGraphics() {
@@ -121,7 +118,7 @@ class Creature {
     die() {
         this.log("Removing self: " + this.id);
         //mark the map tile empty
-        TILES.reset(this.position);
+        GRID.resetTile(this.position);
         //fadeout the picture
         $("#creatureImage_" + this.id).fadeOut(600);
         //drop items if it is an enemy unit that got killed

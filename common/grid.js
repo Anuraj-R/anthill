@@ -53,16 +53,9 @@ var NONE = "none";
 //contains the movability of the tile, and the name of the unit stationed if any
 function tileProperties(movable, station){
 	this.movable = movable;    // EMPTY IMPASSABLE MOVABLE OCCUPIED ATTACKABLE 
-	this.station = station;    //TILES[cellName].station contains the UNIT if occupied, NONE otherwise
+	this.station = station;    //tiles[cellName].station contains the UNIT if occupied, NONE otherwise
 	return this;
 }
-
-
-var TILES = new Array();
-TILES.reset = function( tile ) { 
-    tlog("Resetting "+tile);
-    TILES[tile] = new tileProperties(MOVABLE, NONE);
-};
 
 class Grid{
 
@@ -71,7 +64,33 @@ class Grid{
         this.height = height;
         this.gridName = gridName;
         this.mapLevel = mapLevel;
+        this.tiles = new Array();
         this.html = this.createHtml();
+    }
+
+
+    resetTile(tile){ this.tiles[tile] = new tileProperties(MOVABLE, NONE); }
+
+    placeCreature(creature){ this.tiles[creature.position] = new tileProperties(MOVABLE,creature); }
+
+    isImpassable(loc){ return this.tiles[loc].movable == IMPASSABLE; }
+
+    isVacant(loc){ return this.tiles[loc].station == NONE; }
+
+    isMovable(loc){ return ( this.isVacant(loc) && (!this.isImpassable(loc))); }
+
+    station(loc){ return this.tiles[loc].station; }
+
+    moveCreature(creature, loc){
+        this.resetTile(creature.position);
+        this.tiles[loc].station = creature;
+    }
+
+    isEnemy(loc, team){
+        if ( ! this.isVacant(loc) ){
+            if(this.station(loc).team != team) return true;
+        }
+        return false;
     }
 
     createHtml(){
@@ -82,7 +101,7 @@ class Grid{
                 var cellName = this.gridName + "_"+ i + "x" + j ;
                 grid += '<div id="' + cellName + '" class="mapTile" onclick="selectForMove(' + cellName + ')" ></div>';
                 //console.log ("Created "+name +"_"+ i + "x" + j);
-                TILES[this.gridName +"_"+ i + "x" + j] = new tileProperties(MOVABLE, NONE);
+                this.tiles[this.gridName +"_"+ i + "x" + j] = new tileProperties(MOVABLE, NONE);
             }
             grid += "<br>";
         }

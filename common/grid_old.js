@@ -267,7 +267,8 @@ function findClosestEnemy(boxName){
 
     tlog("findClosestEnemy called with "+boxName);
 
-    pathFind (boxName);
+    pathFinder = new PathFinder(GRID);
+    pathFinder.pathFind(boxName);
 
     var closestDist=1000;
     var closestEnemyWithinRange="-1x-1";
@@ -304,10 +305,10 @@ function findClosestEnemy(boxName){
                 if(GRID.isEnemy(testBox, SELECTEDUNIT.team)){
                     //and closer than the last unit
                     var tempTile = findNeighborTileCloserTo(SELECTEDUNIT.position, testBox, 1.5);
-                    tlog(boxName+" found neighbor tile for "+testBox+" as "+tempTile+" "+DIST[tempTile]+" squares away.");
+                    tlog(boxName+" found neighbor tile for "+testBox+" as "+tempTile+" "+pathFinder.dist[tempTile]+" squares away.");
 
-                    if ( DIST[tempTile] < closestDist){
-                        closestDist = DIST[tempTile];
+                    if ( pathFinder.dist[tempTile] < closestDist){
+                        closestDist = pathFinder.dist[tempTile];
                         closestEnemyReachable = testBox;
                     }
                 }
@@ -325,10 +326,10 @@ function findClosestEnemy(boxName){
                 if(GRID.isEnemy(testBox, SELECTEDUNIT.team)){
                     //and closer than the last unit
                     var tempTile = findNeighborTileCloserTo(SELECTEDUNIT.position, testBox, 1.5);
-                    tlog(boxName+" found neighbor tile for "+testBox+" as "+tempTile+" "+DIST[tempTile]+" squares away.");
+                    tlog(boxName+" found neighbor tile for "+testBox+" as "+tempTile+" "+pathFinder.dist[tempTile]+" squares away.");
 
-                    if ( DIST[tempTile] < closestDist){
-                        closestDist = DIST[tempTile];
+                    if ( pathFinder.dist[tempTile] < closestDist){
+                        closestDist = pathFinder.dist[tempTile];
                         closestEnemyLocation = testBox;
                         tlog("closestEnemyLocation changed to "+closestEnemyLocation);
                     }
@@ -424,8 +425,8 @@ function highLightMoves (boxName , movepoints){
     initializeORIGINALCOLORS();
 
     var moves = movepoints;
-    //tlog("inside HightlightMoves");
-    pathFind (boxName);
+    pathFinder = new PathFinder(GRID);
+    pathFinder.pathFind(boxName);
 
     for (j=0;j<WIDTH;j++) {
         for (i=0;i<HEIGHT;i++) {
@@ -433,7 +434,7 @@ function highLightMoves (boxName , movepoints){
 
             //Highlight movable squares
             if(!GRID.isImpassable(testBox)){
-                var dist = DIST[testBox];
+                var dist = pathFinder.dist[testBox];
                 if ( dist <= moves ) highLight (testBox, moveTint);
             }
 
@@ -528,202 +529,4 @@ function lightenBy(color, percent){
 function darkenBy(color, percent){
     return darken(color, -1 * percent / 100.0);
 }
-
-var VISITED = new Array();
-var DIST = new Array();
-var PREVIOUS = new Array();
-//Fills up PREVIOUS[vertex] and DIST[vertex] for each tile in the map, from using 'start' as starting point.
-//'end' is not used, always return -1 in dist which is also not used!
-function pathFind (start){
-    var xNum = WIDTH;
-    var yNum = HEIGHT;
-
-    //Queue to keep nodes to be visited
-    var Q = "";
-
-    //Initialize arrays required for pathfinding
-    for (var j=0;j<xNum;j++){
-        for (var i=0;i<yNum;i++){
-            var vertex = GRIDNAME+'_'+j+"x"+i;
-            VISITED[vertex]="NO";
-            DIST[vertex]=1000;
-            PREVIOUS[vertex]="none";
-        }
-    }
-
-    //dist[source]  := 0;
-    DIST[start]=0;
-
-    //insert source into Q;
-    Q=pushQ(Q, start);
-
-    //while Q is not empty:
-    while (Q !== "" ){
-
-        //u := vertex in Q with smallest distance in DIST[] and has not been visited;
-        //gets 'start' in the first round (since DIST[start] is 0), nearer tiles to it from the next round onwards.
-        var u = findSmallestInDIST();
-
-        //there are unvisited nodes
-        if (u !== "none" ){
-
-            //remove u from Q;
-            Q=popQ(Q,u);
-
-            //visited[u] := true
-            VISITED[u]="YES";
-
-            //for each neighbor v of u:
-            //fill up distance to neighbors
-            var neighbors = new Array();
-            neighbors = findNeighbors(u);
-            for (var i = 0; i < neighbors.length; i++) {
-
-                var v = neighbors[i];
-
-                //alt := dist[u] + dist_between(u, v);
-                var alt = DIST[u] + distance(u, v);
-
-                //if alt < dist[v] && !visited[v]:
-                if ( alt < DIST[v] && VISITED[v] === "NO"){
-
-                    //dist[v]  := alt;
-                    DIST[v] = alt;
-
-                    //previous[v]  := u;
-                    PREVIOUS[v] = u;
-
-                    //insert v into Q;
-                    Q=pushQ(Q, v);
-                }
-
-            }
-        }
-        //all nodes visited
-        else {
-            Q="";
-        }
-    }
-    tlog("pathfind from "+start+" returns after filling up DIST");
-    tlog (DIST);
-    return 0;
-}
-function pushQ( Q , node ){
-    return Q+"/"+node+"/";
-}
-
-function popQ( Q , node ){
-    return Q.replace("/"+node+"/","");
-}
-//find the smallest value in array DIST[cell] which is also unvisited (VISITED[cell]==NO)
-function findSmallestInDIST(){
-    xNum = WIDTH;
-    yNum = HEIGHT;
-
-    //check if there is atleast one unvisited node.
-    //If no, return 'none'.
-    //If yes, get the first one and use it later for comparison with all other cells
-    var smallest="none";
-    for (var j=0;j<xNum;j++){
-        for (var i=0;i<yNum;i++){
-            var vertex = GRIDNAME+'_'+j+"x"+i;
-            //if there are unvisited nodes
-            if ( VISITED[vertex] == "NO"){
-                smallest = vertex;
-            }
-        }
-    }
-
-    if (smallest == "none"){
-        return "none";
-    }
-
-    //There is atleast one unvisited node found.
-    //Check if it is the smallest in DIST[]. If not, replace it with the smallest in DIST[]
-    for (var j=0;j<xNum;j++){
-        for (var i=0;i<yNum;i++){
-            var vertex = GRIDNAME+'_'+j+"x"+i;
-
-            if ( VISITED[vertex] == "NO"){
-                if (DIST[vertex]<DIST[smallest]){
-                    smallest = vertex;
-                }
-            }
-        }
-    }
-    return smallest;
-}
-
-
-function findNeighbors(node){
-
-    var tempArr = new Array();
-    var index=0;
-
-    //get maximum allowable values for coordinates
-    var xNum = WIDTH-1;
-    var yNum = HEIGHT-1;
-
-    var x = node.lastIndexOf("x");
-    var start = 1+node.lastIndexOf("_");
-    var xVal = parseInt(node.slice(start,x));
-    var yVal = parseInt(node.slice(x+1));
-
-    var containerPrefix = node.slice(0,start);
-
-    this.addToArray = function(x,y){
-        if (pathExists(x,y)){
-            tempArr[index] = containerPrefix+x+"x"+y;
-            index++;
-        }
-    };
-
-    //Four side squares
-    (yVal > 0)      && this.addToArray((xVal),(yVal-1)); //up
-    (yVal < yNum)   && this.addToArray((xVal),(yVal+1)); //down
-    (xVal > 0)      && this.addToArray((xVal-1),(yVal)); //left
-    (xVal < xNum)   && this.addToArray((xVal+1),(yVal)); //right
-
-    //Four corner squares
-    (yVal > 0 && xVal > 0)      && this.addToArray((xVal-1),(yVal-1));
-    (yVal < yNum && xVal < xNum)&& this.addToArray((xVal+1),(yVal+1));
-    (yVal > 0 && xVal < xNum)   && this.addToArray((xVal+1),(yVal-1));
-    (yVal < yNum && xVal > 0)   && this.addToArray((xVal-1),(yVal+1));
-
-    //console.log("findNeighbors for "+node+" returns :");
-    //console.log(tempArr);
-    return tempArr;
-}
-
-//returns 1 if pathExists, 0 otherwise
-function pathExists(x,y){
-    var testBox = GRIDNAME+"_"+x+"x"+y;
-    if ( GRID.isMovable(testBox) ){
-        return 1;
-    }
-    return 0;
-}
-
-function distance (boxName1, boxName2){
-
-    //tlog("distance between "+boxName1+" "+boxName2);
-    var box1=boxName1;
-    var box2=boxName2;
-
-    var x = box1.lastIndexOf("x");
-    var start = 1+box1.lastIndexOf("_");
-    var x1 = parseInt(box1.slice(start,x));
-    var y1 = parseInt(box1.slice(x+1));
-
-    x = box2.lastIndexOf("x");
-    var x2 = parseInt(box2.slice(start,x));
-    var y2 = parseInt(box2.slice(x+1));
-
-    var dist = Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
-    if(dist == NaN)tlog("distance from "+boxName1+" to "+boxName2 + " is " +dist);
-
-    return dist;
-}
-
-
 

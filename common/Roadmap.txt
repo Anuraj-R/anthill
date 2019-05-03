@@ -1,15 +1,7 @@
 RoadMap
 
 
-
-
-
 AntHill notes:
-Remove all deprecated attributes being shown as proprietary
-bgcolor="#E2F2E0"
-type="hidden"
-Fix this html problem first.
-
 ===================================================================
 
 player's unit pool.

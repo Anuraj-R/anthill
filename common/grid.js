@@ -62,7 +62,7 @@ class Grid{
     constructor(width, height, gridName, mapLevel){
         this.width = width;
         this.height = height;
-        this.gridName = gridName;
+        this.name = gridName;
         this.mapLevel = mapLevel;
         this.tiles = new Array();
         this.html = this.createHtml();
@@ -97,10 +97,10 @@ class Grid{
         var grid = "";
         for (var j = 0; j < this.height; j++) {
             for (var i = 0; i < this.width; i++){
-                var cellName = this.gridName + "_"+ i + "x" + j ;
+                var cellName = this.name + "_"+ i + "x" + j ;
                 grid += '<div id="' + cellName + '" class="mapTile" onclick="selectForMove(' + cellName + ')" ></div>';
                 //console.log ("Created "+name +"_"+ i + "x" + j);
-                this.tiles[this.gridName +"_"+ i + "x" + j] = new tileProperties(MOVABLE, NONE);
+                this.tiles[this.name +"_"+ i + "x" + j] = new tileProperties(MOVABLE, NONE);
             }
             grid += "<br>";
         }

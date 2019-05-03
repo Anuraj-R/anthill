@@ -11,25 +11,13 @@ class PathFinder {
     //Fills up this.previous[vertex] and this.dist[vertex] for each tile in the map, from using 'start' as starting point.
     //'end' is not used, always return -1 in dist which is also not used!
     pathFind (start){
-        var xNum = this.grid.width;
-        var yNum = this.grid.height;
 
         //Queue to keep nodes to be visited
         var Q = "";
-
-        //Initialize arrays required for pathfinding
-        for (var j=0;j<xNum;j++){
-            for (var i=0;i<yNum;i++){
-                var vertex = this.grid.name+'_'+j+"x"+i;
-                this.visited[vertex]="NO";
-                this.dist[vertex]=1000;
-                this.previous[vertex]="none";
-            }
-        }
+        this.initializeArrays();
 
         //dist[source]  := 0;
         this.dist[start]=0;
-
         //insert source into Q;
         Q=pushQ(Q, start);
 
@@ -38,7 +26,7 @@ class PathFinder {
 
             //u := vertex in Q with smallest distance in this.dist[] and has not been visited;
             //gets 'start' in the first round (since this.dist[start] is 0), nearer tiles to it from the next round onwards.
-            var u = this.findSmallestInDist();
+            var u = this.findSmallestUnvisitedInDist();
 
             //there are unvisited nodes
             if (u !== "none" ){
@@ -56,10 +44,10 @@ class PathFinder {
                 for (var i = 0; i < neighbors.length; i++) {
 
                     var v = neighbors[i];
-                    var alt = this.dist[u] + distance(u, v);
+                    var altDist = this.dist[u] + distance(u, v);
 
-                    if ( alt < this.dist[v] && this.visited[v] === "NO"){
-                        this.dist[v] = alt;
+                    if ( altDist < this.dist[v] && this.visited[v] === "NO"){
+                        this.dist[v] = altDist;
                         this.previous[v] = u;
                         Q=pushQ(Q, v);
                     }
@@ -71,38 +59,37 @@ class PathFinder {
                 Q="";
             }
         }
-        console.log("pathfind from "+start+" returns after filling up this.dist");
-        console.log (this.dist);
         return 0;
     }
 
+    initializeArrays(){
+        for (var j=0;j<this.grid.width;j++){
+            for (var i=0;i<this.grid.height;i++){
+                var vertex = this.grid.name+'_'+j+"x"+i;
+                this.visited[vertex]="NO";
+                this.dist[vertex]=1000;
+                this.previous[vertex]="none";
+            }
+        }
+    }
+
     //find the smallest value in array this.dist[cell] which is also unvisited (VISITED[cell]==NO)
-    findSmallestInDist(){
-        var xNum = this.grid.width;
-        var yNum = this.grid.height;
+    findSmallestUnvisitedInDist(){
+
+        this.grid.iterateAll(this.testFn);
 
         //check if there is atleast one unvisited node.
         //If no, return 'none'.
         //If yes, get the first one and use it later for comparison with all other cells
-        var smallest="none";
-        for (var j=0;j<xNum;j++){
-            for (var i=0;i<yNum;i++){
-                var vertex = this.grid.name+'_'+j+"x"+i;
-                //if there are unvisited nodes
-                if ( this.visited[vertex] == "NO"){
-                    smallest = vertex;
-                }
-            }
-        }
-
+        var smallest = this.findAnUnvisitedVertex();
         if (smallest == "none"){
             return "none";
         }
 
         //There is atleast one unvisited node found.
         //Check if it is the smallest in this.dist[]. If not, replace it with the smallest in this.dist[]
-        for (var j=0;j<xNum;j++){
-            for (var i=0;i<yNum;i++){
+        for (var j=0;j<this.grid.width;j++){
+            for (var i=0;i<this.grid.height;i++){
                 var vertex = this.grid.name+'_'+j+"x"+i;
 
                 if ( this.visited[vertex] == "NO"){
@@ -113,6 +100,20 @@ class PathFinder {
             }
         }
         return smallest;
+    }
+
+    findAnUnvisitedVertex(){
+        var unvisitedVertex="none";
+        for (var j=0;j<this.grid.width;j++){
+            for (var i=0;i<this.grid.height;i++){
+                var vertex = this.grid.name+'_'+j+"x"+i;
+                //if there are unvisited nodes
+                if ( this.visited[vertex] == "NO"){
+                    unvisitedVertex = vertex;
+                }
+            }
+        }
+        return unvisitedVertex;
     }
 
     findNeighbors(node){

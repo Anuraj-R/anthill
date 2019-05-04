@@ -12,9 +12,9 @@
 
 class CreaturePlacer{
 
-    constructor(mapLevel, grid){
+    constructor(grid){
         this.grid = grid;
-        this.mapLevel = mapLevel;
+        this.mapLevel = grid.mapLevel;
     }
 
     selectPlayerUnits(){
@@ -102,6 +102,64 @@ class CreaturePlacer{
 function weightedUnit(uname){
     this.name = uname;
     this.weight = Creature.weight(uname);
+}
+
+// eslint-disable-next-line no-unused-vars
+function placeUnitsOnGrid(grid){
+
+    //tlog("MAPLEVEL is: "+MAPLEVEL);
+
+    var creaturePlacer = new CreaturePlacer(grid);
+
+    var playerUnits = creaturePlacer.selectPlayerUnits();
+    var AIUnits = creaturePlacer.selectAIUnits();
+    tlog(playerUnits);
+    tlog(AIUnits);
+
+    placeUnits(playerUnits, grid, grid.height-1);
+    placeUnits(AIUnits, grid, 0);
+
+    setSEQUENCE(playerUnits, AIUnits);
+    tlog(SEQUENCE);
+}
+
+//Takes an array of units and places them in the mentioned row
+function placeUnits(unitsArray, grid, row){
+
+    for (var i in unitsArray){
+
+        var unit = unitsArray[i];
+        unit.position = grid.getLoc(i,row);
+
+        grid.placeCreature(unit);
+
+        var img = document.createElement('img');
+        img.id = "creatureImage_"+unit.id;
+        img.className = "creatureImage";
+
+        img.src = unit.image;
+        $('body').append(img);
+        $('#'+img.id).css('width',BLOCKSIZE);
+        $('#'+img.id).css('height',BLOCKSIZE);
+
+        //set the CSS properties for the first time for the image
+        var p = $( '#'+unit.position );
+        var position = p.position();
+        $('#'+img.id).css({
+            position:'absolute',
+            top:position.top-5,
+            left:position.left
+        });
+
+        unit.refreshGraphics();
+    }
+}
+
+//set the sequence in which units take action. Also populate SEQUENCE global array.
+function setSEQUENCE(playerUnits, AIUnits){
+    SEQUENCE = $.merge(playerUnits, AIUnits);
+    //unit with greater initiative comes first in the sequence
+    SEQUENCE.sort(function(a,b){return b.initiative - a.initiative;});
 }
 
 window.module = window.module || {};

@@ -3,69 +3,6 @@
 //SEQUENCE=[];
 var GAMEOVER = 0;
 
-//place units on grid based on the current map level
-//unit_weight = (2 * attack) + MaxHealth
-function placeUnitsOnGrid(){
-
-    tlog("MAPLEVEL is: "+MAPLEVEL);
-
-    creaturePlacer = new CreaturePlacer(MAPLEVEL,GRID);
-
-    var playerUnits = creaturePlacer.selectPlayerUnits();
-    var AIUnits = creaturePlacer.selectAIUnits();
-    tlog(playerUnits);
-    tlog(AIUnits);
-
-    placeUnits(playerUnits, HEIGHT-1);
-    placeUnits(AIUnits, 0);
-
-    setSEQUENCE(playerUnits, AIUnits);
-    tlog(SEQUENCE);
-}
-
-
-//set the sequence in which units take action. Also populate SEQUENCE global array.
-function setSEQUENCE(playerUnits, AIUnits){
-    SEQUENCE = $.merge(playerUnits, AIUnits);
-    //unit with greater initiative comes first in the sequence
-    SEQUENCE.sort(function(a,b){return b.initiative - a.initiative;});
-}
-
-//Takes an array of units and places them in the mentioned row
-function placeUnits(unitsArray, row){
-
-    for (var i in unitsArray){
-
-        var unit = unitsArray[i];
-        unit.position = GRIDNAME+"_"+i+"x"+row;
-
-        GRID.placeCreature(unit);
-
-        var img = document.createElement('img');
-        img.id = "creatureImage_"+unit.id;
-        img.className = "creatureImage";
-
-        img.src = unit.image;
-        $('body').append(img);
-        $('#'+img.id).css('width',BLOCKSIZE);
-        $('#'+img.id).css('height',BLOCKSIZE);
-
-        //set the CSS properties for the first time for the image
-        var p = $( '#'+unit.position );
-        var position = p.position();
-        $('#'+img.id).css({
-            position:'absolute',
-            top:position.top-5,
-            left:position.left
-        });
-
-        unit.refreshGraphics();
-    }
-}
-
-
-
-
 
 function selectNextUnit(){
 

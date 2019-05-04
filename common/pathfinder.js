@@ -40,7 +40,7 @@ class PathFinder {
                 //for each neighbor v of u:
                 //fill up distance to neighbors
                 var neighbors = new Array();
-                neighbors = this.findNeighbors(u);
+                neighbors = this.findAdjacentTiles(u);
                 for (var i = 0; i < neighbors.length; i++) {
 
                     var v = neighbors[i];
@@ -73,115 +73,61 @@ class PathFinder {
         }
     }
 
-    //find the smallest value in array this.dist[cell] which is also unvisited (VISITED[cell]==NO)
     findSmallestUnvisitedInDist(){
-
-        this.grid.iterateAll(this.testFn);
-
-        //check if there is atleast one unvisited node.
-        //If no, return 'none'.
-        //If yes, get the first one and use it later for comparison with all other cells
-        var smallest = this.findAnUnvisitedVertex();
-        if (smallest == "none"){
-            return "none";
-        }
-
-        //There is atleast one unvisited node found.
-        //Check if it is the smallest in this.dist[]. If not, replace it with the smallest in this.dist[]
+        var smallestUnvisitedVertex="none";
         for (var j=0;j<this.grid.width;j++){
             for (var i=0;i<this.grid.height;i++){
                 var vertex = this.grid.name+'_'+j+"x"+i;
-
                 if ( this.visited[vertex] == "NO"){
-                    if (this.dist[vertex]<this.dist[smallest]){
-                        smallest = vertex;
+                    if ( smallestUnvisitedVertex == "none" || this.dist[vertex] < this.dist[smallestUnvisitedVertex]){
+                        smallestUnvisitedVertex = vertex;
                     }
                 }
             }
         }
-        return smallest;
+        return smallestUnvisitedVertex;
     }
 
-    findAnUnvisitedVertex(){
-        var unvisitedVertex="none";
-        for (var j=0;j<this.grid.width;j++){
-            for (var i=0;i<this.grid.height;i++){
-                var vertex = this.grid.name+'_'+j+"x"+i;
-                //if there are unvisited nodes
-                if ( this.visited[vertex] == "NO"){
-                    unvisitedVertex = vertex;
-                }
-            }
-        }
-        return unvisitedVertex;
-    }
+    findAdjacentTiles(node){
 
-    findNeighbors(node){
-
-        var tempArr = new Array();
-        var index=0;
+        var arr = new Array();
     
         //get maximum allowable values for coordinates
         var xNum = this.grid.width-1;
         var yNum = this.grid.height-1;
     
-        var x = node.lastIndexOf("x");
-        var start = 1+node.lastIndexOf("_");
-        var xVal = parseInt(node.slice(start,x));
-        var yVal = parseInt(node.slice(x+1));
-    
-        var containerPrefix = node.slice(0,start);
-    
-        this.addToArray = function(x,y){
-            if (this.pathExists(x,y)){
-                tempArr[index] = containerPrefix+x+"x"+y;
-                index++;
-            }
-        };
-    
+        var xVal = Grid.getX(node);
+        var yVal = Grid.getY(node);
+
         //Four side squares
-        (yVal > 0)      && this.addToArray((xVal),(yVal-1)); //up
-        (yVal < yNum)   && this.addToArray((xVal),(yVal+1)); //down
-        (xVal > 0)      && this.addToArray((xVal-1),(yVal)); //left
-        (xVal < xNum)   && this.addToArray((xVal+1),(yVal)); //right
+        (yVal > 0)      && this.addToArray(arr,(xVal),(yVal-1)); //up
+        (yVal < yNum)   && this.addToArray(arr,(xVal),(yVal+1)); //down
+        (xVal > 0)      && this.addToArray(arr,(xVal-1),(yVal)); //left
+        (xVal < xNum)   && this.addToArray(arr,(xVal+1),(yVal)); //right
     
         //Four corner squares
-        (yVal > 0 && xVal > 0)      && this.addToArray((xVal-1),(yVal-1));
-        (yVal < yNum && xVal < xNum)&& this.addToArray((xVal+1),(yVal+1));
-        (yVal > 0 && xVal < xNum)   && this.addToArray((xVal+1),(yVal-1));
-        (yVal < yNum && xVal > 0)   && this.addToArray((xVal-1),(yVal+1));
+        (yVal > 0 && xVal > 0)      && this.addToArray(arr,(xVal-1),(yVal-1));
+        (yVal < yNum && xVal < xNum)&& this.addToArray(arr,(xVal+1),(yVal+1));
+        (yVal > 0 && xVal < xNum)   && this.addToArray(arr,(xVal+1),(yVal-1));
+        (yVal < yNum && xVal > 0)   && this.addToArray(arr,(xVal-1),(yVal+1));
     
-        //console.log("findNeighbors for "+node+" returns :");
-        //console.log(tempArr);
-        return tempArr;
+        return arr;
     }
 
-    pathExists(x,y){
-        var loc = this.grid.name+"_"+x+"x"+y;
-        return this.grid.isMovable(loc);
+    addToArray(arr, x,y){
+        var loc = this.grid.getLoc(x,y);
+        if (this.grid.isMovable(loc)){
+            arr[arr.length] = loc;
+        }
     }
-
 }
 
-function distance (boxName1, boxName2){
-
-    //tlog("distance between "+boxName1+" "+boxName2);
-    var box1=boxName1;
-    var box2=boxName2;
-
-    var x = box1.lastIndexOf("x");
-    var start = 1+box1.lastIndexOf("_");
-    var x1 = parseInt(box1.slice(start,x));
-    var y1 = parseInt(box1.slice(x+1));
-
-    x = box2.lastIndexOf("x");
-    var x2 = parseInt(box2.slice(start,x));
-    var y2 = parseInt(box2.slice(x+1));
-
-    var distance = Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
-    if(isNaN(distance))console.log("distance from "+boxName1+" to "+boxName2 + " is " +distance);
-
-    return distance;
+function distance (tile1, tile2){
+    var x1 = Grid.getX(tile1);
+    var y1 = Grid.getY(tile1);
+    var x2 = Grid.getX(tile2);
+    var y2 = Grid.getY(tile2);
+    return Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 }
 
 function pushQ( Q , node ){

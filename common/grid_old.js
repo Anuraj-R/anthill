@@ -360,17 +360,15 @@ function findNeighborTileCloserTo(startLoc, targetLoc, moves){
     //for finding neighbor tiles, iterate through the board and look for
     for (var i=0;i<WIDTH;i++){
         for (var j=0;j<HEIGHT;j++){
-            var testBox=GRIDNAME+"_"+i+"x"+j;
-            //a neighbor tile
-            if (distance(startLoc, testBox) <= moveRadius){
-                //tlog("Processing neighbor tile "+testBox);
+            var loc=GRID.getLoc(i,j);
+            if (distance(startLoc, loc) <= moveRadius){
+                //a neighbor tile
                 //If not impassable and unoccupied, see if it moves closer to our target
-                if(GRID.isMovable(testBox)){
-                    var temp = distance(testBox, targetLoc);
+                if(GRID.isMovable(loc)){
+                    var temp = distance(loc, targetLoc);
                     if (temp < minDist) {
                         minDist = temp;
-                        returnNode = testBox;
-                        //tlog("returnNode changed to "+returnNode);
+                        returnNode = loc;
                     }
                 }
 

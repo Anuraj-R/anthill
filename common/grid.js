@@ -148,6 +148,21 @@ class Grid{
     static currentCreature(){
         return SEQUENCE[NEXTINDEX];
     }
+
+    getLoc(x,y){
+        return this.name + "_"+ x + "x" + y;
+    }
+
+    static getX(loc){
+        var xLoc = loc.lastIndexOf("x");
+        var xyStart = 1+loc.lastIndexOf("_");
+        return parseInt(loc.slice(xyStart,xLoc));
+    }
+
+    static getY(loc){
+        var xLoc = loc.lastIndexOf("x");
+        return parseInt(loc.slice(xLoc+1));
+    }
 }
 
 window.module = window.module || {};

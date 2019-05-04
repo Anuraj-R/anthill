@@ -20,6 +20,7 @@ module.exports = {
         "require":"false",
         "module":"false",
         "global":"false",
+        "Grid":"false",
         "LOGGINGSCOPE":"false",
         "SharedArrayBuffer": "readonly"
     },

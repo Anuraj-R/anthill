@@ -1,152 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=800">
-<title>Battleground</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
-<script src="common/jquery-2.1.4.js"></script>
-<script src="common/jquery-ui.js"></script>
-<script src="common/bootstrap.min.js"></script>
-<script src="common/perlin.js"></script>
-
-
-
-<script src="common/effect.js"></script>
-<script src="common/healthpotion.js"></script>
-<script src="common/barkskinpotion.js"></script>
-<script src="common/strengthpotion.js"></script>
-
-<script src="common/creature.js"></script>
-<script src="common/creatureplacer.js"></script>
-<script src="common/creature_remaining.js"></script>
-<script src="common/combat.js"></script>
-<script src="common/pathfinder.js"></script>
-<script src="common/grid.js"></script>
-<script src="common/grid_old.js"></script>
-<script src="common/inventory.js"></script>
-<script src="common/messages.js"></script>
-<script src="common/orderbox.js"></script>
-<script src="common/settings.js"></script>
-<script src="common/statstable.js"></script>
-
-<link rel="stylesheet" type="text/css" href="common/koyotil.css">
-<link rel="stylesheet" type="text/css" href="common/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=800">
+  <title>Battleground</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/common/koyotil.css">
+  <link rel="stylesheet" href="/common/bootstrap.min.css">
+  <script src="/common/jquery-2.1.4.js"></script>
+  <script src="/common/jquery-ui.js"></script>
+  <script src="/common/bootstrap.min.js"></script>
+  <script src="/common/perlin.js"></script>
+  <script src="/common/effect.js"></script>
+  <script src="/common/healthpotion.js"></script>
+  <script src="/common/barkskinpotion.js"></script>
+  <script src="/common/strengthpotion.js"></script>
+  <script src="/common/creature.js"></script>
+  <script src="/common/creatureplacer.js"></script>
+  <script src="/common/creature_remaining.js"></script>
+  <script src="/common/combat.js"></script>
+  <script src="/common/pathfinder.js"></script>
+  <script src="/common/grid.js"></script>
+  <script src="/common/grid_old.js"></script>
+  <script src="/common/inventory.js"></script>
+  <script src="/common/messages.js"></script>
+  <script src="/common/orderbox.js"></script>
+  <script src="/common/settings.js"></script>
+  <script src="/common/statstable.js"></script>
+  <script src="/js/map.js"></script>
 </head>
-<style></style>
-
-<body onload="loadFunc()">
-
-<div id="startBox" class="ui-widget-content ui-corner-all" onclick="showStartMessage()" style="display:none;">
-<p><br><br><br><br><br><br> Destroy the enemy and secure the area.<br><br>Tap here to start the game!<br><br><br><br><br><br></p></div>
-<div id="winBox" class="ui-widget-content ui-corner-all" onclick="showWinMessage()" style="display:none;">
-<p><br><br><br><br><br>Well done warrior! You have unlocked more adventures! <br><br>Tap here to dismiss this message.<br><br></p></div>
-<div id="failBox" class="ui-widget-content ui-corner-all" onclick="showFailMessage()" style="display:none;">
-<p><br><br><br><br><br>How sad! Spiders eat your limbs. <br><br>Tap here to wipe off your blood.<br><br></p></div>
-
-<div id="container"  class="containerDiv"> </div>
-<div id="statsTable"> </div>
-
-<script type="text/javascript">
-
-
-var HEIGHT = 13;
-var WIDTH = 8;
-var RULE=0;
-var BLOCKSIZE = 31;
-var SLECTEDBOX = "";
-var NEXTINDEX = -1;
-var ANTHILL_MUSIC = "OFF";
-var LOGLEVEL = 1;
-var LOGGINGSCOPE = "MAP INVENTORY SETTINGS"; /* CREATURE MAP INVENTORY SETTINGS */
-var ORDERBOX = null;
-var GRID = null;
-function loadMapLevelFromLocalStorage(){
-    MAPLEVEL = localStorageGetOrSetVar("MAPLEVEL",3);
-    MAPLEVELMAX = localStorageGetOrSetVar("MAPLEVELMAX",20);
-    GRIDNAME="container"+MAPLEVEL;
-}
-
-function loadFunc() {
-    $(document).ready(function() {
-        loadMapLevelFromLocalStorage();
-        InitAudio();
-        loadInventory();
-        populateTheUIContainer();
-    });
-}
-
-function populateTheUIContainer(){
-
-    addDropDownForLevels();
-    addMapAndInventoryButtons();
-
-    orderBox = new OrderBox(GRIDNAME, BLOCKSIZE);
-    orderBox.addToContainer("container");
-
-    var grid = createGridAndAddToContainer();
-    placeUnitsOnGrid(grid);
-
-    orderBox.fillOrderBox(SEQUENCE);
-    orderBox.progress();
-    ORDERBOX = orderBox;
-
-    showStartMessage();
-}
-
-function addDropDownForLevels(){
-    $("#container").append(createDropDown());
-}
-
-function createDropDown(){
-	var str = '<div class="dropdown" id="mapList" ><button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">';
-	str += 'Level '+ MAPLEVEL + ' ';
-	str += '<span class="caret"></span></button><ul class="dropdown-menu" id="dropdownList" ><li>';
-	for(var i = 1; i<=MAPLEVELMAX; i++){
-	 	str += '<li onclick="selectLevel('+i+')"><a href="#">' + 'Level '+ i + ' ' + '</a></li>';
-	}
-	str += '</li></ul></div>';
-	return str;
-}
-
-function selectLevel(i){
-    localStorage.setItem("MAPLEVEL", i);
-    location.reload();
-}
-
-function createGridAndAddToContainer(){
-    var grid = new Grid(WIDTH, HEIGHT, GRIDNAME, MAPLEVEL);
-    $("#container").append(grid.getHtml());
-    grid.paint();
-    GRID = grid;
-    return grid;
-}
-
-function addMapAndInventoryButtons(){
-
-    //$("#container").append('<button id="'+GRIDNAME+'mapbutton" class="menuButton" onclick="showHelp()" ></button>');
-    $("#container").append('<button id="'+GRIDNAME+'mapbutton" class="menuButton" onclick="showMenu()" ></button>');
-    $('#'+GRIDNAME+'mapbutton').css('width',BLOCKSIZE*1.4);
-    $('#'+GRIDNAME+'mapbutton').css('height',BLOCKSIZE*1.4);
-
-
-    $("#container").append('<button id="'+GRIDNAME+'inventorybutton" class="inventorybutton" onclick="showInventory()" ></button>');
-    $('#'+GRIDNAME+'inventorybutton').css('width',BLOCKSIZE*1.4);
-    $('#'+GRIDNAME+'inventorybutton').css('height',BLOCKSIZE*1.4);
-    $('#'+GRIDNAME+'inventorybutton').css('margin-left',BLOCKSIZE*1.4);
-}
-
-function showHelp(){
-    window.location="common/help.html";
-}
-
-</script>
-
+<body>
+  <div id="startBox" class="ui-widget-content ui-corner-all" onclick="showStartMessage()" style="display:none;">
+    <p><br><br><br><br><br><br>Destroy the enemy and secure the area.<br><br>Tap here to start the game!<br><br><br><br><br><br></p>
+  </div>
+  <div id="winBox" class="ui-widget-content ui-corner-all" onclick="showWinMessage()" style="display:none;">
+    <p><br><br><br><br><br>Well done warrior! You have unlocked more adventures!<br><br>Tap here to dismiss this message.<br><br></p>
+  </div>
+  <div id="failBox" class="ui-widget-content ui-corner-all" onclick="showFailMessage()" style="display:none;">
+    <p><br><br><br><br><br>How sad! Spiders eat your limbs.<br><br>Tap here to wipe off your blood.<br><br></p>
+  </div>
+  <div id="container" class="containerDiv"></div>
+  <div id="statsTable"></div>
 </body>
 </html>
-
-
-
-

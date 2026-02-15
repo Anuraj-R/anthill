@@ -82,12 +82,12 @@ function dropItems(loc){
     //get enemy unit numbers.
     var eNum = 0;
     for ( var j=0; j<SEQUENCE.length ;  j++){
-        if ( SEQUENCE[j].team != "1" ){
+        if (SEQUENCE[j].team !== "1"){
             eNum++;
         }
     }
     console.log(eNum+ " enemies detected to calculate dropChance");
-    if (eNum != 0) dropChance = dropChance * 5 / eNum;
+    if (eNum !== 0) dropChance = dropChance * 5 / eNum;
 
     while (dropChance > 0){
         var dropOrNot = parseInt(100*Math.random());
@@ -211,7 +211,7 @@ function usePotion(potion){
     numPotions = parseInt(INVENTORY[potion.name]);
     if (numPotions > 0) {
         var ret = potion.applyEffect(Grid.currentCreature());
-        if (ret == true) {
+        if (ret === true) {
             INVENTORY[potion.name] = --numPotions;
             saveInventory();
             updateInventoryNumbers();

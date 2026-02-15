@@ -1,7 +1,11 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ant Hill</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
 <script src="common/jquery-2.1.4.js"></script>
 <script src="common/jquery-ui.js"></script>
 <script type="text/javascript" src="cordova.js"></script>
@@ -56,138 +60,125 @@ function showContact(){
 </script>
 <style type="text/css">
 
-html { 
-	
+* {
+	box-sizing: border-box;
+}
+html, body {
+	min-height: 100%;
+	margin: 0;
+}
+body {
+	background: linear-gradient(165deg, #2c1810 0%, #3d2817 25%, #4a3520 50%, #3d2a1a 75%, #2e1f14 100%);
+	background-attachment: fixed;
+	color: #e8ddd4;
+	font-family: 'Source Sans 3', 'Helvetica Neue', Helvetica, sans-serif;
 }
 h1 {
-	font-family: Papyrus, fantasy;
-	font-size: 24px;
+	font-family: 'Cormorant Garamond', Georgia, serif;
+	font-size: 1.75rem;
 	font-style: italic;
-	font-variant: normal;
-	font-weight: bolder;
-	text-shadow: 2px 2px #cccccc;
-	
-	color: #662617;
+	font-weight: 600;
+	color: #f5e6d3;
+	text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+	letter-spacing: 0.02em;
+	max-width: 20em;
+	margin: 0 auto;
+	line-height: 1.4;
 }
 .center {
-    margin: auto;
-	text-align:center;
+	margin: 0 auto;
+	text-align: center;
+	max-width: 480px;
+	padding: 2rem 1.5rem;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.hero-image {
+	width: 140px;
+	height: auto;
+	border-radius: 12px;
+	box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 3px rgba(255,235,205,0.08);
+	margin-bottom: 1.5rem;
+}
+.demo-info, .box-demo-info {
+	padding: 14px 28px;
+	font-size: 15px;
+	line-height: 1.2;
+	color: #fff;
+	text-align: center;
+	cursor: pointer;
+	font-weight: 600;
+	font-family: 'Source Sans 3', Helvetica, sans-serif;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+	outline: none;
+	text-decoration: none;
+	border: none;
+	display: inline-block;
+}
+.demo-info:active, .box-demo-info:active {
+	transform: translateY(2px);
 }
 .demo-info {
-	padding: 14px 26px;
-	font-size: 14px;
-	line-height: 100%;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.4);
-	color: #fff;
-	
-	vertical-align: middle;
-	text-align: center;
-	cursor: pointer;
-	font-weight: bold;
-	transition: background 0.1s ease-in-out;
-	-webkit-transition: background 0.1s ease-in-out;
-	-moz-transition: background 0.1s ease-in-out;
-	-ms-transition: background 0.1s ease-in-out;
-	-o-transition: background 0.1s ease-in-out;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-	color: #fff;
-	-webkit-border-radius: 40px;
-	-moz-border-radius: 40px;
 	border-radius: 40px;
-	font-family: 'Helvetica Neue', Helvetica, sans-serif;
+	margin: 0.5rem 0;
 }
-.demo-info:active {
-	padding-top: 15px;
-}
-.demo-info, .demo-info:hover, .demo-info:active {
-	outline: 0 none;
-	text-decoration: none;
-        color: #fff;
-}
-
 .box-demo-info {
-	padding: 14px 26px;
-	font-size: 14px;
-	line-height: 100%;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.4);
-	color: #fff;
-	
-	vertical-align: middle;
-	text-align: center;
-	cursor: pointer;
-	font-weight: bold;
-	transition: background 0.1s ease-in-out;
-	-webkit-transition: background 0.1s ease-in-out;
-	-moz-transition: background 0.1s ease-in-out;
-	-ms-transition: background 0.1s ease-in-out;
-	-o-transition: background 0.1s ease-in-out;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-	color: #fff;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	font-family: 'Helvetica Neue', Helvetica, sans-serif;
-}
-.box-demo-info:active {
-	padding-top: 15px;
-}
-.box-demo-info, .demo-info:hover, .demo-info:active {
-	outline: 0 none;
-	text-decoration: none;
-        color: #fff;
-}
-.demo-info-1 {
-	background-color: #fdc058;
-	box-shadow: 0px 3px 0px 0px #e29003;
-}
-.demo-info-1:hover {
-	background-color: #fdb53a;
-}
-.demo-info-1:active {
-	box-shadow: 0px 1px 0px 0px #e29003;
-}
-.demo-info-2 {
-	background-color:  #d1c2f0;
-	box-shadow: 0px 3px 0px 0px #a385e0;
-}
-.demo-info-2:hover {
-	background-color: #b299e5;
-}
-.demo-info-2:active {
-	box-shadow: 0px 1px 0px 0px #a385e0;
+	border-radius: 12px;
+	margin: 0 0.25rem;
 }
 .demo-info-3 {
-	background-color: #2ecc71;
-	box-shadow: 0px 3px 0px 0px #239a55;
+	background: linear-gradient(180deg, #4a7c59 0%, #3d6b4a 100%);
+	box-shadow: 0 4px 0 #2d5038, 0 6px 20px rgba(0,0,0,0.25);
 }
 .demo-info-3:hover {
-	background-color: #28b363;
+	background: linear-gradient(180deg, #559966 0%, #4a7c59 100%);
+	box-shadow: 0 4px 0 #2d5038, 0 8px 24px rgba(0,0,0,0.35);
 }
 .demo-info-3:active {
-	box-shadow: 0px 1px 0px 0px #239a55;
+	box-shadow: 0 2px 0 #2d5038, 0 4px 12px rgba(0,0,0,0.3);
 }
-
-#blackBoard{ 
-	height: 60px;  
-	display:block;
+.demo-info-2 {
+	background: linear-gradient(180deg, #6b5b7a 0%, #5a4a68 100%);
+	box-shadow: 0 3px 0 #443952, 0 4px 16px rgba(0,0,0,0.2);
+}
+.demo-info-2:hover {
+	background: linear-gradient(180deg, #7a6a8a 0%, #6b5b7a 100%);
+	box-shadow: 0 3px 0 #443952, 0 6px 20px rgba(0,0,0,0.3);
+}
+.demo-info-2:active {
+	box-shadow: 0 1px 0 #443952, 0 3px 12px rgba(0,0,0,0.25);
+}
+#blackBoard {
+	min-height: 60px;
+	display: block;
+	padding: 1rem 1.5rem;
+	margin: 1rem 0;
+	font-size: 0.9rem;
+	line-height: 1.5;
+	color: #d4c4b0;
+	background: rgba(0,0,0,0.25);
+	border-radius: 12px;
+	text-align: center;
+	max-width: 100%;
+}
+.footer-buttons {
+	margin-top: 1rem;
 }
 </style>
 </head>
 <body onload="loadFunc()">
 <div class="center">
-<br><br><br>
-<img class="thumbnail" src="common/images/units/DebutAnt.png">
-<br>
-<h1>An ant's tryst with destiny.</h1>
-<br>
-<a href="map.html" class="demo-info demo-info-3">Play!</a><br><br><br>
-<div id="blackBoard"></div>
-<br><br>
-<a href="#" onclick="showCredits()" class="box-demo-info demo-info-2">Credits</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="#" onclick="showContact()" class="box-demo-info demo-info-2">Contact</a>
+	<img class="hero-image" src="common/images/units/DebutAnt.png" alt="Ant">
+	<h1>An ant's tryst with destiny.</h1>
+	<a href="map.html" class="demo-info demo-info-3">Play!</a>
+	<div id="blackBoard"></div>
+	<div class="footer-buttons">
+		<a href="#" onclick="showCredits()" class="box-demo-info demo-info-2">Credits</a>
+		<a href="#" onclick="showContact()" class="box-demo-info demo-info-2">Contact</a>
+	</div>
 </div>
-
-
-        
 </body>
 </html>

@@ -1,24 +1,24 @@
 
-html{color:#000;background:#FFF}
+html{color:#2d2618;background:#1a1f14}
 dl,dt,dd,ul,ol,li,h1,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th{margin:0;padding:0}
 
 .mapTile {
 	padding: 20px;
-	background-color: #E2F2E2;
+	background-color: #E8F0E4;
 	display: inline-block;
 	margin-right: -4px;
 	margin-top: -6px;
-	border-style: solid;
-	border-width: 1px;
-	border-color: #D5D5D4;
-	background-size:100%;
+	border: 1px solid rgba(90,100,80,0.25);
+	background-size: 100%;
+	box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+	transition: box-shadow 0.15s ease;
+}
+.mapTile:hover {
+	box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 0 0 2px rgba(120,140,80,0.3);
 }
 .containerDiv {
-	padding: 0px;
+	padding: 0;
 	display: inline-block;
-	/*border-style: solid;*/
-	border-width: 1px;
-	border-color: red;
 }
 
 .creatureImage{
@@ -26,29 +26,39 @@ dl,dt,dd,ul,ol,li,h1,pre,code,form,fieldset,legend,input,textarea,p,blockquote,t
 }
 
 .BOGtile {
-    background-color: #98D3FF;
+    background-color: #A8D8F0;
 }
 .HEIGHTStile {
-    background-color: #F2D1FC;
+    background-color: #E8D4F8;
 }
 .WOODStile {
-    background-color: #9EEECF;
+    background-color: #A8E8C8;
 }
 .PLAINStile {
-    background-color: #E2F2E1;
+    background-color: #E8F2E4;
 }
 .HIDDENtile {
-    background-color: #233AD4;
+    background-color: #3a4ad8;
 }
 
 .menuButton {
-    display:inline-block;
+    display: inline-block;
     position: absolute;
     font-size: 14px;
     background-image: url("images/mapIcon.png");
     background-size: 100%;
-    background-color: rgba(154, 169, 239, 0.29);
-    background-repeat: no-repeat;    
+    background-color: rgba(120, 150, 200, 0.4);
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.menuButton:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+.menuButton:active {
+    transform: scale(0.97);
 }
 
 .orderList {
@@ -59,39 +69,62 @@ dl,dt,dd,ul,ol,li,h1,pre,code,form,fieldset,legend,input,textarea,p,blockquote,t
 }
 
 .inventorybutton {
-    display:inline-block;
+    display: inline-block;
     position: absolute;
     font-size: 14px;
     background-image: url("images/inventoryButton.png");
     background-size: 100%;
-    background-color: rgba(145, 230, 67, 0.62);
+    background-color: rgba(120, 180, 90, 0.5);
     background-repeat: no-repeat;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.inventorybutton:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+.inventorybutton:active {
+    transform: scale(0.97);
 }
 
 .btn-primary {
-    color: #0f0a53;
-    background-color: #33a0b75c;
-    border-color: #2e9da40d;
-    
+    color: #fff;
+    background: linear-gradient(180deg, #4a7c59 0%, #3d6b4a 100%);
+    border: 1px solid rgba(255,255,255,0.2);
     margin-bottom: 2px;
+    border-radius: 8px;
+    font-family: "Source Sans 3", Helvetica, sans-serif;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .btn-primary:hover {
-    color: #0f0a53;
-    background-color: #33a0b75c;
-    border-color: #2e9da40d;
+    color: #fff;
+    background: linear-gradient(180deg, #559966 0%, #4a7c59 100%);
+    border-color: rgba(255,255,255,0.25);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
 }
 
 .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .open>.dropdown-toggle.btn-primary.focus, .open>.dropdown-toggle.btn-primary:focus, .open>.dropdown-toggle.btn-primary:hover {
-    color: #0f0a53;
-    background-color: #33a0b75c;
-    border-color: #2e9da40d;
+    color: #fff;
+    background: linear-gradient(180deg, #4a7c59 0%, #3d6b4a 100%);
+    border-color: rgba(255,255,255,0.2);
 }
 
 #mapList{
-	margin:auto;
+	margin: auto;
 	margin-left: 80px;
-	/*padding:0;*/
+}
+
+.dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.dropdown-menu li a:hover {
+    background-color: #e8f0e4 !important;
 }
 
 img {
@@ -99,35 +132,39 @@ img {
 }
 
 body {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Source Sans 3", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
-    line-height: 1;
-    color: #333;
+    line-height: 1.35;
+    color: #2d2618;
+    background: linear-gradient(180deg, #1a1f14 0%, #252a1c 100%);
+    min-height: 100vh;
 }
-
 
 #statsTable
 {
-    padding:3px 7px 2px 7px;
-    border-spacing:0;
-    border-collapse:collapse;
-    position:absolute;
-    font-family: "Comic Sans MS", cursive, sans-serif;
+    padding: 4px 8px;
+    border-spacing: 0;
+    border-collapse: collapse;
+    position: absolute;
+    font-family: "Source Sans 3", "Helvetica Neue", Helvetica, sans-serif;
     font-size: 12px;
     width: 220px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
 }
 #statsTable tr td
 {
-    padding:3px 7px 2px 7px;
-    border-spacing:0;
-    border-collapse:collapse;
+    padding: 5px 9px;
+    border-spacing: 0;
+    border-collapse: collapse;
 }
 
 #statsTable tr:nth-child(even) {
-    background-color: #F0F9E4;
+    background-color: #eef5e8;
 }
 #statsTable tr:nth-child(odd) {
-    background-color: #FFFFFF;
+    background-color: #f8fcf4;
 }
 
 a.blacklist{
@@ -136,24 +173,27 @@ a.blacklist{
 	color:#AAD8FC;
 	}
 
-#failBox { text-decoration: none; text-align: center; border-radius: 15px;}
-#failBox { width: 24px; position: absolute; z-index:1; background: #E61303; }
+#failBox { text-decoration: none; text-align: center; border-radius: 12px; padding: 20px; box-sizing: border-box; }
+#failBox { width: 24px; position: absolute; z-index: 10; background: linear-gradient(180deg, #c43d35 0%, #a02d26 100%); color: #fff; box-shadow: 0 8px 32px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.15); cursor: pointer; }
 #failBox h5 { margin: 0; text-align: center; }
+#failBox p { margin: 0.5em 0; font-size: 14px; line-height: 1.5; }
 
-#startBox { text-decoration: none; text-align: center; border-radius: 15px;}
-#startBox { width: 24px; position: absolute; z-index:1; background: #AEFF00; }
+#startBox { text-decoration: none; text-align: center; border-radius: 12px; padding: 20px; box-sizing: border-box; }
+#startBox { width: 24px; position: absolute; z-index: 10; background: linear-gradient(180deg, #5a9e4a 0%, #4a7d3a 100%); color: #fff; box-shadow: 0 8px 32px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.2); cursor: pointer; }
 #startBox h5 { margin: 0; text-align: center; }
+#startBox p { margin: 0.5em 0; font-size: 14px; line-height: 1.6; }
 
-#winBox { text-decoration: none; text-align: center; border-radius: 15px;}
-#winBox { width: 24px; position: absolute; z-index:1; background: #AEFF00; }
+#winBox { text-decoration: none; text-align: center; border-radius: 12px; padding: 20px; box-sizing: border-box; }
+#winBox { width: 24px; position: absolute; z-index: 10; background: linear-gradient(180deg, #5a9e4a 0%, #4a7d3a 100%); color: #fff; box-shadow: 0 8px 32px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.2); cursor: pointer; }
 #winBox h5 { margin: 0; text-align: center; }
+#winBox p { margin: 0.5em 0; font-size: 14px; line-height: 1.6; }
 
-#inventoryBox { text-decoration: none; text-align: center; border-radius: 15px;}
-#inventoryBox { width: 240px; height:92px; position: absolute; z-index:1; background: rgba(165, 207, 243, 0.89); }
+#inventoryBox { text-decoration: none; text-align: center; border-radius: 12px; padding: 12px; box-sizing: border-box; }
+#inventoryBox { width: 240px; min-height: 92px; position: absolute; z-index: 10; background: rgba(200, 220, 245, 0.95); box-shadow: 0 6px 24px rgba(0,0,0,0.25); border: 2px solid rgba(255,255,255,0.5); }
 #inventoryBox h5 { margin: 0; text-align: center; float: left; }
 
-#menuBox { text-decoration: none; text-align: center; border-radius: 15px;}
-#menuBox { width: 240px; height:74px; position: absolute; z-index:1; background: rgba(171, 195, 133, 0.89); }
+#menuBox { text-decoration: none; text-align: center; border-radius: 12px; padding: 12px; box-sizing: border-box; }
+#menuBox { width: 240px; min-height: 74px; position: absolute; z-index: 10; background: rgba(200, 220, 180, 0.95); box-shadow: 0 6px 24px rgba(0,0,0,0.25); border: 2px solid rgba(255,255,255,0.5); }
 #menuBox h5 { margin: 0; text-align: center; float: left; }
 
 #healthPotionIcon{
@@ -175,27 +215,23 @@ a.blacklist{
 	background-image: url("images/sound_icons/help.png");
 }
 .potionIcon {
-	border-radius: 7px;
-	background-color:rgba(230, 255, 255, 0.57);
-
-	/*padding:20px;*/ 
-	width:48px; 
-	height:48px;
-	margin-left:12px;
-	margin-right:12px;
+	border-radius: 10px;
+	background: linear-gradient(180deg, rgba(240, 252, 255, 0.9) 0%, rgba(220, 240, 248, 0.9) 100%);
+	width: 48px;
+	height: 48px;
+	margin-left: 12px;
+	margin-right: 12px;
 	background-repeat: no-repeat;
-    background-position: center; 
-    
-    /*align text to centre*/
-    color:white;
+    background-position: center;
+    color: #2d2618;
     text-align: center;
 	vertical-align: middle;
-	line-height: 48px; 
-	
+	line-height: 48px;
 	margin-left: 12px;
     margin-top: 12px;
-    
     display: inline-block;
+	border: 1px solid rgba(90, 120, 140, 0.2);
+	box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .menuIcon {
@@ -291,62 +327,71 @@ table.cellTable {
 }
 
 .map_button {
-    /*border: 1px solid #006;*/
-    background: #ccf;
+    background: linear-gradient(180deg, #5a7c9e 0%, #4a6a8e 100%);
+    color: #fff;
     width: 140px;
-    height:40px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    font-family: "Source Sans 3", Helvetica, sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 .map_button_won {
-    /*border: 1px solid #78b023;*/
-    background: rgba(66, 201, 71, 0.57);
+    background: linear-gradient(180deg, #4a9e5a 0%, #3a7d4a 100%);
+    color: #fff;
     width: 140px;
-    height:40px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    font-family: "Source Sans 3", Helvetica, sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 .map_button_disabled {
-    /*border: 1px solid #006;*/
-    background: #ccc;
+    background: #8a8a8a;
+    color: #ccc;
     width: 140px;
-    height:40px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: not-allowed;
 }
 .map_button:hover {
-    /*border: 1px solid #f00;*/
-    background: #eef;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
 #mapbutton {
-    /*border: 1px solid #FFFFFF;*/
-    /*background: #ccf;*/
-    display:inline-block;
+    display: inline-block;
     width: 48px;
     height: 48px;
     position: absolute;
-    
-
-	font-size: 14px;
-	/*border-radius: 24px;
-	background-color: Transparent; */
-	background-image: url("images/mapIcon.png");
-	background-size: 100%;
-	background-color: rgba(154, 169, 239, 0.29);
-    background-repeat: no-repeat;    
+    font-size: 14px;
+    background-image: url("images/mapIcon.png");
+    background-size: 100%;
+    background-color: rgba(120, 150, 200, 0.4);
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 #inventorybutton {
-    /*border: 1px solid #FFFFFF;*/
-    /*background: #ccf;*/
-    display:inline-block;
+    display: inline-block;
     width: 48px;
     height: 48px;
     position: absolute;
-    
-	font-size: 14px;
-	/*border-radius: 24px;
-	background-color: Transparent; */
-	background-image: url("images/inventoryButton.png");
-	background-size: 100%;
-	background-color: rgba(145, 230, 67, 0.62);
+    font-size: 14px;
+    background-image: url("images/inventoryButton.png");
+    background-size: 100%;
+    background-color: rgba(120, 180, 90, 0.5);
     background-repeat: no-repeat;
     margin-left: 50px;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 #orderList {
@@ -388,17 +433,17 @@ table.cellTable {
 
 
 .orderCard {
-    box-shadow: 2px 2px 4px #888888;
-	border-radius:7px;
-	background: #78b023;
-	background-image: -webkit-linear-gradient(top, rgba(168, 199, 119, 0.87), rgba(237, 255, 223, 0.95));
-	background-image: -moz-linear-gradient(top, rgba(168, 199, 119, 0.87), rgba(237, 255, 223, 0.95));
-	background-image: -ms-linear-gradient(top, rgba(168, 199, 119, 0.87), rgba(237, 255, 223, 0.95));
-	background-image: -o-linear-gradient(top, rgba(168, 199, 119, 0.87), rgba(237, 255, 223, 0.95));
-	background-image: linear-gradient(to bottom, rgba(168, 199, 119, 0.87), rgba(237, 255, 223, 0.95));
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4);
+	border-radius: 10px;
+	background: linear-gradient(180deg, rgba(168, 199, 119, 0.95) 0%, rgba(220, 240, 200, 0.98) 100%);
+	border: 1px solid rgba(90, 120, 60, 0.25);
+	transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.orderCard:hover {
+	box-shadow: 0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.5);
 }
 .orderCard + .orderCard {
-    margin-left: 1px;
+    margin-left: 2px;
 }
 
 .titleDisp {

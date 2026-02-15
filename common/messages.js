@@ -108,9 +108,10 @@ function centrify(messageBox) {
     });
 }
 function popBox(msgBox) {
+    var textColor = msgBox === "failBox" ? "#f5e6d3" : "#2D1A1C";
     $("#" + msgBox).show();
     $("#" + msgBox).animate({
-        color: "#2D1A1C",
+        color: textColor,
         width: BLOCKSIZE * 7
     }, 800);
 }

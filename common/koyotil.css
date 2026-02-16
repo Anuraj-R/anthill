@@ -181,10 +181,59 @@ a.blacklist{
 #failBox h5 { margin: 0; text-align: center; }
 #failBox p { margin: 0.5em 0; font-size: 14px; line-height: 1.5; }
 
-#startBox { text-decoration: none; text-align: center; border-radius: 12px; padding: 20px; box-sizing: border-box; }
-#startBox { width: 24px; position: absolute; z-index: 10; background: linear-gradient(180deg, #5a9e4a 0%, #4a7d3a 100%); color: #fff; box-shadow: 0 8px 32px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.2); cursor: pointer; }
-#startBox h5 { margin: 0; text-align: center; }
-#startBox p { margin: 0.5em 0; font-size: 14px; line-height: 1.6; }
+#startBox {
+    text-decoration: none;
+    text-align: center;
+    border-radius: 16px;
+    padding: 32px 40px;
+    box-sizing: border-box;
+    width: 320px;
+    position: absolute;
+    z-index: 10;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 60px;
+    background: linear-gradient(165deg, #6bae5a 0%, #4a7d3a 50%, #3d6b2e 100%);
+    color: #f5f9f3;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) inset;
+    border: 1px solid rgba(255,255,255,0.25);
+    cursor: pointer;
+    font-family: "Source Sans 3", "Helvetica Neue", Helvetica, sans-serif;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#startBox:hover {
+    transform: translateX(-50%) scale(1.02);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.15) inset;
+}
+#startBox:active {
+    transform: translateX(-50%) scale(0.98);
+}
+#startBox .start-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+#startBox .start-mission {
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+    opacity: 0.95;
+}
+#startBox .start-cta {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: background 0.2s ease;
+}
+#startBox:hover .start-cta {
+    background: rgba(255,255,255,0.3);
+}
 
 #winBox { text-decoration: none; text-align: center; border-radius: 12px; padding: 20px; box-sizing: border-box; }
 #winBox { width: 24px; position: absolute; z-index: 10; background: linear-gradient(180deg, #5a9e4a 0%, #4a7d3a 100%); color: #fff; box-shadow: 0 8px 32px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.2); cursor: pointer; }

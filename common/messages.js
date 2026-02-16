@@ -9,12 +9,17 @@ function centrify(messageBox) {
     });
 }
 function popBox(msgBox) {
-    var textColor = msgBox === "failBox" ? "#f5e6d3" : "#2D1A1C";
-    $("#" + msgBox).show();
-    $("#" + msgBox).animate({
-        color: textColor,
-        width: BLOCKSIZE * 7
-    }, 800);
+    var $box = $("#" + msgBox);
+    $box.show();
+    if (msgBox === "startBox") {
+        $box.css({ opacity: 0 }).animate({ opacity: 1 }, 400);
+    } else {
+        var textColor = msgBox === "failBox" ? "#f5e6d3" : "#2D1A1C";
+        $box.animate({
+            color: textColor,
+            width: BLOCKSIZE * 7
+        }, 800);
+    }
 }
 
 function fillBox(msgBox, msg) {
@@ -22,11 +27,11 @@ function fillBox(msgBox, msg) {
 }
 
 function showStartMessage() {
-    var msg = "<p><br><br><br><br><br><br>";
-    msg += "<br><br>Tap here to start the game!<br><br><br><br><br><br></p>";
+    var msg = '<div class="start-title">Ready for Battle</div>';
+    msg += '<div class="start-mission">Destroy the enemy and secure the area.</div>';
+    msg += '<div class="start-cta">Tap here to start</div>';
     fillBox("startBox", msg);
 
-    centrify("startBox");
     if (showStartMessageState) {
         popBox("startBox");
 

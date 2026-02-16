@@ -1,193 +1,26 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Ant Hill</title>
-<script src="common/jquery-2.1.4.js"></script>
-<script src="common/jquery-ui.js"></script>
-<script type="text/javascript" src="cordova.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
-<script type="text/javascript">
-
-boardValue = 1;
-
-function loadFunc(){
-
-$(document).ready(function() {
-	// For mobile: Add event listener
-	document.addEventListener("deviceready", onDeviceReady, false);
-	});
-}
-
-function onDeviceReady() {
-    document.addEventListener("backbutton", onBackKeyDown, false);
-}
-
-function onBackKeyDown() {
-   navigator.app.exitApp();
-}
-
-function showCredits(){
-	//var str = "Credits: Many of the images used in the game are from pixabay.com, which is a great site for images for free use without attribution. If you find an image in the game that violates a copyright, please notify me.";
-	//document.getElementById("blackBoard").innerHTML = str;
-	
-	if ( boardValue != 2 ){
-		var str = "Credits: Many of the images used in the game are from pixabay.com, which is a great site for images for free use without attribution. If you find an image in the game that violates a copyright, please notify me.";
-		document.getElementById("blackBoard").innerHTML = str;
-		boardValue = 2;
-	}
-	else{
-		document.getElementById("blackBoard").innerHTML = "";
-		boardValue = 1;
-	}
-}
-function showContact(){
-	
-	if ( boardValue != 3 ){
-		var str = "Please send your feedback, suggestions and complaints to anurajr@gmail.com.";
-		document.getElementById("blackBoard").innerHTML = str;
-		boardValue = 3;
-	}
-	else{
-		document.getElementById("blackBoard").innerHTML = "";
-		boardValue = 1;
-	}
-}
-	
-</script>
-<style type="text/css">
-
-html { 
-	
-}
-h1 {
-	font-family: Papyrus, fantasy;
-	font-size: 24px;
-	font-style: italic;
-	font-variant: normal;
-	font-weight: bolder;
-	text-shadow: 2px 2px #cccccc;
-	
-	color: #662617;
-}
-.center {
-    margin: auto;
-	text-align:center;
-}
-.demo-info {
-	padding: 14px 26px;
-	font-size: 14px;
-	line-height: 100%;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.4);
-	color: #fff;
-	
-	vertical-align: middle;
-	text-align: center;
-	cursor: pointer;
-	font-weight: bold;
-	transition: background 0.1s ease-in-out;
-	-webkit-transition: background 0.1s ease-in-out;
-	-moz-transition: background 0.1s ease-in-out;
-	-ms-transition: background 0.1s ease-in-out;
-	-o-transition: background 0.1s ease-in-out;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-	color: #fff;
-	-webkit-border-radius: 40px;
-	-moz-border-radius: 40px;
-	border-radius: 40px;
-	font-family: 'Helvetica Neue', Helvetica, sans-serif;
-}
-.demo-info:active {
-	padding-top: 15px;
-}
-.demo-info, .demo-info:hover, .demo-info:active {
-	outline: 0 none;
-	text-decoration: none;
-        color: #fff;
-}
-
-.box-demo-info {
-	padding: 14px 26px;
-	font-size: 14px;
-	line-height: 100%;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.4);
-	color: #fff;
-	
-	vertical-align: middle;
-	text-align: center;
-	cursor: pointer;
-	font-weight: bold;
-	transition: background 0.1s ease-in-out;
-	-webkit-transition: background 0.1s ease-in-out;
-	-moz-transition: background 0.1s ease-in-out;
-	-ms-transition: background 0.1s ease-in-out;
-	-o-transition: background 0.1s ease-in-out;
-	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-	color: #fff;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	font-family: 'Helvetica Neue', Helvetica, sans-serif;
-}
-.box-demo-info:active {
-	padding-top: 15px;
-}
-.box-demo-info, .demo-info:hover, .demo-info:active {
-	outline: 0 none;
-	text-decoration: none;
-        color: #fff;
-}
-.demo-info-1 {
-	background-color: #fdc058;
-	box-shadow: 0px 3px 0px 0px #e29003;
-}
-.demo-info-1:hover {
-	background-color: #fdb53a;
-}
-.demo-info-1:active {
-	box-shadow: 0px 1px 0px 0px #e29003;
-}
-.demo-info-2 {
-	background-color:  #d1c2f0;
-	box-shadow: 0px 3px 0px 0px #a385e0;
-}
-.demo-info-2:hover {
-	background-color: #b299e5;
-}
-.demo-info-2:active {
-	box-shadow: 0px 1px 0px 0px #a385e0;
-}
-.demo-info-3 {
-	background-color: #2ecc71;
-	box-shadow: 0px 3px 0px 0px #239a55;
-}
-.demo-info-3:hover {
-	background-color: #28b363;
-}
-.demo-info-3:active {
-	box-shadow: 0px 1px 0px 0px #239a55;
-}
-
-#blackBoard{ 
-	height: 60px;  
-	display:block;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ant Hill</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/index.css">
 </head>
-<body onload="loadFunc()">
-<div class="center">
-<br><br><br>
-<img class="thumbnail" src="common/images/units/DebutAnt.png">
-<br>
-<h1>An ant's tryst with destiny.</h1>
-<br>
-<a href="map.html" class="demo-info demo-info-3">Play!</a><br><br><br>
-<div id="blackBoard"></div>
-<br><br>
-<a href="#" onclick="showCredits()" class="box-demo-info demo-info-2">Credits</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="#" onclick="showContact()" class="box-demo-info demo-info-2">Contact</a>
-</div>
-
-
-        
+<body>
+  <div class="center">
+    <img class="hero-image" src="common/images/units/DebutAnt.png" alt="Ant">
+    <h1>An ant's tryst with destiny.</h1>
+    <a href="map.html" class="demo-info demo-info-3">Play!</a>
+    <div id="blackBoard"></div>
+    <div class="footer-buttons">
+      <a href="#" data-action="credits" class="box-demo-info demo-info-2">Credits</a>
+      <a href="#" data-action="contact" class="box-demo-info demo-info-2">Contact</a>
+    </div>
+  </div>
+  <script src="cordova.js"></script>
+  <script src="js/index.js"></script>
 </body>
 </html>

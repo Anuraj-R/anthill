@@ -23,35 +23,16 @@
   window.GRID = null;
 
   function loadMapLevelFromLocalStorage() {
-    window.MAPLEVEL = localStorageGetOrSetVar('MAPLEVEL', 3);
+    window.MAPLEVEL = parseInt(localStorage.getItem('MAPLEVEL'), 10) || 1;
     window.MAPLEVELMAX = localStorageGetOrSetVar('MAPLEVELMAX', 20);
     window.GRIDNAME = `container${window.MAPLEVEL}`;
   }
 
-  function addDropDownForLevels() {
-    $('#container').append(createDropDown());
+  function addMapSelectButton() {
+    $('#container').append(
+      '<a href="maplist.html" id="mapList" class="btn btn-primary map-select-btn">← Maps</a>'
+    );
   }
-
-  function createDropDown() {
-    const max = window.MAPLEVELMAX;
-    let items = '';
-    for (let i = 1; i <= max; i++) {
-      items += `<li onclick="selectLevel(${i})"><a href="#">Level ${i}</a></li>`;
-    }
-    return `
-      <div class="dropdown" id="mapList">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-          Level ${window.MAPLEVEL} <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" id="dropdownList">${items}</ul>
-      </div>
-    `;
-  }
-
-  window.selectLevel = function (i) {
-    localStorage.setItem('MAPLEVEL', i);
-    location.reload();
-  };
 
   function createGridAndAddToContainer() {
     const grid = new Grid(window.WIDTH, window.HEIGHT, window.GRIDNAME, window.MAPLEVEL);
@@ -85,7 +66,7 @@
   };
 
   function populateTheUIContainer() {
-    addDropDownForLevels();
+    addMapSelectButton();
     addMapAndInventoryButtons();
 
     const orderBox = new OrderBox(window.GRIDNAME, window.BLOCKSIZE);

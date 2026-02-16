@@ -113,9 +113,12 @@ dl,dt,dd,ul,ol,li,h1,pre,code,form,fieldset,legend,input,textarea,p,blockquote,t
     border-color: rgba(255,255,255,0.2);
 }
 
-#mapList{
+#mapList.map-select-btn,
+.map-select-btn {
 	margin: auto;
-	margin-left: 80px;
+	margin-left: 0;
+	text-decoration: none;
+	display: inline-block;
 }
 
 .dropdown-menu {

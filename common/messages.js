@@ -56,11 +56,8 @@ function showWinMessage() {
         showWinMessageState = !showWinMessageState;
     } else {
         $("#winBox").fadeOut("slow", function () {
-            // Animation complete.
             showWinMessageState = !showWinMessageState;
-
-            //redirect to maplist
-            //window.location = "../maplist.html";
+            window.location = "maplist.html";
         });
     }
 }

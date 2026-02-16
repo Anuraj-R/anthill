@@ -100,23 +100,33 @@ class Creature {
     }
 
     refreshGraphics() {
-        //get the cell offset and set the image location to that
-        var pos = $("#" + this.position).offset();
+        var $tile = $("#" + this.position);
+        var $container = $("#container");
+        var tileOffset = $tile.offset();
+        var containerOffset = $container.offset();
+        var scale = (typeof window.GAME_SCALE !== "undefined") ? window.GAME_SCALE : 1;
+        var relLeft = (tileOffset.left - containerOffset.left) / scale;
+        var relTop = (tileOffset.top - containerOffset.top) / scale;
+
         $("#creatureImage_" + this.id).animate({
-            left: (pos.left),
-            top: (pos.top)
+            left: relLeft,
+            top: relTop + 5
         }, 200, function () {
             // Animation complete.
         });
         $(this.healthBar).detach();
         this.healthBar = this.createHealthBar();
-        $(this.healthBar).offset({ top: pos.top - 12, left: pos.left });
+        $(this.healthBar).css({
+            left: relLeft + "px",
+            top: relTop + "px"
+        });
         this.log("Refreshed graphics for " + this.name);
         //CreatureLog(this);
     }
 
     die() {
         this.log("Removing self: " + this.id);
+        $(this.healthBar).detach();
         //mark the map tile empty
         GRID.resetTile(this.position);
         //fadeout the picture
@@ -179,14 +189,30 @@ class Creature {
         this.log("Creating healthbar for " + this.name);
         var barLength = 40;
         var col = this.teamColor();
-        var greyLength = ((this.maxHealth - this.health) / this.maxHealth) * barLength;
-        var greenLength = barLength - greyLength;
+        var healthWidth = (this.health / this.maxHealth) * barLength;
         var outerDiv = document.createElement('div');
         outerDiv.style.position = "absolute";
-        //width, height, color
-        var div = Creature.createDiv(greenLength + "px", "2px", col);
-        outerDiv.appendChild(div);
-        document.body.appendChild(outerDiv);
+        outerDiv.style.pointerEvents = "none";
+        outerDiv.style.zIndex = "5";
+        outerDiv.style.width = barLength + "px";
+        outerDiv.style.height = "4px";
+        outerDiv.style.background = "#666";
+        outerDiv.style.borderRadius = "2px";
+        var fillDiv = document.createElement('div');
+        fillDiv.style.position = "absolute";
+        fillDiv.style.left = "0";
+        fillDiv.style.top = "0";
+        fillDiv.style.width = healthWidth + "px";
+        fillDiv.style.height = "4px";
+        fillDiv.style.background = col;
+        fillDiv.style.borderRadius = "2px";
+        outerDiv.appendChild(fillDiv);
+        var container = document.getElementById("container");
+        if (container) {
+            container.appendChild(outerDiv);
+        } else {
+            document.body.appendChild(outerDiv);
+        }
         return outerDiv;
     }
 

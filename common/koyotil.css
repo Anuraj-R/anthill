@@ -19,6 +19,7 @@ dl,dt,dd,ul,ol,li,h1,pre,code,form,fieldset,legend,input,textarea,p,blockquote,t
 .containerDiv {
 	padding: 0;
 	display: inline-block;
+	position: relative;
 }
 
 .creatureImage{
@@ -141,6 +142,18 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-x: hidden;
+}
+
+#gameWrapper {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: auto;
 }
 
 #statsTable
@@ -188,6 +201,7 @@ a.blacklist{
     padding: 32px 40px;
     box-sizing: border-box;
     width: 320px;
+    max-width: calc(100vw - 40px);
     position: absolute;
     z-index: 10;
     left: 50%;

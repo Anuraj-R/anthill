@@ -101,11 +101,45 @@
     showStartMessage();
   }
 
+  function scaleGameToFit() {
+    var $wrapper = $('#gameWrapper');
+    var $container = $('#container');
+    if (!$wrapper.length || !$container.length) return;
+
+    var viewportW = window.innerWidth - 20;
+    var viewportH = window.innerHeight - 20;
+    var contentW = $container.outerWidth();
+    var contentH = $container.outerHeight();
+
+    if (contentW <= 0 || contentH <= 0) return;
+
+    var scaleX = viewportW / contentW;
+    var scaleY = viewportH / contentH;
+    var scale = Math.min(scaleX, scaleY, 1.5);
+
+    window.GAME_SCALE = scale;
+    $container.css({
+      'transform': 'scale(' + scale + ')',
+      'transform-origin': 'top center'
+    });
+    if (window.SEQUENCE) {
+      window.SEQUENCE.forEach(function (unit) {
+        if (unit && unit.refreshGraphics) unit.refreshGraphics();
+      });
+    }
+  }
+
   function loadFunc() {
     loadMapLevelFromLocalStorage();
     InitAudio();
     loadInventory();
     populateTheUIContainer();
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        scaleGameToFit();
+      });
+    });
+    $(window).on('resize orientationchange', scaleGameToFit);
   }
 
   $(document).ready(loadFunc);

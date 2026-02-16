@@ -138,17 +138,17 @@ function placeUnits(unitsArray, grid, row){
         img.className = "creatureImage";
 
         img.src = unit.image;
-        $('body').append(img);
+        $('#container').append(img);
         $('#'+img.id).css('width',BLOCKSIZE);
         $('#'+img.id).css('height',BLOCKSIZE);
 
-        //set the CSS properties for the first time for the image
+        //set the CSS properties for the first time for the image (position relative to container)
         var p = $( '#'+unit.position );
-        var position = p.position();
+        var pos = p.position();
         $('#'+img.id).css({
             position:'absolute',
-            top:position.top-5,
-            left:position.left
+            top:pos.top+5,
+            left:pos.left
         });
 
         unit.refreshGraphics();

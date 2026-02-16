@@ -6,17 +6,31 @@
   <title>Select Map - Ant Hill</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="common/koyotil.css">
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/maplist.css">
 </head>
 <body>
   <div class="maplist-container">
-    <h1 class="maplist-title">Select a Map</h1>
-    <p class="maplist-subtitle">Choose your battleground</p>
-    <div id="mapCards" class="map-cards"></div>
-    <a href="index.html" class="maplist-back">← Back to Home</a>
+    <div class="maplist-map">
+      <h1 class="maplist-title">The Ant's Trail</h1>
+      <p class="maplist-subtitle">Follow the trail to your battleground</p>
+      <div class="maplist-route-wrap">
+        <svg class="maplist-route" viewBox="0 0 280 520" preserveAspectRatio="xMidYMid meet">
+          <path class="route-path" d="M 50 50 Q 220 100 50 160 Q 220 220 50 280 Q 220 340 50 400 Q 220 460 50 520" fill="none" stroke="url(#routeGradient)" stroke-width="4" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#5c4a32"/>
+              <stop offset="50%" style="stop-color:#8b7355"/>
+              <stop offset="100%" style="stop-color:#5c4a32"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div id="mapCards" class="map-grains"></div>
+      </div>
+    </div>
+    <a href="index.html" class="maplist-back">← Leave the map</a>
   </div>
   <script src="common/jquery-2.1.4.js"></script>
   <script src="js/maplist.js"></script>

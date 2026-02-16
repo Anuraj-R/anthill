@@ -1,108 +1,186 @@
-/* Map Selection Page */
+/* Map Selection Page - Fantasy Map with Rice Grains */
 
 .maplist-container {
   min-height: 100vh;
-  padding: 2rem 1.5rem;
-  background: linear-gradient(180deg, #1a1f14 0%, #252a1c 100%);
+  padding: 1.5rem;
+  background: #1a1510;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.maplist-map {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem 1.5rem 3rem;
+  background: url("../common/images/fantasy-map-background.png") center / cover no-repeat;
+  background-color: #e8dcc8;
+  border-radius: 8px;
+  box-shadow:
+    inset 0 0 60px rgba(139, 115, 85, 0.15),
+    0 0 0 6px #8b7355,
+    0 0 0 10px #5c4a32,
+    0 16px 48px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(139, 115, 85, 0.4);
+}
+
 .maplist-title {
-  font-family: "Source Sans 3", Helvetica, sans-serif;
-  font-size: 1.5rem;
+  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-size: 1.35rem;
   font-weight: 600;
-  color: #f5f9f3;
+  color: #3d2e1f;
   margin: 0 0 0.25rem 0;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .maplist-subtitle {
-  font-size: 0.95rem;
-  color: #b8c4b0;
-  margin: 0 0 2rem 0;
+  font-family: "Source Sans 3", Helvetica, sans-serif;
+  font-size: 0.8rem;
+  color: #5c4a32;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+  font-style: italic;
 }
 
-.map-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.maplist-route-wrap {
+  position: relative;
   width: 100%;
-  max-width: 320px;
-  margin-bottom: 2rem;
+  aspect-ratio: 280 / 520;
+  min-height: 360px;
 }
 
-.map-card {
-  display: block;
-  padding: 1.25rem 1.5rem;
-  border-radius: 12px;
-  color: #f5f9f3;
+.maplist-route {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.route-path {
+  stroke-dasharray: 4 8;
+  opacity: 0.85;
+}
+
+.map-grains {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.map-grains .map-grain {
+  pointer-events: auto;
+}
+
+/* Rice grain shape - elongated oval, rotated to follow path */
+.map-grain {
+  position: absolute;
+  width: 28px;
+  height: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 2;
+}
+
+.map-grain-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  padding: 4px 8px;
+  background: rgba(45, 38, 28, 0.95);
+  color: #f5f0e8;
+  font-family: "Source Sans 3", Helvetica, sans-serif;
+  font-size: 0.7rem;
   font-weight: 600;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Unlocked (playable) - green */
-.map-card--unlocked {
-  background: linear-gradient(165deg, #4a7d3a 0%, #3d6b2e 100%);
+.map-grain:hover .map-grain-tooltip {
+  opacity: 1;
+}
+
+/* Unlocked - pale rice grain */
+.map-grain--unlocked {
+  background: linear-gradient(135deg, #f5f0e0 0%, #e8e0c8 30%, #d8d0b0 70%, #c8c0a0 100%);
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+    inset -1px -1px 1px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(180, 170, 140, 0.5);
   cursor: pointer;
 }
 
-.map-card--unlocked:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+.map-grain--unlocked:hover {
+  transform: translate(-50%, -50%) rotate(var(--grain-angle, 0deg)) scale(1.25);
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+    0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.map-card--unlocked:active {
-  transform: translateY(0);
+.map-grain--unlocked:active {
+  transform: translate(-50%, -50%) rotate(var(--grain-angle, 0deg)) scale(1.1);
 }
 
-/* Completed - gold/amber */
-.map-card--completed {
-  background: linear-gradient(165deg, #6b5a3a 0%, #5a4a2e 100%);
+/* Completed - golden/amber grain */
+.map-grain--completed {
+  background: linear-gradient(135deg, #f0e8c0 0%, #e0d4a0 30%, #d0c080 70%, #b8a860 100%);
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.5),
+    inset -1px -1px 1px rgba(0, 0, 0, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(180, 160, 100, 0.5);
   cursor: pointer;
 }
 
-.map-card--completed:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+.map-grain--completed:hover {
+  transform: translate(-50%, -50%) rotate(var(--grain-angle, 0deg)) scale(1.25);
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+    0 4px 12px rgba(212, 184, 64, 0.25);
 }
 
-.map-card--completed:active {
-  transform: translateY(0);
+.map-grain--completed:active {
+  transform: translate(-50%, -50%) rotate(var(--grain-angle, 0deg)) scale(1.1);
 }
 
-/* Locked - grey, unclickable */
-.map-card--locked {
-  background: linear-gradient(165deg, #3a3a3a 0%, #2a2a2a 100%);
-  color: #8a8a8a;
+/* Locked - dull grey grain */
+.map-grain--locked {
+  background: linear-gradient(135deg, #a0a0a0 0%, #808080 50%, #606060 100%);
+  box-shadow:
+    inset 1px 1px 1px rgba(255, 255, 255, 0.2),
+    inset -1px -1px 1px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   cursor: not-allowed;
   pointer-events: none;
 }
 
-.map-card-lock {
-  font-size: 0.85rem;
-  opacity: 0.8;
-}
-
 .maplist-back {
-  color: #8a9a82;
+  margin-top: 1.5rem;
+  color: #8a7355;
   text-decoration: none;
   font-size: 0.9rem;
+  font-family: "Source Sans 3", Helvetica, sans-serif;
   transition: color 0.15s ease;
 }
 
 .maplist-back:hover {
-  color: #b8c4b0;
-}
-
-.maplist-complete {
-  color: #b8c4b0;
-  font-size: 1rem;
-  text-align: center;
-  padding: 2rem;
+  color: #5c4a32;
 }

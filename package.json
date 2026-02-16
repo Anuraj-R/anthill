@@ -11,6 +11,9 @@
   },
   "author": "",
   "license": "ISC",
+  "overrides": {
+    "form-data": "^2.5.4"
+  },
   "devDependencies": {
     "@babel/core": "^7.23.0",
     "@babel/preset-env": "^7.23.0",

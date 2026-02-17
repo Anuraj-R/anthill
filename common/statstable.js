@@ -49,9 +49,12 @@ function showStats(x){
     fillStatsTable(uid);
     $("#statsTable").show();
     
-    //show the menu on the left hand corner of map
-    var position = $("#"+GRIDNAME+"inventorybutton").position();
-    $("#statsTable").offset({left:position.left+48,top:position.top+48});
+    // Position over container1_0x0 (top-left grid cell)
+    var $cell = $("#"+GRIDNAME+"_0x0");
+    if ($cell.length) {
+        var pos = $cell.position();
+        $("#statsTable").css({ top: pos.top + "px", left: pos.left + "px" });
+    }
 }
 
 function hideStats(){
@@ -71,7 +74,8 @@ function showPrevUnit(){
 function fillStatsTable(uname){
 
     $("#statsTable").remove();
-    $("body").append('<table id="statsTable" name="statsTable">'); 
+    var $target = $("#container").length ? $("#container") : $("body");
+    $target.append('<table id="statsTable" name="statsTable">'); 
 
     var thisUnit = SEQUENCE[0];
     for (var i=0; i<SEQUENCE.length ; i++){

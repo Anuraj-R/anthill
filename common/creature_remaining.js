@@ -37,7 +37,8 @@ function getCreatureMaxHealth(unit_type) {
 }
 
 function addStatsTable() {
-    $("body").append(statsTable);
+    var $target = $("#container").length ? $("#container") : $("body");
+    $target.append(statsTable);
 
     //update unit stats from saved structures
     updateUnitStats();

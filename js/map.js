@@ -79,6 +79,7 @@
     orderBox.progress();
     window.ORDERBOX = orderBox;
 
+    if (window.setupTerrainTooltips) window.setupTerrainTooltips();
     showStartMessage();
   }
 

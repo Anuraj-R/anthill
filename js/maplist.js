@@ -64,7 +64,7 @@
       var state = getMapState(level, highestCompleted);
       var pt = points[level - 1] || { x: 140, y: 26 * level, angle: 0 };
       var name = LEVEL_NAMES[level - 1] || 'Map ' + level;
-      var $grain = $('<a href="#" class="map-grain map-grain--' + state + '" data-level="' + level + '" title="' + name + '"><span class="map-grain-tooltip">' + name + '</span></a>');
+      var $grain = $('<a href="#" class="map-grain map-grain--' + state + '" data-level="' + level + '" data-name="' + name + '" title="' + name + '"></a>');
       $grain.css({
         left: (pt.x / vbWidth * 100) + '%',
         top: (pt.y / vbHeight * 100) + '%',
@@ -83,7 +83,24 @@
     }
   }
 
+  function initTooltip() {
+    var $tooltip = $('#mapTooltip');
+    $('.map-grain').on('mouseenter', function () {
+      var $g = $(this);
+      var name = $g.data('name');
+      var rect = this.getBoundingClientRect();
+      $tooltip.text(name).css({
+        left: rect.left + rect.width / 2,
+        top: rect.top - 4,
+        opacity: 1
+      });
+    }).on('mouseleave', function () {
+      $tooltip.css('opacity', 0);
+    });
+  }
+
   $(document).ready(function () {
     renderMapCards();
+    initTooltip();
   });
 })();

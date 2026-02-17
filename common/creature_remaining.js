@@ -33,7 +33,7 @@ function getCreatureAttack(unit_type) {
 
 function getCreatureMaxHealth(unit_type) {
     var i = Creature.getIndex(unit_type);
-    return Creatures[i][10];
+    return Creatures[i][11]; // maxHealth is at index 11
 }
 
 function addStatsTable() {

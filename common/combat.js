@@ -1,3 +1,4 @@
+var COMBAT_ANIMATION_DURATION = 400;
 
 class Combat {
     constructor(attacker, defender) {
@@ -5,54 +6,45 @@ class Combat {
         this.defender = defender;
     }
 
-    start(){
-        console.log( this.attacker.name + " Vs "+this.defender.name);
-        if (this.attacker.type == "infantry") this.combatMelee();
-        if (this.attacker.type == "ranged") this.combatRanged();
+    start() {
+        console.log(this.attacker.name + " Vs " + this.defender.name);
+        if (this.attacker.type === "infantry") {
+            this.combatMelee();
+        } else if (this.attacker.type === "ranged") {
+            this.combatRanged();
+        }
         this.defender.refreshGraphics();
     }
 
-    combatMelee(){
-        var animationObject = 'common/images/melee.png';
-        var audioObject = 'common/audio/anthill_melee.wav';
-        var defenceCoefficient = 1 - (this.defender.defence/100);
-
-        this.doCombat(animationObject, audioObject, defenceCoefficient);
+    combatMelee() {
+        var defenceCoefficient = 1 - (this.defender.defence / 100);
+        this.doCombat('common/images/melee.png', 'common/audio/anthill_melee.wav', defenceCoefficient);
     }
 
-    combatRanged(){
-        var animationObject = 'common/images/ranged.png';
-        var audioObject = 'common/audio/anthill_ranged.wav';
-        var defenceCoefficient = 1 - (this.defender.rangedDefence/100);
-
-        this.doCombat(animationObject, audioObject, defenceCoefficient);
+    combatRanged() {
+        var defenceCoefficient = 1 - (this.defender.rangedDefence / 100);
+        this.doCombat('common/images/ranged.png', 'common/audio/anthill_ranged.wav', defenceCoefficient);
     }
 
-    doCombat(animationObject, audioObject, defenceCoefficient){
-        animateNewObject( this.attacker.position, this.defender.position, 400, animationObject);
+    doCombat(animationObject, audioObject, defenceCoefficient) {
+        animateNewObject(this.attacker.position, this.defender.position, COMBAT_ANIMATION_DURATION, animationObject);
         playAudio(audioObject);
 
-        var impact = this.attacker.attack * (0.5 + 0.5 * (this.attacker.health/this.attacker.maxHealth)) * defenceCoefficient;
+        var healthFactor = 0.5 + 0.5 * (this.attacker.health / this.attacker.maxHealth);
+        var impact = this.attacker.attack * healthFactor * defenceCoefficient;
 
-        if (impact < this.defender.health){
+        if (impact < this.defender.health) {
             this.defender.health -= impact;
-            //defender.refreshGraphics();
-        }
-        else
-        {
+        } else {
             this.defender.health = 0;
-            //this.defender.refreshGraphics();
             this.defender.die();
-            var winner=checkIfWon();
-            if ( winner != 0){
-                GAMEOVER=1;
-                console.log("Team "+winner+" has won");
+            var winner = checkIfWon();
+            if (winner !== 0) {
+                GAMEOVER = 1;
+                console.log("Team " + winner + " has won");
             }
         }
     }
-
-
-
 }
 
 window.module = window.module || {};

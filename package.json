@@ -1,13 +1,12 @@
 {
-  "name": "aunthillary",
+  "name": "anthill",
   "version": "1.0.0",
-  "description": "",
+  "description": "AntHill - A small combat puzzle game",
   "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
+  "directories": { "lib": "lib" },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "npx serve -p 3000"
   },
   "author": "",
   "license": "ISC",

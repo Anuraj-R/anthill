@@ -114,10 +114,10 @@ class PathFinder {
         return arr;
     }
 
-    addToArray(arr, x,y){
-        var loc = this.grid.getLoc(x,y);
-        if (this.grid.isMovable(loc)){
-            arr[arr.length] = loc;
+    addToArray(arr, x, y) {
+        var loc = this.grid.getLoc(x, y);
+        if (this.grid.isMovable(loc)) {
+            arr.push(loc);
         }
     }
 }

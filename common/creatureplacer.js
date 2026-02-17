@@ -79,11 +79,9 @@ class CreaturePlacer{
     }
 
     
-    static sortUnitsByWeight(unitsArray){
-        var unitsSortedArray = [];
-        for ( var i=0; i< unitsArray.length; i++)
-            unitsSortedArray.push(new weightedUnit(unitsArray[i]));
-        unitsSortedArray.sort(function(a,b){return a.weight - b.weight;});
+    static sortUnitsByWeight(unitsArray) {
+        var unitsSortedArray = unitsArray.map(function (name) { return new WeightedUnit(name); });
+        unitsSortedArray.sort(function (a, b) { return a.weight - b.weight; });
         return unitsSortedArray;
     }
 
@@ -97,11 +95,10 @@ class CreaturePlacer{
     }
 }
 
-//This is a structure with just the unit names and their weights
-//It is used as a helper structure for sorting units based on weights
-function weightedUnit(uname){
-    this.name = uname;
-    this.weight = Creature.weight(uname);
+/** Helper for sorting units by combat weight */
+function WeightedUnit(unitName) {
+    this.name = unitName;
+    this.weight = Creature.weight(unitName);
 }
 
 // eslint-disable-next-line no-unused-vars

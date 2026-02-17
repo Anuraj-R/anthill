@@ -5,17 +5,15 @@
 */
 
 
-class OrderBox{
+class OrderBox {
+    constructor(gridName, blockSize) {
+        this.id = gridName + "orderList";
+        this.gridName = gridName;
+        this.blockSize = blockSize;
+        this.firstUnitMoved = false;
 
-    constructor(GRIDNAME, BLOCKSIZE){
-        
-        this.id = GRIDNAME+"orderList"; //contains the ID used for the html element
-        this.gridName = GRIDNAME;
-        this.blockSize = BLOCKSIZE;     //a value to scale the cards in the box
-        this.firstUnitMoved = false;    //to handle the first time movement boundary condition
-
-        this.cardSize = BLOCKSIZE;
-        this.bigSize = BLOCKSIZE+6;
+        this.cardSize = blockSize;
+        this.bigSize = blockSize + 6;
     }
 
     addToContainer(container){

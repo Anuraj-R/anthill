@@ -107,13 +107,11 @@ function fillStatsTable(uname){
     str+='<tr><td>Position</td><td>'+thisUnit.position+'</td></tr>'          ;
 
     //update effects
-    str+='<tr><td>Effects	</td><td>';
+    str += '<tr><td>Effects</td><td>';
     var effects = "";
-    for (var effect in thisUnit.effects){
-        var name = thisUnit.effects[effect].name;
-        var turns = thisUnit.effects[effect].turns;
-        effects+= name + "(" + turns + ")<br>";
-    }
+    thisUnit.effects.forEach(function (effect) {
+        effects += effect.name + "(" + effect.turns + ")<br>";
+    });
     str+=effects + '</td></tr>';
 
     //close the table

@@ -10,7 +10,7 @@ class Effect {
 
     applyEffect(creature){
         
-        if(! creature.effectExists(this)){
+        if (!creature.effectExists(this.name)) {
             console.log(this.name+" effect being applied");
             return this.applySpecific(creature);
         }
@@ -21,7 +21,7 @@ class Effect {
     }
 
     removeEffect(creature){
-        if(creature.effectExists(this)){
+        if (creature.effectExists(this.name)) {
             console.log(this.name+" effect being removed");
             return this.removeSpecific(creature);
         }

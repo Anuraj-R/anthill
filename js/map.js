@@ -94,13 +94,11 @@
 
     if (contentW <= 0 || contentH <= 0) return;
 
-    var scaleX = viewportW / contentW;
-    var scaleY = viewportH / contentH;
-    var scale = Math.min(scaleX, scaleY, 1.5);
+    var scale = Math.min(viewportW / contentW, viewportH / contentH, 1.5);
 
     window.GAME_SCALE = scale;
     $container.css({
-      'transform': 'scale(' + scale + ')',
+      transform: 'scale(' + scale + ')',
       'transform-origin': 'top center'
     });
     if (window.SEQUENCE) {

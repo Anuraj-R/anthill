@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var MAPLEVELMAX = 20;
+  var MAP_LEVEL_MAX = 20;
   var MAPS_TO_UNLOCK = 3;
 
   var LEVEL_NAMES = [
@@ -38,8 +38,8 @@
     var len = path.getTotalLength();
     var points = [];
     var delta = 2;
-    for (var i = 0; i < MAPLEVELMAX; i++) {
-      var t = (i + 0.5) / MAPLEVELMAX;
+    for (var i = 0; i < MAP_LEVEL_MAX; i++) {
+      var t = (i + 0.5) / MAP_LEVEL_MAX;
       var pt = path.getPointAtLength(t * len);
       var ptNext = path.getPointAtLength(Math.min(t * len + delta, len));
       var angle = Math.atan2(ptNext.y - pt.y, ptNext.x - pt.x);
@@ -60,7 +60,7 @@
     var vbWidth = parseFloat(vb[2]) || 280;
     var vbHeight = parseFloat(vb[3]) || 520;
 
-    for (var level = 1; level <= MAPLEVELMAX; level++) {
+    for (var level = 1; level <= MAP_LEVEL_MAX; level++) {
       var state = getMapState(level, highestCompleted);
       var pt = points[level - 1] || { x: 140, y: 26 * level, angle: 0 };
       var name = LEVEL_NAMES[level - 1] || 'Map ' + level;

@@ -89,25 +89,25 @@ function dropItems(loc){
     console.log(eNum+ " enemies detected to calculate dropChance");
     if (eNum !== 0) dropChance = dropChance * 5 / eNum;
 
-    while (dropChance > 0){
-        var dropOrNot = parseInt(100*Math.random());
-        if (dropChance >= dropOrNot){
-            var itemNum = parseInt(100*Math.random());
+    while (dropChance > 0) {
+        var dropOrNot = parseInt(100 * Math.random(), 10);
+        if (dropChance >= dropOrNot) {
+            var itemNum = parseInt(100 * Math.random(), 10);
             dropItem(itemNum, loc);
         }
         dropChance -= 100;
     }
 }
-function dropItem(itemNum, loc){
+function dropItem(itemNum, loc) {
     var item = healthPotion;
-    if (itemNum > 66){
+    if (itemNum > 66) {
         item = barkSkinPotion;
-    }else if( itemNum > 33){
+    } else if (itemNum > 33) {
         item = strengthPotion;
     }
-    console.log("dropping item "+item);
-    
-    INVENTORY[item] += 1;
+    console.log("dropping item " + item);
+
+    INVENTORY.set(item, (INVENTORY.get(item) || 0) + 1);
     saveInventory();
     animateDrop(item, loc);
 }
@@ -116,22 +116,20 @@ function loadInventory() {
     console.log("loading the player inventory..");
     INVENTORY = new Map();
     if (localStorage.getItem("ANTHILL_INVENTORY_ITEMS") === null) {
-        //inventory is not set. Initialize it.
-        INVENTORY[healthPotion] = 0; //Health Potion
-        INVENTORY[strengthPotion] = 0; //strength potion
-        INVENTORY[barkSkinPotion] = 0; //stoneskin potion
+        INVENTORY.set(healthPotion, 0);
+        INVENTORY.set(strengthPotion, 0);
+        INVENTORY.set(barkSkinPotion, 0);
         saveInventory();
-    }
-    else{
+    } else {
         var ANTHILL_INVENTORY_ITEMS = JSON.parse(localStorage.getItem("ANTHILL_INVENTORY_ITEMS"));
         var ANTHILL_INVENTORY_NUMBERS = JSON.parse(localStorage.getItem("ANTHILL_INVENTORY_NUMBERS"));
-        for(var i=0; i<ANTHILL_INVENTORY_ITEMS.length; i++){
-            INVENTORY[ANTHILL_INVENTORY_ITEMS[i]] = ANTHILL_INVENTORY_NUMBERS[i];
+        for (var i = 0; i < ANTHILL_INVENTORY_ITEMS.length; i++) {
+            INVENTORY.set(ANTHILL_INVENTORY_ITEMS[i], ANTHILL_INVENTORY_NUMBERS[i]);
         }
     }
 
     //insert the inventory box
-    var str = '<div id="healthPotionIcon" class="potionIcon" onclick="useHealthPotion()">13</div>';
+    var str = '<div id="healthPotionIcon" class="potionIcon" onclick="useHealthPotion()">0</div>';
     str += '<div id="strengthPotionIcon" class="potionIcon" onclick="useStrengthPotion()">0</div>';
     str += '<div id="barkskinPotionIcon" class="potionIcon" onclick="useBarkskinPotion()">0</div>';
     str = '<div id="inventoryBox" class="ui-widget-content ui-corner-all" onclick="" style="display:none;">' + str + '</div>';
@@ -150,10 +148,10 @@ function saveInventory() {
     console.log("Saving the player inventory..");
     var ANTHILL_INVENTORY_ITEMS = [];
     var ANTHILL_INVENTORY_NUMBERS = [];
-    for (var item in INVENTORY){
+    INVENTORY.forEach(function (count, item) {
         ANTHILL_INVENTORY_ITEMS.push(item);
-        ANTHILL_INVENTORY_NUMBERS.push(INVENTORY[item]);
-    }
+        ANTHILL_INVENTORY_NUMBERS.push(count);
+    });
     localStorage.setItem("ANTHILL_INVENTORY_ITEMS", JSON.stringify(ANTHILL_INVENTORY_ITEMS));
     localStorage.setItem("ANTHILL_INVENTORY_NUMBERS", JSON.stringify(ANTHILL_INVENTORY_NUMBERS));
 }
@@ -172,9 +170,9 @@ function showInventory() {
 
 
 function updateInventoryNumbers() {
-    $("#healthPotionIcon").html(INVENTORY[healthPotion]);
-    $("#strengthPotionIcon").html(INVENTORY[strengthPotion]);
-    $("#barkskinPotionIcon").html(INVENTORY[barkSkinPotion]);
+    $("#healthPotionIcon").html(INVENTORY.get(healthPotion) || 0);
+    $("#strengthPotionIcon").html(INVENTORY.get(strengthPotion) || 0);
+    $("#barkskinPotionIcon").html(INVENTORY.get(barkSkinPotion) || 0);
 }
 
 function showMenu() {
@@ -207,12 +205,12 @@ function useBarkskinPotion() {
     usePotion(new BarkSkinPotion(turns));
 }
 
-function usePotion(potion){
-    numPotions = parseInt(INVENTORY[potion.name]);
+function usePotion(potion) {
+    var numPotions = parseInt(INVENTORY.get(potion.name) || 0, 10);
     if (numPotions > 0) {
         var ret = potion.applyEffect(Grid.currentCreature());
         if (ret === true) {
-            INVENTORY[potion.name] = --numPotions;
+            INVENTORY.set(potion.name, numPotions - 1);
             saveInventory();
             updateInventoryNumbers();
         }

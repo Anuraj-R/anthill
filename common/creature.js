@@ -65,32 +65,30 @@ class Creature {
         return this;
     }
 
-    effectExists(effect){
-        if (effect.name in this.effects) return true;
-        return false;
+    effectExists(effectName) {
+        return this.effects.has(effectName);
     }
 
-    applyEffect(effect){
-        if (this.effectExists(effect.name)){
+    applyEffect(effect) {
+        if (this.effectExists(effect.name)) {
             alert("This effect is already applied");
             return false;
         }
-        else{
-            this.effects[effect.name] = effect;
-            return true;
-        }
+        this.effects.set(effect.name, effect);
+        return true;
     }
 
     updateEffectsCount() {
-        for (var effectName in this.effects){
-            if (this.effects[effectName].turns == 1) {
-                this.effects[effectName].removeEffect(this);
-                delete this.effects[effectName];
+        const effectsToRemove = [];
+        this.effects.forEach((effect, effectName) => {
+            if (effect.turns === 1) {
+                effect.removeEffect(this);
+                effectsToRemove.push(effectName);
+            } else {
+                effect.updateTurns(this, -1);
             }
-            else{
-                this.effects[effectName].updateTurns(this, -1);
-            }
-        }
+        });
+        effectsToRemove.forEach(name => this.effects.delete(name));
     }
 
     moveTo(loc) {

@@ -43,18 +43,16 @@ var PLAINS = [
 ];
 
 
-//tileProperties.movable; 
-//These are temporary values used to help functions communicate the state of the map
-//They may not reflect the actual state of the tile
-//var EMPTY = 0;
+// Tile mobility constants
 var IMPASSABLE = -1;
 var MOVABLE = 1;
 var NONE = "none";
-//contains the movability of the tile, and the name of the unit stationed if any
-function tileProperties(movable, station){
-	this.movable = movable;    // EMPTY IMPASSABLE MOVABLE OCCUPIED ATTACKABLE 
-	this.station = station;    //tiles[cellName].station contains the UNIT if occupied, NONE otherwise
-	return this;
+
+/** Represents tile state: mobility and stationed unit (if any) */
+function TileProperties(movable, station) {
+    this.movable = movable;
+    this.station = station;
+    return this;
 }
 
 class Grid{
@@ -69,9 +67,9 @@ class Grid{
     }
 
 
-    resetTile(tile){ this.tiles[tile] = new tileProperties(MOVABLE, NONE); }
+    resetTile(tile) { this.tiles[tile] = new TileProperties(MOVABLE, NONE); }
 
-    placeCreature(creature){ this.tiles[creature.position] = new tileProperties(MOVABLE,creature); }
+    placeCreature(creature) { this.tiles[creature.position] = new TileProperties(MOVABLE, creature); }
 
     isImpassable(loc){ return this.tiles[loc].movable == IMPASSABLE; }
 
@@ -100,7 +98,7 @@ class Grid{
                 var cellName = this.name + "_"+ i + "x" + j ;
                 grid += '<div id="' + cellName + '" class="mapTile" onclick="selectForMove(' + cellName + ')" ></div>';
                 //console.log ("Created "+name +"_"+ i + "x" + j);
-                this.tiles[this.name +"_"+ i + "x" + j] = new tileProperties(MOVABLE, NONE);
+                this.tiles[this.name + "_" + i + "x" + j] = new TileProperties(MOVABLE, NONE);
             }
             grid += "<br>";
         }
